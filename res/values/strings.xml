@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Oxygen</string>
+    <string name="action_settings">Settings</string>
+    <string name="login.cancel">Annuler</string>
+    <string name="login.login">Login</string>
+    <string name="login.placeholder.password">Mot de passe</string>
+    <string name="login.placeholder.login">Nom d\'utilisateur</string>
+
+</resources>
