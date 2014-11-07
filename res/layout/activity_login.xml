@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,48 +7,78 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.deep_blue.oxygen.LoginActivity" >
+    tools:context="com.deep_blue.oxygen.activity.LoginActivity" >
 
+    
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_title"
+    	style="@style/Title"
+         />
+    
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/editTextLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="97dp"
         android:ems="10"
-        android:hint="@string/login.placeholder.login"
-        android:inputType="text" />
+        android:hint="@string/login_placeholder_login"
+        android:inputType="text"
+        android:singleLine="true" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/editTextLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="41dp"
         android:ems="10"
-        android:hint="@string/login.placeholder.password"
-        android:inputType="textPassword|textWebPassword" >
-
-        <requestFocus />
+        android:hint="@string/login_placeholder_password"
+        android:inputType="textPassword|textWebPassword"
+        android:singleLine="true" >
+        
     </EditText>
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout 
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/login.login" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_alignLeft="@+id/editText1"
-        android:text="@string/login.cancel" />
+	    android:weightSum="1">
+	    
+   		<Button
+            android:id="@+id/button_cancel"
+        	android:onClick="onClickCancel"
+            android:text="@string/login_cancel" 
+            
+ 			android:drawableLeft="@drawable/ic_default"
+  			android:gravity="left|center_vertical"
+            
+            android:layout_width="0dp"
+	    	android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            
+            
+            android:background="?android:attr/selectableItemBackground"/>
+        <Button
+            android:id="@+id/button_login"
+       		android:onClick="onClickLogin"
+            android:text="@string/login_login" 
+            
+ 			android:drawableLeft="@drawable/ic_default"
+  			android:gravity="left|center_vertical"
+  			
+            android:layout_width="0dp"
+	    	android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            
+            
+            android:background="?android:attr/selectableItemBackground" />
+	</LinearLayout>
 
 </RelativeLayout>

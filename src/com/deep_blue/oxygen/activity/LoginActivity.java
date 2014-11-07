@@ -1,9 +1,12 @@
-package com.deep_blue.oxygen;
+package com.deep_blue.oxygen.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.deep_blue.oxygen.R;
 
 public class LoginActivity extends Activity {
 
@@ -30,5 +33,14 @@ public class LoginActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void onClickCancel(View view){
+		System.out.println("Clique cancel");
+		finish();
+	}
+	
+	public void onClickLogin(View view){
+		System.out.println("Clique login");
 	}
 }
