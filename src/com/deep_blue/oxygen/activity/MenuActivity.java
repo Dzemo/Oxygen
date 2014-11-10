@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.model.Utilisateur;
 
 public class MenuActivity extends Activity {
 
@@ -13,6 +14,9 @@ public class MenuActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu);
+		
+		Utilisateur utilisateur = (Utilisateur) savedInstanceState.getParcelable(IntentKey.UTILISATEUR_COURANT.toString());
+		System.out.println("Utilisateur courant:"+utilisateur);
 	}
 
 	@Override
@@ -32,5 +36,26 @@ public class MenuActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void onCliqueSynch(){
+		System.out.println("clique synch");
+	}
+	
+	public void onCliqueList(){
+		System.out.println("clique list");
+	}
+	
+	public void onCliqueCurrent(){
+		System.out.println("clique current");
+	}
+	
+	public void onCliqueParam(){
+		System.out.println("clique param");
+	}
+	
+	public void onCliqueLogout(){
+		System.out.println("clique logout");
+		finish();
 	}
 }

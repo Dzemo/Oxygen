@@ -1,12 +1,18 @@
 package com.deep_blue.oxygen.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.dao.FicheSecuriteDao;
+import com.deep_blue.oxygen.dao.UtilisateurDao;
+import com.deep_blue.oxygen.model.FicheSecurite;
+import com.deep_blue.oxygen.model.Utilisateur;
 
 public class LoginActivity extends Activity {
 
@@ -20,6 +26,12 @@ public class LoginActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.login, menu);
+		
+		FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
+		FicheSecurite ficheSecurite = ficheSecuriteDao.getById(1);
+		System.out.println(ficheSecurite);
+		
+
 		return true;
 	}
 
@@ -41,6 +53,25 @@ public class LoginActivity extends Activity {
 	}
 	
 	public void onClickLogin(View view){
-		System.out.println("Clique login");
+		String login = ((EditText)findViewById(R.id.editTextLogin)).getText().toString();
+		String password = ((EditText)findViewById(R.id.editTextPassword)).getText().toString();
+		
+		System.out.println("Clique login: login="+login+" password="+password);
+		
+		UtilisateurDao utilisateurDao = new UtilisateurDao(LoginActivity.this);
+		Utilisateur utilisateur = utilisateurDao.authentifier(login, password);
+		
+		if(utilisateur != null){
+			System.out.println("Authentification réussi!");
+			System.out.println("Utilisateur: "+utilisateur);
+			
+			Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+			intent.putExtra(IntentKey.UTILISATEUR_COURANT.toString(), utilisateur);
+			
+			startActivity(intent);
+		}
+		else{
+			System.out.println("Authentification échoué!");
+		}
 	}
 }
