@@ -1,16 +1,22 @@
 package com.deep_blue.oxygen.activity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.dao.FicheSecuriteDao;
+import com.deep_blue.oxygen.model.EnumEtat;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.ListeFichesSecurite;
 import com.deep_blue.oxygen.model.Utilisateur;
@@ -37,12 +43,25 @@ public class ListActivity extends Activity {
 			TableRow row= new TableRow(this);
 	        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
 	        row.setLayoutParams(lp);
+	        ImageView ivIcon = new ImageView(this);
+	        if(ficheSecurite.getEtat().equals(EnumEtat.SYNCHRONISE)){
+		        ivIcon.setImageResource(android.R.drawable.ic_menu_edit);
+		        ivIcon.setAdjustViewBounds(true);
+		        //ivIcon.setPadding(5, 25, 5, 25);
+	        }
+	        else if(ficheSecurite.getEtat().equals(EnumEtat.VALIDE)){
+		        ivIcon.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+		        ivIcon.setAdjustViewBounds(true);
+		        //ivIcon.setPadding(5, 25, 5, 25);
+	        }
 	        
-	        TextView tvIcon = new TextView(this);
-	        tvIcon.setText(ficheSecurite.getEtat().toString());
 	        TextView tvDescription = new TextView(this);
-	        String textDescription = "Plongé à "+ficheSecurite.getSite()+" le "+ficheSecurite.getTimestamp();
+	        String dateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(ficheSecurite.getTimestamp()*1000));
+	        String hourString = new SimpleDateFormat("hh:mm").format(new Date(ficheSecurite.getTimestamp()*1000));
+
+	        String textDescription = "Plongé à "+ficheSecurite.getSite()+" le "+dateString+" à "+hourString;
 	        tvDescription.setText(textDescription);
+	        //tvDescription.setPadding(15, 0, 15, 0);
 	       
 	       
 	        
@@ -51,7 +70,7 @@ public class ListActivity extends Activity {
 	        else
 	        	row.setBackgroundResource(R.drawable.list_item_background_2);
 	        
-	        row.addView(tvIcon);
+			row.addView(ivIcon);
 	        row.addView(tvDescription);
 	        tableLayout.addView(row,i);
 	        
