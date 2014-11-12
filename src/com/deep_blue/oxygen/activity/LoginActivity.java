@@ -9,9 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.deep_blue.oxygen.R;
-import com.deep_blue.oxygen.dao.FicheSecuriteDao;
 import com.deep_blue.oxygen.dao.UtilisateurDao;
-import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Utilisateur;
 
 public class LoginActivity extends Activity {
@@ -26,13 +24,8 @@ public class LoginActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.login, menu);
-		
-		FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
-		FicheSecurite ficheSecurite = ficheSecuriteDao.getById(1);
-		System.out.println(ficheSecurite);
-		
+	    return true;
 
-		return true;
 	}
 
 	@Override
@@ -40,11 +33,18 @@ public class LoginActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
+        case R.id.itemParam:
+            //newGame();
+        	System.out.println("Menu param");
+            return true;
+        case R.id.itemSync:
+           // showHelp();
+        	System.out.println("Menu sync");
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+    }
 	}
 	
 	public void onClickCancel(View view){

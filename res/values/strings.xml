@@ -11,10 +11,7 @@
     <string name="login_placeholder_login">Nom d\'utilisateur</string>
     <string name="login_title">Connection</string>
     
-    <string name="menu_lastsynch">Dernière synchronisation: 06/11/2014 à 12h54</string>
     <string name="menu_synch">Sychroniser</string>
-    <string name="menu_list">Liste fiches</string>
-    <string name="menu_current">Sortie en cours</string>
     <string name="menu_param">Parametres</string>
     <string name="menu_logout">Deconnexion</string>
     
