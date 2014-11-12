@@ -18,6 +18,13 @@
     <string name="list_fiche_number">n°X</string>
     <string name="list_fiche_desc">Plongée [type] à [lieu]</string>
     <string name="title_activity_list">ListActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_fiche_securite">Fiche de Sécurité</string>
+    
+    <!-- FICHE INFO DEBUT -->
+    <string name="fiche_infos_date_labelle">Date :</string>
+    <string name="fiche_infos_heure_labelle">Heure :</string>
+    <string name="fiche_infos_site_labelle">Site :</string>
+    <string name="fiche_infos_directeur_plonge_labelle">Directeur :</string>
+    <!-- FICHE INFO FIN -->
 
 </resources>
