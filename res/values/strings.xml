@@ -15,5 +15,11 @@
     <string name="menu_logout">Deconnexion</string>
     
     <string name="parametre_title">Paramètres</string>
+    <string name="list_title">Liste des Fiches en cours</string>
+    <string name="list_icon_edit">Editable</string>
+    <string name="list_icon_valid">Validé</string>
+    <string name="list_fiche_number">n°X</string>
+    <string name="list_fiche_desc">Plongée [type] à [lieu]</string>
+ 
 
 </resources>
