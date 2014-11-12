@@ -15,12 +15,11 @@
             android:gravity="center"
             android:paddingBottom="14dp"
             android:paddingTop="14dp"
-            android:background="@drawable/titleBackground"
+            android:background="@drawable/title_background"
             android:textColor="#fcf1df"	
             android:text="@string/list_title"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:typeface="Roboto" >
+            android:textStyle="bold" >
 
 		</TextView>
 	<!-- DEBUT DES TABLES -->
@@ -28,7 +27,8 @@
    <TableRow
         android:layout_height="wrap_content"
         android:id="@+id/fiche1"
-        android:background="@drawable/listItemBackground1"
+       
+        android:background="@drawable/list_item_background_1"
     	android:textColor="#2f3d4c"
         android:paddingBottom="12dp"
         android:paddingTop="12dp"
@@ -56,7 +56,7 @@
     <TableRow
         android:layout_height="wrap_content"
         android:id="@+id/fiche2"
-        android:background="@drawable/listItemBackground2"
+        android:background="@drawable/list_item_background_2"
     	android:textColor="#2f3d4c"
         android:paddingBottom="12dp"
         android:paddingTop="12dp"
@@ -83,7 +83,7 @@
     <TableRow
         android:layout_height="wrap_content"
         android:id="@+id/fiche3"
-        android:background="@drawable/listItemBackground1"
+        android:background="@drawable/list_item_background_1"
     	android:textColor="#2f3d4c"
         android:paddingBottom="12dp"
         android:paddingTop="12dp"

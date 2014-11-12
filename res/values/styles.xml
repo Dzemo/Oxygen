@@ -22,7 +22,16 @@
         <item name="android:layout_height">wrap_content</item>
 		<item name="android:textColor">#31AEDA</item>
 		<item name="android:textSize">18sp</item>
-        <item name="android:typeface">monospace</item>
+        <item name="android:typeface">roboto</item>
+    </style>
+    
+    <style name="ListFicheElem" >       
+        <item name="android:textColor">#2f3d4c</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
     
 

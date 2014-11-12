@@ -30,8 +30,12 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.deep_blue.oxygen.activity.ParametreActivity"
+            android:name=".activity.ParametreActivity"
             android:label="@string/parametre_title" >
+        </activity>
+        <activity
+            android:name=".activity.ListActivity"
+            android:label="@string/title_activity_list" >
         </activity>
     </application>
 
