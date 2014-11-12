@@ -13,11 +13,13 @@ import com.deep_blue.oxygen.dao.UtilisateurDao;
 import com.deep_blue.oxygen.model.Utilisateur;
 
 public class LoginActivity extends Activity {
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		
 	}
 
 	@Override
@@ -34,10 +36,13 @@ public class LoginActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
-        case R.id.itemParam:
-            //newGame();
+       
+		case R.id.itemParam:
         	System.out.println("Menu param");
+        	Intent intent = new Intent(LoginActivity.this, ParametreActivity.class);
+			startActivity(intent);
             return true;
+            
         case R.id.itemSync:
            // showHelp();
         	System.out.println("Menu sync");
