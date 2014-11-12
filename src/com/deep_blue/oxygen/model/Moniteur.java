@@ -58,7 +58,7 @@ public class Moniteur implements Parcelable{
 		id = source.readInt();
 		nom = source.readString();
 		prenom = source.readString();
-		aptitudes = source.readParcelable(ListeAptitudes.class.getClassLoader());
+		//aptitudes = source.readParcelable(ListeAptitudes.class.getClassLoader());
 		actif = source.readInt() > 0;
 		directeurPlongee = source.readInt() > 0;
 		telephone = source.readString();
@@ -160,7 +160,7 @@ public class Moniteur implements Parcelable{
 		dest.writeInt(id);
 		dest.writeString(nom);
 		dest.writeString(prenom);
-		dest.writeParcelable(aptitudes, flags);
+		//dest.writeParcelable(aptitudes, flags);
 		dest.writeInt(actif ? 1 : 0);
 		dest.writeInt(directeurPlongee ? 1 : 0);
 		dest.writeString(email);

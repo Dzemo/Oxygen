@@ -112,7 +112,7 @@ public class Plongeur implements Parcelable {
 		idFicheSecurite = source.readInt();
 		nom = source.readString();
 		prenom = source.readString();
-		aptitudes = source.readParcelable(ListeAptitudes.class.getClassLoader());
+		//aptitudes = source.readParcelable(ListeAptitudes.class.getClassLoader());
 		telephone = source.readString();
 		telephoneUrgence = source.readString();
 		dateNaissance = source.readString();
@@ -221,7 +221,7 @@ public class Plongeur implements Parcelable {
 		dest.writeInt(idFicheSecurite);
 		dest.writeString(nom);
 		dest.writeString(prenom);
-		dest.writeParcelable(aptitudes, flags);
+		//dest.writeParcelable(aptitudes, flags);
 		dest.writeString(telephone);
 		dest.writeString(telephoneUrgence);
 		dest.writeString(dateNaissance);

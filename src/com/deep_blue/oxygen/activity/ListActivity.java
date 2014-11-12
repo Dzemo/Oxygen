@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -44,7 +46,16 @@ public class ListActivity extends Activity {
 	        String textDescription = "Plongé à "+ficheSecurite.getSite()+" le "+ficheSecurite.getTimestamp();
 	        tvDescription.setText(textDescription);
 	       
-	       
+	        row.setOnClickListener(new OnClickListener(){
+
+	            @Override
+	            public void onClick(View v){
+	                // TODO Auto-generated method stub
+	                //row_id=contact_table.indexOfChild(row);
+	            	Intent intent = new Intent(ListActivity.this, FicheSecuriteActivity.class);
+	            	startActivity(intent);
+	            }
+	        });
 	        
 	        if(i % 2 == 0)
 	        	row.setBackgroundResource(R.drawable.list_item_background_1);
