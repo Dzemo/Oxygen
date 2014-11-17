@@ -4,13 +4,10 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.deep_blue.oxygen.R;
-import com.deep_blue.oxygen.model.ListePlongeurs;
-import com.deep_blue.oxygen.model.Moniteur;
 import com.deep_blue.oxygen.model.Palanquee;
 
 public class PalanqueeActivity extends Activity {
@@ -27,13 +24,13 @@ public class PalanqueeActivity extends Activity {
 		
 		Intent intent = getIntent();
 		
-		ListePlongeurs result = intent.getParcelableExtra(IntentKey.PALANQUEE_COURANTE.toString());
+		palanquee = intent.getParcelableExtra(IntentKey.PALANQUEE_COURANTE.toString());
 		
-		if(result == null){
+		if(palanquee == null){
 			System.out.println("Pas de palanquée selectionnée");
 		}
 		else{
-			System.out.println("Palanquée séléctionnée "+result);
+			System.out.println("Palanquée séléctionnée "+palanquee);
 		}
 	}
 
@@ -49,7 +46,7 @@ public class PalanqueeActivity extends Activity {
 		switch (item.getItemId()) {
 	    // Respond to the action bar's Up/Home button
 	    case android.R.id.home:
-	        NavUtils.navigateUpFromSameTask(this);
+	        finish();
 	        return true;
 	    }
 	    return super.onOptionsItemSelected(item);

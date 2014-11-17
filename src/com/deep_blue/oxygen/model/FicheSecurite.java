@@ -51,15 +51,34 @@ public class FicheSecurite  implements Parcelable {
 		this.palanquees = palanquees;
 	}
 	
+	/**
+	 * 
+	 * @param source
+	 */
 	public FicheSecurite(Parcel source){
+		boolean isPresent;
+		
 		id = source.readInt();
-		embarcation = source.readParcelable(Embarcation.class.getClassLoader());
-		directeurPlonge = source.readParcelable(Moniteur.class.getClassLoader());
+		isPresent = source.readByte() == 1;
+		if(isPresent)
+			embarcation = source.readParcelable(Embarcation.class.getClassLoader());
+		else
+			embarcation = new Embarcation(0, "", "", false, 0);
+		
 		timestamp = source.readLong();
 		site = source.readString();
+		isPresent = source.readByte() == 1;
+		if(isPresent)
+			directeurPlonge = source.readParcelable(Moniteur.class.getClassLoader());
+		else
+			directeurPlonge = new Moniteur(0, "", "", new ListeAptitudes(), false, false, "", "", 0);
 		etat = EnumEtat.valueOf(source.readString());
-		version = source.readInt();
-		palanquees = source.readParcelable(ListePalanquees.class.getClassLoader());
+		version = source.readInt();		
+		isPresent = source.readByte() == 1;
+		if(isPresent)
+			palanquees = source.readParcelable(ListePalanquees.class.getClassLoader());
+		else
+			palanquees = new ListePalanquees();
 	}
 
 	/**
@@ -191,12 +210,17 @@ public class FicheSecurite  implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(id);
-		dest.writeParcelable(embarcation, flags);
-		dest.writeParcelable(directeurPlonge, flags);
+		dest.writeByte((byte)(embarcation != null ? 1 : 0));
+		if(embarcation != null)
+			dest.writeParcelable(embarcation, flags);
 		dest.writeLong(timestamp);
-		dest.writeString(site);
-		dest.writeString(etat.toString());
+		dest.writeString(site != null ? site : "");
+		dest.writeByte((byte)(directeurPlonge != null ? 1 : 0));
+		if(directeurPlonge != null)
+			dest.writeParcelable(directeurPlonge, flags);
+		dest.writeString(etat != null ? etat.toString() : null);
 		dest.writeInt(version);
+		dest.writeByte((byte)(palanquees != null ? 1 : 0));
 		dest.writeParcelable(palanquees, flags);
 	}
 }

@@ -9,15 +9,15 @@ import android.os.Parcelable;
  */
 public class Embarcation implements Parcelable {
 	
-	public static final Parcelable.Creator<Aptitude> CREATOR = new Parcelable.Creator<Aptitude>() {
+	public static final Parcelable.Creator<Embarcation> CREATOR = new Parcelable.Creator<Embarcation>() {
 		@Override
-		public Aptitude createFromParcel(Parcel source) {
-			return new Aptitude(source);
+		public Embarcation createFromParcel(Parcel source) {
+			return new Embarcation(source);
 		}
 
 		@Override
-		public Aptitude[] newArray(int size) {
-			return new Aptitude[size];
+		public Embarcation[] newArray(int size) {
+			return new Embarcation[size];
 		}
 	};
 	
@@ -132,8 +132,8 @@ public class Embarcation implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(id);
-		dest.writeString(libelle);
-		dest.writeString(comentaire);
+		dest.writeString(libelle != null ? libelle : "");
+		dest.writeString(comentaire != null ? comentaire : "");
 		dest.writeInt(disponible ? 1 : 0);
 		dest.writeInt(version);
 	}

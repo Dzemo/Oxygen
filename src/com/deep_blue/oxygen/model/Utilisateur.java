@@ -212,12 +212,12 @@ public class Utilisateur implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(login);
-		dest.writeString(nom);
-		dest.writeString(prenom);
-		dest.writeString(motDePasse);
+		dest.writeString(login != null ? login : "");
+		dest.writeString(nom != null ? nom : "");
+		dest.writeString(prenom != null ? prenom : "");
+		dest.writeString(motDePasse != null ? motDePasse : "");
 		dest.writeInt(administrateur ? 1 : 0);
-		dest.writeString(email);
+		dest.writeString(email != null ? email : "");
 		dest.writeInt(actif ? 1 : 0);
 		dest.writeInt(version);
 	}

@@ -70,7 +70,7 @@ public class LoginActivity extends Activity {
 			System.out.println("Authentification réussi!");
 			System.out.println("Utilisateur: "+utilisateur);
 			
-			Intent intent = new Intent(LoginActivity.this, ListActivity.class);
+			Intent intent = new Intent(LoginActivity.this, ListeFichesSecuriteActivity.class);
 			intent.putExtra(IntentKey.UTILISATEUR_COURANT.toString(), utilisateur);
 			
 			startActivity(intent);

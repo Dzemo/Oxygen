@@ -1,5 +1,7 @@
 package com.deep_blue.oxygen.model;
 
+import java.util.List;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -58,7 +60,7 @@ public class Moniteur implements Parcelable{
 		id = source.readInt();
 		nom = source.readString();
 		prenom = source.readString();
-		//aptitudes = source.readParcelable(ListeAptitudes.class.getClassLoader());
+		aptitudes = source.readParcelable(ListeAptitudes.class.getClassLoader());
 		actif = source.readInt() > 0;
 		directeurPlongee = source.readInt() > 0;
 		telephone = source.readString();
@@ -90,7 +92,7 @@ public class Moniteur implements Parcelable{
 		this.prenom = prenom;
 	}
 
-	public ListeAptitudes getAptitudes() {
+	public List<Aptitude> getAptitudes() {
 		return aptitudes;
 	}
 
@@ -158,13 +160,13 @@ public class Moniteur implements Parcelable{
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(id);
-		dest.writeString(nom);
-		dest.writeString(prenom);
-		//dest.writeParcelable(aptitudes, flags);
+		dest.writeString(nom != null ? nom : "");
+		dest.writeString(prenom != null ? prenom : "");
+		dest.writeParcelable(aptitudes != null ? aptitudes : new ListeAptitudes(), flags);
 		dest.writeInt(actif ? 1 : 0);
 		dest.writeInt(directeurPlongee ? 1 : 0);
-		dest.writeString(email);
-		dest.writeString(telephone);
+		dest.writeString(email != null ? email : "");
+		dest.writeString(telephone != null ? telephone : "");
 		dest.writeInt(version);		
 	}
 	

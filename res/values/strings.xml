@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    
+	<!-- GENERAL/MENU DEBUT -->
     <string name="app_name">Oxygen</string>
     <string name="action_settings">Settings</string>
+    
+    <string name="menu_synch">Sychroniser</string>
+    <string name="menu_param">Parametres</string>
+    <string name="menu_logout">Deconnexion</string>
+    <string name="parametre_title">Paramètres</string>
+    <!-- GENERAL/MENU FIN -->
+    
+    <!-- LOGIN DEBUT -->
     <string name="login_cancel">Annuler</string>
     <string name="login_login">Login</string>
     <string name="login_placeholder_password">Mot de passe</string>
     <string name="login_placeholder_login">Nom d\'utilisateur</string>
     <string name="login_title">Connection</string>
-    <string name="menu_synch">Sychroniser</string>
-    <string name="menu_param">Parametres</string>
-    <string name="menu_logout">Deconnexion</string>
-    <string name="parametre_title">Paramètres</string>
-    <string name="list_title">Liste des Fiches en cours</string>
+    <!-- LOGIN FIN -->
+    
+    <!-- LISTE FICHES SECURITE DEBUT -->
+    <string name="title_activity_list">Liste des fiches</string>
     <string name="list_icon_edit">Editable</string>
     <string name="list_icon_valid">Validé</string>
     <string name="list_fiche_number">n°X</string>
     <string name="list_fiche_desc">Plongée [type] à [lieu]</string>
-    <string name="title_activity_list">ListActivity</string>
+    <!-- LISTE FICHES SECURITE FIN -->
 
     <!-- FICHE INFO DEBUT -->
     <string name="fiche_infos_title_palanquees">Palanquées :</string>
@@ -28,7 +36,8 @@
     <string name="fiche_infos_directeur_plonge_labelle">Directeur :</string>
     <!-- FICHE INFO FIN -->
 
+	<!-- PALANQUEE DEBUT -->
     <string name="title_activity_palanquee">Palanquée</string>
-    <string name="hello_world">Hello world!</string>
+    <!-- PALANQUEE FIN -->
 
 </resources>

@@ -1,15 +1,10 @@
 package com.deep_blue.oxygen.activity;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -17,12 +12,14 @@ import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.dao.FicheSecuriteDao;
+import com.deep_blue.oxygen.listener.ListeFichesSecuriteOnClickListener;
 import com.deep_blue.oxygen.model.EnumEtat;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.ListeFichesSecurite;
 import com.deep_blue.oxygen.model.Utilisateur;
+import com.deep_blue.oxygen.util.DateStringUtils;
 
-public class ListActivity extends Activity {
+public class ListeFichesSecuriteActivity extends Activity {
 
 
 	@Override
@@ -32,7 +29,6 @@ public class ListActivity extends Activity {
 		
 		Intent intent = getIntent();
 		Utilisateur utilisateur = (Utilisateur) intent.getParcelableExtra(IntentKey.UTILISATEUR_COURANT.toString());
-		System.out.println("Utilisateur courant:"+utilisateur);
 
 		TableLayout tableLayout = (TableLayout) findViewById(R.id.tableLayout1);
 		FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
@@ -57,29 +53,25 @@ public class ListActivity extends Activity {
 	        }
 	        
 	        TextView tvDescription = new TextView(this);
-	        String dateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(ficheSecurite.getTimestamp()*1000));
-	        String hourString = new SimpleDateFormat("hh:mm").format(new Date(ficheSecurite.getTimestamp()*1000));
+	        String dateString = DateStringUtils.timestampsToDate(ficheSecurite.getTimestamp());
+	        String hourString = DateStringUtils.timestampsToHeure(ficheSecurite.getTimestamp());
 
 	        String textDescription = "Plongé à "+ficheSecurite.getSite()+" le "+dateString+" à "+hourString;
 	        tvDescription.setText(textDescription);
 	        //tvDescription.setPadding(15, 0, 15, 0);
 	       
-	        row.setOnClickListener(new OnClickListener(){
-
-	            @Override
-	            public void onClick(View v){
-	                // TODO Auto-generated method stub
-	                //row_id=contact_table.indexOfChild(row);
-	            	Intent intent = new Intent(ListActivity.this, FicheSecuriteActivity.class);
-	            	startActivity(intent);
-	            }
-	        });
+	       
 	        
+	        //Coloration selon la parité de la row
 	        if(i % 2 == 0)
 	        	row.setBackgroundResource(R.drawable.list_item_background_1);
 	        else
 	        	row.setBackgroundResource(R.drawable.list_item_background_2);
 	        
+	        //Clik listener sur la row
+	        row.setOnClickListener(new ListeFichesSecuriteOnClickListener(ficheSecurite, this));
+	        
+	        //Ajout du contenu de la row et ajout de la row dans la table
 			row.addView(ivIcon);
 	        row.addView(tvDescription);
 	        tableLayout.addView(row,i);

@@ -154,6 +154,22 @@ public class Aptitude implements Parcelable {
 		encadrementMax = source.readInt();
 		
 		version  = source.readInt();
+		
+		libelleCourt = "";
+		libelleLong = "";
+		
+		techniqueMax = 0;
+		encardeeMax = 0;
+		autonomeMax = 0;
+		
+		nitroxMax = 0;
+		ajoutMax = 0;
+		
+		enseignementAirMax = 0;
+		enseignementNitroxMax = 0;
+		encadrementMax = 0;
+		
+		version  = 0;
 	}
 
 
@@ -252,8 +268,8 @@ public class Aptitude implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(id);
-		dest.writeString(libelleCourt);
-		dest.writeString(libelleLong);
+		dest.writeString(libelleCourt != null ? libelleCourt : "");
+		dest.writeString(libelleLong != null ? libelleLong : "");
 		
 		dest.writeInt(techniqueMax);
 		dest.writeInt(encardeeMax);
@@ -266,7 +282,7 @@ public class Aptitude implements Parcelable {
 		dest.writeInt(enseignementNitroxMax);
 		dest.writeInt(encadrementMax);
 		
-		dest.writeInt(version);		
+		dest.writeInt(version);
 	}
 	
 	

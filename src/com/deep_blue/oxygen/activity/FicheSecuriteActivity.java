@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TableLayout;
@@ -12,8 +11,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
-import com.deep_blue.oxygen.dao.FicheSecuriteDao;
-import com.deep_blue.oxygen.listener.PalanqueeListOnClickListener;
+import com.deep_blue.oxygen.listener.ListePalanqueeOnClickListener;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Palanquee;
 
@@ -33,15 +31,11 @@ public class FicheSecuriteActivity extends Activity {
 		ficheSecurite = intent
 				.getParcelableExtra(IntentKey.FICHE_SECURITE_COURANTE
 						.toString());
-
-		if (ficheSecurite == null) {
-			System.out.println("Pas de fiche selectionné !");
-			//finish();
-			FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
-			ficheSecurite = ficheSecuriteDao.getById(1);
-		}
+		
 
 		// Initialisation de la vue avec la fiche de sécurité séléctionné
+		
+		//Info général de la fiche
 		((TextView) findViewById(R.id.textView_fiche_infos_date_value))
 				.setText(ficheSecurite.getTimestamp().toString());
 		((TextView) findViewById(R.id.textView_fiche_infos_heure_value))
@@ -55,6 +49,8 @@ public class FicheSecuriteActivity extends Activity {
 		((TextView) findViewById(R.id.textView_fiche_infos_directeur_plonge_value))
 				.setText(directeurPlongeValue);
 
+		//Infos des palanques
+		// "Palanquée n°X encadree utilisant de l'air à 12m pendant 30min";
 		TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayout_fiche_palanquees);
 		int i = 0;
 		for (Palanquee palanquee : ficheSecurite.getPalanquees()) {
@@ -63,8 +59,7 @@ public class FicheSecuriteActivity extends Activity {
 					TableRow.LayoutParams.WRAP_CONTENT);
 			row.setLayoutParams(lp);
 
-			// "Palanquée n°X encadree utilisant de l'air à 12m pendant 30min";
-
+			//Création du text de description de la palanquée
 			TextView tvDescription = new TextView(this);
 			String textDescription = "Palanquée n°" + palanquee.getNumero()
 					+ " " + palanquee.getTypePlonge().toString()
@@ -73,14 +68,18 @@ public class FicheSecuriteActivity extends Activity {
 					+ "pendant "+palanquee.getDureePrevue()+"s";
 			tvDescription.setText(textDescription);
 
-			System.out.println(textDescription);
 			
-			row.setOnClickListener(new PalanqueeListOnClickListener(palanquee, FicheSecuriteActivity.this));
+			//Ajout du click listener
+			row.setOnClickListener(new ListePalanqueeOnClickListener(palanquee, FicheSecuriteActivity.this));
 			
+			//Coloration alterné pour les row
 			if (i % 2 == 0)
 				row.setBackgroundResource(R.drawable.list_item_background_1);
 			else
 				row.setBackgroundResource(R.drawable.list_item_background_2);
+			
+			 //Ajout du contenu de la row et ajout de la row dans la table
+			row.addView(tvDescription);
 			tableLayout.addView(row, i);
 			i++;
 		}
@@ -98,7 +97,7 @@ public class FicheSecuriteActivity extends Activity {
 		switch (item.getItemId()) {
 	    // Respond to the action bar's Up/Home button
 	    case android.R.id.home:
-	        NavUtils.navigateUpFromSameTask(this);
+	    	finish();
 	        return true;
 	    }
 	    return super.onOptionsItemSelected(item);
