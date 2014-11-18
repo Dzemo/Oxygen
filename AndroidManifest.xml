@@ -45,14 +45,6 @@
                 android:value="com.deep_blue.oxygen.activity.ListeFichesSecuriteActivity" />
         </activity>
         
-        <activity
-            android:name="com.deep_blue.oxygen.activity.PalanqueeActivity"
-            android:label="@string/title_activity_palanquee" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.deep_blue.oxygen.activity.FicheSecuriteActivity" />
-        </activity>
-        
     </application>
 
 </manifest>

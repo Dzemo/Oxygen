@@ -37,8 +37,13 @@
     <string name="fiche_infos_directeur_plonge_labelle">Directeur :</string>
     <!-- FICHE INFO FIN -->
 
-	<!-- PALANQUEE DEBUT -->
-    <string name="title_activity_palanquee">Palanquée</string>
-    <!-- PALANQUEE FIN -->
+	<!-- PALANQUEE INFO DEBUT -->
+	<string name="palanquee_info_gaz_labelle">Type de gaz</string>
+	<string name="palanquee_info_plongee_labelle">Type de plongée</string>
+	<string name="palanquee_info_profondeur_prevue_labelle">Profondeur prévue</string>
+	<string name="palanquee_info_profondeur_realisee_labelle">Profondeur réalisée</string>
+	<string name="palanquee_info_duree_prevue_labelle">Durée prévue</string>
+	<string name="palanquee_info_duree_realisee_labelle">Durée réalisée</string>
+    <!-- PALANQUEE INFO FIN -->
 
 </resources>

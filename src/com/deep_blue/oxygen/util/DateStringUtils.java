@@ -28,5 +28,25 @@ public class DateStringUtils {
 	public static String timestampsToHeure(Long timestamp){
         return new SimpleDateFormat("hh:mm", new Locale("fr_FR")).format(new Date(timestamp*1000));
 	}
+	
+	/**
+	 * Transforme des seconds en hh'mm''ss
+	 * @param seconds
+	 * @return
+	 */
+	public static String secondsToNiceString(Integer seconds){
+		String result = "";
+		
+		if(seconds > 3600){
+			result += (seconds / 3600) + "h";
+			seconds /= 3600;
+		}
+		if(seconds > 60)
+			result += (seconds / 60) + "m";
+		
+		result += (seconds % 60) + "s";
+		
+		return result;
+	}
 
 }

@@ -1,87 +1,86 @@
 package com.deep_blue.oxygen.activity;
 
 import android.app.ActionBar;
-import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
-import com.deep_blue.oxygen.listener.ListePalanqueeOnClickListener;
+import com.deep_blue.oxygen.activity.adapter.FicheSecuriteTabsAdapter;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Palanquee;
 
-public class FicheSecuriteActivity extends Activity {
+public class FicheSecuriteActivity extends FragmentActivity {
+
+	// When requested, this adapter returns a FicheSecuriteTabsInfoFragment or FicheSecuriteTabsPalanqueeFragment,
+	// representing an object in the collection.
+	private FicheSecuriteTabsAdapter ficheSecuriteTabsAdapter;
+	private ViewPager mViewPager;
 
 	private FicheSecurite ficheSecurite;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fiche_securite);
+		final ActionBar actionBar = getActionBar();
 
-		ActionBar actionBar = this.getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-
+		// Récupération de la fiche de sécurité dans l'Intent
 		Intent intent = getIntent();
 		ficheSecurite = intent
 				.getParcelableExtra(IntentKey.FICHE_SECURITE_COURANTE
 						.toString());
+		// ViewPager and its adapters use support library
+		// fragments, so use getSupportFragmentManager.
+		ficheSecuriteTabsAdapter = new FicheSecuriteTabsAdapter(
+				getSupportFragmentManager(), ficheSecurite);
+		mViewPager = (ViewPager) findViewById(R.id.fiche_securite_tabs);
+		mViewPager.setAdapter(ficheSecuriteTabsAdapter);
+
+		// Specify that tabs should be displayed in the action bar.
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		
+		// Create a tab listener that is called when the user changes tabs.
+		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+				// When the tab is selected, switch to the
+				// corresponding page in the ViewPager.
+				mViewPager.setCurrentItem(tab.getPosition());
+			}
 
-		// Initialisation de la vue avec la fiche de sécurité séléctionné
-		
-		//Info général de la fiche
-		((TextView) findViewById(R.id.textView_fiche_infos_date_value))
-				.setText(ficheSecurite.getTimestamp().toString());
-		((TextView) findViewById(R.id.textView_fiche_infos_heure_value))
-				.setText(ficheSecurite.getTimestamp().toString());
-		((TextView) findViewById(R.id.textView_fiche_infos_site_value))
-				.setText(ficheSecurite.getSite());
-		String directeurPlongeValue = ficheSecurite.getDirecteurPlonge()
-				.getPrenom()
-				+ " "
-				+ ficheSecurite.getDirecteurPlonge().getNom();
-		((TextView) findViewById(R.id.textView_fiche_infos_directeur_plonge_value))
-				.setText(directeurPlongeValue);
+			public void onTabUnselected(ActionBar.Tab tab,
+					FragmentTransaction ft) {
+				// ignore this event
+			}
 
-		//Infos des palanques
-		// "Palanquée n°X encadree utilisant de l'air à 12m pendant 30min";
-		TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayout_fiche_palanquees);
-		int i = 0;
-		for (Palanquee palanquee : ficheSecurite.getPalanquees()) {
-			TableRow row = new TableRow(this);
-			TableRow.LayoutParams lp = new TableRow.LayoutParams(
-					TableRow.LayoutParams.WRAP_CONTENT);
-			row.setLayoutParams(lp);
+			public void onTabReselected(ActionBar.Tab tab,
+					FragmentTransaction ft) {
+				// ignore this event
+			}
+		};
 
-			//Création du text de description de la palanquée
-			TextView tvDescription = new TextView(this);
-			String textDescription = "Palanquée n°" + palanquee.getNumero()
-					+ " " + palanquee.getTypePlonge().toString()
-					+ " utilisant du gaz " + palanquee.getTypeGaz().toString()
-					+ " à "+palanquee.getProfondeurPrevue()+"m "
-					+ "pendant "+palanquee.getDureePrevue()+"s";
-			tvDescription.setText(textDescription);
+		mViewPager
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					@Override
+					public void onPageSelected(int position) {
+						// When swiping between pages, select the
+						// corresponding tab.
+						getActionBar().setSelectedNavigationItem(position);
+					}
+				});
 
-			
-			//Ajout du click listener
-			row.setOnClickListener(new ListePalanqueeOnClickListener(palanquee, FicheSecuriteActivity.this));
-			
-			//Coloration alterné pour les row
-			if (i % 2 == 0)
-				row.setBackgroundResource(R.drawable.list_item_background_1);
-			else
-				row.setBackgroundResource(R.drawable.list_item_background_2);
-			
-			 //Ajout du contenu de la row et ajout de la row dans la table
-			row.addView(tvDescription);
-			tableLayout.addView(row, i);
-			i++;
+		//Ajout de la tabs info index 0
+		actionBar.addTab(actionBar.newTab().setText("Infos").setTabListener(tabListener));
+		//Ajout des tabs palanquée à la suite
+		if(ficheSecurite.getPalanquees() != null){
+			for(Palanquee palanquee : ficheSecurite.getPalanquees()){
+				actionBar.addTab(actionBar.newTab().setText("Pal " + palanquee.getNumero())
+						.setTabListener(tabListener));
+			}
 		}
 	}
 
@@ -94,12 +93,14 @@ public class FicheSecuriteActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		System.out.println(item.getItemId());
 		switch (item.getItemId()) {
-	    // Respond to the action bar's Up/Home button
-	    case android.R.id.home:
-	    	finish();
-	        return true;
-	    }
-	    return super.onOptionsItemSelected(item);
+		// Respond to the action bar's Up/Home button
+		case android.R.id.home:
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
+
 }
