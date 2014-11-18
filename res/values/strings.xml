@@ -17,7 +17,11 @@
     <string name="login_login">Login</string>
     <string name="login_placeholder_password">Mot de passe</string>
     <string name="login_placeholder_login">Nom d\'utilisateur</string>
-    <string name="login_title">Connection</string>
+    <string name="login_title">Connexion</string>
+    
+    <string name="imageTitle">Un beau logo mon flavio</string>
+    <string name="imageAnnuler">Cross icon with Annuler string</string>
+    <string name="imageValider">Validate icon with Valider string</string>
     <!-- LOGIN FIN -->
     
     <!-- LISTE FICHES SECURITE DEBUT -->

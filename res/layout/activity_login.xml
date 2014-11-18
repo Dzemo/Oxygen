@@ -1,5 +1,4 @@
-<RelativeLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,26 +8,50 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.deep_blue.oxygen.activity.LoginActivity" >
 
-    
-    <TextView
-        android:id="@+id/textViewTitle"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/login_title"
-    	style="@style/Title"
-         />
-    
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/button_cancel"
+            android:contentDescription="@string/imageAnnuler"
+            android:onClick="onClickCancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".50"
+            android:gravity="left"
+            android:src="@drawable/annulerbutton" />
+
+        <ImageButton
+            android:id="@+id/button_login"
+            android:contentDescription="@string/imageValider"
+            android:onClick="onClickLogin"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".50"
+            android:gravity="left"
+            android:src="@drawable/validerbutton" />
+      
+    </LinearLayout>
+
     <EditText
         android:id="@+id/editTextLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextPassword"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="97dp"
+        android:layout_marginTop="126dp"
         android:ems="10"
         android:hint="@string/login_placeholder_login"
         android:inputType="text"
-        android:singleLine="true" />
+        android:singleLine="true" >
+
+        <requestFocus />
+    </EditText>
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -36,49 +59,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextLogin"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp"
         android:ems="10"
         android:hint="@string/login_placeholder_password"
         android:inputType="textPassword|textWebPassword"
-        android:singleLine="true" >
-        
-    </EditText>
+        android:singleLine="true" />
 
-    <LinearLayout 
-	    android:orientation="horizontal"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-	    android:weightSum="1">
-	    
-   		<Button
-            android:id="@+id/button_cancel"
-        	android:onClick="onClickCancel"
-            android:text="@string/login_cancel" 
-            
- 			android:drawableLeft="@drawable/ic_default"
-  			android:gravity="left|center_vertical"
-            
-            android:layout_width="0dp"
-	    	android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            
-            
-            android:background="?android:attr/selectableItemBackground"/>
-        <Button
-            android:id="@+id/button_login"
-       		android:onClick="onClickLogin"
-            android:text="@string/login_login" 
-            
- 			android:drawableLeft="@drawable/ic_default"
-  			android:gravity="left|center_vertical"
-  			
-            android:layout_width="0dp"
-	    	android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            
-            
-            android:background="?android:attr/selectableItemBackground" />
-	</LinearLayout>
+    <ImageView
+        android:id="@+id/imageView1"
+        android:contentDescription="@string/imageTitle"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/header"
+        android:adjustViewBounds="true" />
 
 </RelativeLayout>
