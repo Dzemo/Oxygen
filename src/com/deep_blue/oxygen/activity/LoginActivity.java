@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.dao.UtilisateurDao;
 import com.deep_blue.oxygen.model.Utilisateur;
+import com.deep_blue.oxygen.thread.SynchThread;
 
 public class LoginActivity extends Activity {
 	
@@ -43,8 +44,12 @@ public class LoginActivity extends Activity {
             return true;
             
         case R.id.itemSync:
-           // showHelp();
         	System.out.println("Menu sync");
+        	UtilisateurDao utilisateurDao = new UtilisateurDao(LoginActivity.this);
+    		Utilisateur utilisateur = utilisateurDao.getByLogin("admin");
+    		
+        	Thread synchThread = new SynchThread(this, utilisateur);
+        	synchThread.start();
             return true;
         default:
             return super.onOptionsItemSelected(item);
