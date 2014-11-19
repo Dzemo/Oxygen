@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -43,11 +44,13 @@ public class ListeFichesSecuriteActivity extends Activity {
 			row.setLayoutParams(lp);
 			ImageView ivIcon = new ImageView(this);
 			if (ficheSecurite.getEtat().equals(EnumEtat.SYNCHRONISE)) {
-				ivIcon.setImageResource(android.R.drawable.ic_menu_edit);
+				ivIcon.setMaxWidth(40);
+				ivIcon.setPadding(2, 2, 2, 2);
 				ivIcon.setAdjustViewBounds(true);
+				ivIcon.setImageDrawable(getResources().getDrawable(R.drawable.inprogressstatus));
 				// ivIcon.setPadding(5, 25, 5, 25);
 			} else if (ficheSecurite.getEtat().equals(EnumEtat.VALIDE)) {
-				ivIcon.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+				ivIcon.setImageDrawable(getResources().getDrawable(R.drawable.closedstatus));
 				ivIcon.setAdjustViewBounds(true);
 				// ivIcon.setPadding(5, 25, 5, 25);
 			}

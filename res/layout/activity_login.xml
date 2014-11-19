@@ -18,60 +18,65 @@
 
         <ImageButton
             android:id="@+id/button_cancel"
-            android:contentDescription="@string/imageAnnuler"
-            android:onClick="onClickCancel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".50"
+            android:contentDescription="@string/imageAnnuler"
             android:gravity="left"
+            android:onClick="onClickCancel"
             android:src="@drawable/annulerbutton" />
 
         <ImageButton
             android:id="@+id/button_login"
-            android:contentDescription="@string/imageValider"
-            android:onClick="onClickLogin"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".50"
+            android:contentDescription="@string/imageValider"
             android:gravity="left"
+            android:onClick="onClickLogin"
             android:src="@drawable/validerbutton" />
-      
     </LinearLayout>
+
+    <View
+        android:id="@+id/view1"
+        style="@style/hrBar"
+        android:layout_alignLeft="@+id/textViewTitle"
+        android:layout_alignRight="@+id/textViewTitle"
+        android:layout_below="@+id/textViewTitle" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        style="@style/Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:text="@string/login_title" />
 
     <EditText
         android:id="@+id/editTextLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextPassword"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="126dp"
+        android:layout_alignLeft="@+id/textViewTitle"
+        android:layout_alignRight="@+id/textViewTitle"
+        android:layout_below="@+id/view1"
+        android:layout_marginTop="54dp"
         android:ems="10"
         android:hint="@string/login_placeholder_login"
         android:inputType="text"
-        android:singleLine="true" >
-
-        <requestFocus />
-    </EditText>
+        android:singleLine="true" />
 
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextLogin"
+        android:layout_alignRight="@+id/textViewTitle"
         android:layout_below="@+id/editTextLogin"
-        android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="@string/login_placeholder_password"
         android:inputType="textPassword|textWebPassword"
         android:singleLine="true" />
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:contentDescription="@string/imageTitle"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/header"
-        android:adjustViewBounds="true" />
 
 </RelativeLayout>

@@ -3,9 +3,23 @@
     tools:context="com.deep_blue.oxygen.ListActivity" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:id="@+id/itemParam"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:menuCategory="container"
+        android:showAsAction="always"
+        android:title="@string/menu_param"
+        android:titleCondensed="@string/menu_param"
+        android:visible="true">
+    </item>
+    <item
+        android:id="@+id/itemSync"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:showAsAction="always"
+        android:title="@string/menu_synch"
+        android:titleCondensed="@string/menu_synch"
+        android:visible="true">
+    </item>
 
 </menu>
