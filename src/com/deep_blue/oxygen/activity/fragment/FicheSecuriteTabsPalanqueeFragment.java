@@ -2,6 +2,7 @@ package com.deep_blue.oxygen.activity.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,31 +76,31 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 
 			int i = 0;
 			int parite_background = palanquee.getMoniteur() != null ? 1 : 0;
+			
+			int pxPadding = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, R.dimen.panel_padding_size, rootView.getContext().getResources().getDisplayMetrics()));
+			
 			for (Plongeur plongeur : palanquee.getPlongeurs()) {
 
 				TableRow row = new TableRow(rootView.getContext());
-				TableRow.LayoutParams lp = new TableRow.LayoutParams(
-						TableRow.LayoutParams.WRAP_CONTENT);
+				TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+				lp.setMargins(pxPadding, pxPadding, pxPadding, pxPadding);
 				row.setLayoutParams(lp);
-
-				TextView tvPlongeur = new TextView(rootView.getContext());
 				
-				tvPlongeur.setText("Plongeur: "+plongeur.getPrenom()+" "+plongeur.getNom());
-				tvPlongeur.setPadding(7, 7, 7, 7);
-				//TODO passer en ressources
+				TextView tvPlongeur = new TextView(rootView.getContext());
+				tvPlongeur.setText("    Plongeur: "+plongeur.getPrenom()+" "+plongeur.getNom());
+
 				
 				// Coloration selon la parité de la row
 				if (parite_background % 2 == 0)
 					row.setBackgroundResource(R.drawable.list_item_background_1);
 				else
 					row.setBackgroundResource(R.drawable.list_item_background_2);
-				parite_background++;
-				
+				parite_background++;				
 
 				// Ajout du contenu de la row et ajout de la row dans la table
 				row.addView(tvPlongeur);
-				tableLayout.addView(row, i);
-
+				
+				tableLayout.addView(row, i, lp);
 				i++;
 			}
 			

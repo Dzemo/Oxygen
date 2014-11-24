@@ -1,5 +1,4 @@
-<TableLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_fiche_securite_fragment_info"
     android:layout_width="match_parent"
@@ -10,21 +9,19 @@
         android:id="@+id/fiche_infos_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_background_1" >
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/panel_padding_size" >
 
         <TextView
             android:id="@+id/textView_fiche_infos_date_labelle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
             android:text="@string/fiche_infos_date_labelle" />
 
         <TextView
             android:id="@+id/textView_fiche_infos_date_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
             android:text="" />
     </TableRow>
 
@@ -32,21 +29,19 @@
         android:id="@+id/fiche_infos_heure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_background_2" >
+        android:background="@drawable/list_item_background_2"
+        android:padding="@dimen/panel_padding_size" >
 
         <TextView
             android:id="@+id/textView_fiche_infos_heure_labelle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
             android:text="@string/fiche_infos_heure_labelle" />
 
         <TextView
             android:id="@+id/textView_fiche_infos_heure_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
             android:text="" />
     </TableRow>
 
@@ -54,21 +49,19 @@
         android:id="@+id/fiche_infos_site"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_background_1" >
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/panel_padding_size" >
 
         <TextView
             android:id="@+id/textView_fiche_infos_site_labelle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
             android:text="@string/fiche_infos_site_labelle" />
 
         <TextView
             android:id="@+id/textView_fiche_infos_site_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
             android:text="" />
     </TableRow>
 
@@ -76,21 +69,19 @@
         android:id="@+id/fiche_infos_directeur_plonge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_background_2" >
+        android:background="@drawable/list_item_background_2"
+        android:padding="@dimen/panel_padding_size" >
 
         <TextView
             android:id="@+id/textView_fiche_infos_directeur_plonge_labelle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
             android:text="@string/fiche_infos_directeur_plonge_labelle" />
 
         <TextView
             android:id="@+id/textView_fiche_infos_directeur_plonge_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
             android:text="" />
     </TableRow>
 
