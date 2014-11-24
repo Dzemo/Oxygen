@@ -5,10 +5,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.model.Moniteur;
 import com.deep_blue.oxygen.model.Palanquee;
+import com.deep_blue.oxygen.model.Plongeur;
 import com.deep_blue.oxygen.util.DateStringUtils;
 
 public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
@@ -54,6 +58,50 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 						.findViewById(R.id.textView_palanquee_info_duree_realisee_value))
 						.setText(DateStringUtils.secondsToNiceString(palanquee.getDureeRealisee()));
 			
+			//Moniteur si présent
+			if(palanquee.getMoniteur() != null){
+				Moniteur moniteur = palanquee.getMoniteur();
+				
+				((TextView) rootView
+						.findViewById(R.id.textView_palanquee_moniteur))
+						.setText("Moniteur: "+moniteur.getPrenom()+" "+moniteur.getNom());
+			}
+			else{
+				rootView.findViewById(R.id.palanquee_moniteur).setVisibility(View.GONE);
+			}
+			
+			//Ajout des plongeurs
+			TableLayout tableLayout = (TableLayout) rootView.findViewById(R.id.TableLayout_palanquee_plongeurs);
+
+			int i = 0;
+			int parite_background = palanquee.getMoniteur() != null ? 1 : 0;
+			for (Plongeur plongeur : palanquee.getPlongeurs()) {
+
+				TableRow row = new TableRow(rootView.getContext());
+				TableRow.LayoutParams lp = new TableRow.LayoutParams(
+						TableRow.LayoutParams.WRAP_CONTENT);
+				row.setLayoutParams(lp);
+
+				TextView tvPlongeur = new TextView(rootView.getContext());
+				
+				tvPlongeur.setText("Plongeur: "+plongeur.getPrenom()+" "+plongeur.getNom());
+				tvPlongeur.setPadding(7, 7, 7, 7);
+				//TODO passer en ressources
+				
+				// Coloration selon la parité de la row
+				if (parite_background % 2 == 0)
+					row.setBackgroundResource(R.drawable.list_item_background_1);
+				else
+					row.setBackgroundResource(R.drawable.list_item_background_2);
+				parite_background++;
+				
+
+				// Ajout du contenu de la row et ajout de la row dans la table
+				row.addView(tvPlongeur);
+				tableLayout.addView(row, i);
+
+				i++;
+			}
 			
         }
         else

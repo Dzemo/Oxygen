@@ -137,4 +137,24 @@
             android:text="" />
     </TableRow>
 
+    <TableRow
+        android:id="@+id/palanquee_moniteur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_1" >
+	    
+	    <TextView
+	        android:id="@+id/textView_palanquee_moniteur"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="7dp"
+	        android:text="" />
+	</TableRow>
+
+    <TableLayout
+        android:id="@+id/TableLayout_palanquee_plongeurs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </TableLayout>
+
 </TableLayout>
