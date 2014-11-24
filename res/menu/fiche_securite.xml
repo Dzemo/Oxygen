@@ -3,18 +3,10 @@
     tools:context="com.deep_blue.oxygen.activity.LoginActivity" >
 
     <item
-        android:id="@+id/itemParam"
-        android:enabled="true"
-        android:menuCategory="container"
-        android:showAsAction="always|withText"
-        android:title="@string/menu_param"
-        android:titleCondensed="@string/menu_param"
-        android:visible="true">
-    </item>
-    <item
         android:id="@+id/itemSync"
         android:enabled="true"
-        android:showAsAction="always|withText"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:showAsAction="always"
         android:title="@string/menu_synch"
         android:titleCondensed="@string/menu_synch"
         android:visible="true">

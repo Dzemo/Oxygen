@@ -6,10 +6,15 @@
     <string name="action_settings">Settings</string>
     
     <string name="menu_synch">Sychroniser</string>
+    <string name="menu_save">Enregistrer</string>
     <string name="menu_param">Parametres</string>
     <string name="menu_logout">Deconnexion</string>
     
     <string name="parametre_title">Paramètres</string>
+    <string name="parametre_remote_url">Addresse du serveur: </string>
+    <string name="parametre_save_login">Se souvenir du login</string>
+    <string name="parametre_last_synch_label">Dernière synchronisation :</string>
+    <string name="parametre_saved">Paramètres enregistrés</string>
     <!-- GENERAL/MENU FIN -->
     
     <!-- LOGIN DEBUT -->
@@ -18,6 +23,7 @@
     <string name="login_placeholder_password">Mot de passe</string>
     <string name="login_placeholder_login">Nom d\'utilisateur</string>
     <string name="login_title">Connexion</string>
+    <string name="login_invalide">identifiants invalides</string>
     
     <string name="imageTitle">Un beau logo mon flavio</string>
     <string name="imageAnnuler">Cross icon with Annuler string</string>

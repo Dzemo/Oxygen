@@ -1,16 +1,73 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/background_gen"
+    android:gravity="center"
     tools:context="com.deep_blue.oxygen.activity.ParametreActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <TableRow
+        android:id="@+id/parametre_remote_url_label"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/parametre_title" />
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/panel_padding_size" >
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textView_parametre_remote_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/parametre_remote_url" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/parametre_remote_url_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/panel_padding_size" >
+
+        <EditText
+            android:id="@+id/editText_parametre_remote_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textUri" >
+        </EditText>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/parametre_save_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_2"
+        android:padding="@dimen/panel_padding_size" >
+
+        <CheckBox
+            android:id="@+id/checkBox_save_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/parametre_save_login" />
+    </TableRow>
+    
+    <TableRow
+        android:id="@+id/parametre_last_synch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/panel_padding_size" >
+
+        <TextView
+            android:id="@+id/textView_parametre_last_synch_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/parametre_last_synch_label" />
+
+        <TextView
+            android:id="@+id/textView_parametre_last_synch_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            android:text="" />
+    </TableRow>
+
+</TableLayout>

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -18,17 +17,20 @@ import com.deep_blue.oxygen.model.EnumEtat;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.ListeFichesSecurite;
 import com.deep_blue.oxygen.model.Utilisateur;
+import com.deep_blue.oxygen.thread.SynchThread;
 import com.deep_blue.oxygen.util.DateStringUtils;
 
 public class ListeFichesSecuriteActivity extends Activity {
 
+	private Utilisateur utilisateur;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list);
 
 		Intent intent = getIntent();
-		Utilisateur utilisateur = (Utilisateur) intent
+		utilisateur = (Utilisateur) intent
 				.getParcelableExtra(IntentKey.UTILISATEUR_COURANT.toString());
 
 		TableLayout tableLayout = (TableLayout) findViewById(R.id.tableLayout1);
@@ -47,10 +49,12 @@ public class ListeFichesSecuriteActivity extends Activity {
 				ivIcon.setMaxWidth(40);
 				ivIcon.setPadding(2, 2, 2, 2);
 				ivIcon.setAdjustViewBounds(true);
-				ivIcon.setImageDrawable(getResources().getDrawable(R.drawable.inprogressstatus));
+				ivIcon.setImageDrawable(getResources().getDrawable(
+						R.drawable.inprogressstatus));
 				// ivIcon.setPadding(5, 25, 5, 25);
 			} else if (ficheSecurite.getEtat().equals(EnumEtat.VALIDE)) {
-				ivIcon.setImageDrawable(getResources().getDrawable(R.drawable.closedstatus));
+				ivIcon.setImageDrawable(getResources().getDrawable(
+						R.drawable.closedstatus));
 				ivIcon.setAdjustViewBounds(true);
 				// ivIcon.setPadding(5, 25, 5, 25);
 			}
@@ -74,7 +78,7 @@ public class ListeFichesSecuriteActivity extends Activity {
 
 			// Clik listener sur la row
 			row.setOnClickListener(new ListeFichesSecuriteOnClickListener(
-					ficheSecurite, this));
+					ficheSecurite, utilisateur, this));
 
 			// Ajout du contenu de la row et ajout de la row dans la table
 			row.addView(ivIcon);
@@ -97,7 +101,20 @@ public class ListeFichesSecuriteActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
+		switch (item.getItemId()) {
 
-		return super.onOptionsItemSelected(item);
+		case R.id.itemParam:
+			Intent intent = new Intent(ListeFichesSecuriteActivity.this,
+					ParametreActivity.class);
+			startActivity(intent);
+			return true;
+
+		case R.id.itemSync:
+			Thread synchThread = new SynchThread(this, utilisateur);
+			synchThread.start();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 }

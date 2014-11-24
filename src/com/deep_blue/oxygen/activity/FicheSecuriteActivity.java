@@ -16,7 +16,8 @@ import com.deep_blue.oxygen.model.Palanquee;
 
 public class FicheSecuriteActivity extends FragmentActivity {
 
-	// When requested, this adapter returns a FicheSecuriteTabsInfoFragment or FicheSecuriteTabsPalanqueeFragment,
+	// When requested, this adapter returns a FicheSecuriteTabsInfoFragment or
+	// FicheSecuriteTabsPalanqueeFragment,
 	// representing an object in the collection.
 	private FicheSecuriteTabsAdapter ficheSecuriteTabsAdapter;
 	private ViewPager mViewPager;
@@ -43,7 +44,7 @@ public class FicheSecuriteActivity extends FragmentActivity {
 		// Specify that tabs should be displayed in the action bar.
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		// Create a tab listener that is called when the user changes tabs.
 		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
 			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -73,12 +74,14 @@ public class FicheSecuriteActivity extends FragmentActivity {
 					}
 				});
 
-		//Ajout de la tabs info index 0
-		actionBar.addTab(actionBar.newTab().setText("Infos").setTabListener(tabListener));
-		//Ajout des tabs palanquée à la suite
-		if(ficheSecurite.getPalanquees() != null){
-			for(Palanquee palanquee : ficheSecurite.getPalanquees()){
-				actionBar.addTab(actionBar.newTab().setText("Pal " + palanquee.getNumero())
+		// Ajout de la tabs info index 0
+		actionBar.addTab(actionBar.newTab().setText("Infos")
+				.setTabListener(tabListener));
+		// Ajout des tabs palanquée à la suite
+		if (ficheSecurite.getPalanquees() != null) {
+			for (Palanquee palanquee : ficheSecurite.getPalanquees()) {
+				actionBar.addTab(actionBar.newTab()
+						.setText("Pal " + palanquee.getNumero())
 						.setTabListener(tabListener));
 			}
 		}
@@ -93,14 +96,20 @@ public class FicheSecuriteActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		System.out.println(item.getItemId());
 		switch (item.getItemId()) {
 		// Respond to the action bar's Up/Home button
 		case android.R.id.home:
 			finish();
 			return true;
+
+		case R.id.itemParam:
+			Intent intent = new Intent(FicheSecuriteActivity.this,
+					ParametreActivity.class);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 }

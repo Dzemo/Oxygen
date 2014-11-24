@@ -1,5 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.deep_blue.oxygen.activity.LoginActivity" >
-    
+
+    <item
+        android:id="@+id/itemSave"
+        android:enabled="true"
+        android:showAsAction="always|withText"
+        android:title="@string/menu_save"
+        android:titleCondensed="@string/menu_save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:visible="true">
+    </item>
+
 </menu>
