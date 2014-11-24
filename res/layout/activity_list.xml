@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:shrinkColumns="*"
     android:stretchColumns="*"
-    android:background="#2a3744"
+    android:background="@color/background_gen"
     xmlns:android="http://schemas.android.com/apk/res/android">
  	<!-- TITRE DE LA VIEW -->
 </TableLayout>

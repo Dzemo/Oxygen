@@ -2,6 +2,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
    <solid android:color="#cccccc"/>
    <stroke android:color="#c0c0c0"/>
-   <padding android:left="0dp" android:top="7dp"
-	android:right="0dp" android:bottom="7dp" />
+   <padding android:left="0dp" android:top="@dimen/panel_padding_size"
+	android:right="0dp" android:bottom="@dimen/panel_padding_size" />
 </shape>

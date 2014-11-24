@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_gen"
     tools:context="com.deep_blue.oxygen.activity.FicheSecuriteActivity" 
     android:id="@+id/fiche_securite_tabs"/>
  
