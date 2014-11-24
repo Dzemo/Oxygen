@@ -30,6 +30,15 @@ public class DateStringUtils {
 	}
 	
 	/**
+	 * Retoure la date au format MM/dd/yyyy hh:mm
+	 * @param date
+	 * @return
+	 */
+	public static String dateToString(Date date){
+		return new SimpleDateFormat("MM/dd/yyyy hh:mm", new Locale("fr_FR")).format(date);
+	}
+	
+	/**
 	 * Transforme des seconds en hh'mm''ss
 	 * @param seconds
 	 * @return

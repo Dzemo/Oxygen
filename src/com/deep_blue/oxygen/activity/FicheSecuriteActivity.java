@@ -13,6 +13,7 @@ import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.activity.adapter.FicheSecuriteTabsAdapter;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Palanquee;
+import com.deep_blue.oxygen.util.IntentKey;
 
 public class FicheSecuriteActivity extends FragmentActivity {
 

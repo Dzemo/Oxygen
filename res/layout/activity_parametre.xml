@@ -50,7 +50,7 @@
     </TableRow>
     
     <TableRow
-        android:id="@+id/parametre_last_synch"
+        android:id="@+id/parametre_last_synch_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/list_item_background_1"
@@ -62,7 +62,16 @@
             android:layout_height="wrap_content"
             android:text="@string/parametre_last_synch_label" />
 
-        <TextView
+       
+    </TableRow>
+    <TableRow
+        android:id="@+id/parametre_last_synch_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/panel_padding_size" >
+
+         <TextView
             android:id="@+id/textView_parametre_last_synch_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

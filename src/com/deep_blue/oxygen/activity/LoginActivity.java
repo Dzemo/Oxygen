@@ -15,6 +15,7 @@ import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.dao.UtilisateurDao;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.thread.SynchThread;
+import com.deep_blue.oxygen.util.IntentKey;
 import com.deep_blue.oxygen.util.PreferenceKey;
 
 public class LoginActivity extends Activity {

@@ -5,10 +5,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.deep_blue.oxygen.activity.FicheSecuriteActivity;
-import com.deep_blue.oxygen.activity.IntentKey;
 import com.deep_blue.oxygen.activity.ListeFichesSecuriteActivity;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Utilisateur;
+import com.deep_blue.oxygen.util.IntentKey;
 
 public class ListeFichesSecuriteOnClickListener implements OnClickListener{
 

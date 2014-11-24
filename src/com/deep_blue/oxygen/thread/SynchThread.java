@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 
@@ -15,6 +17,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.thread.handler.SynchThreadHandler;
+import com.deep_blue.oxygen.util.IntentKey;
+import com.deep_blue.oxygen.util.PreferenceKey;
 
 /**
  * 
@@ -50,11 +54,10 @@ public class SynchThread extends Thread {
 	 */
 	private static final String QUERY_DATA = "data";
 
-	private static final String URL_SITE_WEB = "http://10.0.2.2/deep_blue/api.php";
-
 	private Context pContext;
 	private SynchThreadHandler handler;
 	private Utilisateur utilisateur;
+	private String url;
 
 	public SynchThread(Context pContext) {
 		super();
@@ -62,6 +65,17 @@ public class SynchThread extends Thread {
 		this.pContext = pContext;
 		handler = new SynchThreadHandler(pContext);
 		this.utilisateur = null;
+
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(pContext);
+
+		url = preferences.getString(PreferenceKey.REMOTE_URL.toString(), "");
+		
+		if(!url.endsWith("/")) url += "/";
+			url +="api.php";
+			
+		Log.w(TAG,url);
+
 	}
 
 	public SynchThread(Context pContext, Utilisateur utilisateur) {
@@ -71,28 +85,27 @@ public class SynchThread extends Thread {
 
 	@Override
 	public void start() {
-		
+
 		// Instantiate the RequestQueue.
 		RequestQueue queue = Volley.newRequestQueue(pContext);
-		String url = URL_SITE_WEB ;//+ "?" + generateQuery(utilisateur);
 
 		// Request a string response from the provided URL.
-		SynchRequest stringRequest = new SynchRequest(url, generateParams(utilisateur),
-		            new Response.Listener<String>() {
-		    @Override
-		    public void onResponse(String response) {
-		    	onResponseHandler(response);
-		    }
-		}, new Response.ErrorListener() {
-		    @Override
-		    public void onErrorResponse(VolleyError error) {
-		    	onErrorResponseHandler(error);
-		    }
-		});
-		
+		SynchRequest stringRequest = new SynchRequest(url,
+				generateParams(utilisateur), new Response.Listener<String>() {
+					@Override
+					public void onResponse(String response) {
+						onResponseHandler(response);
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						onErrorResponseHandler(error);
+					}
+				});
+
 		// Add the request to the RequestQueue.
-		Log.w(TAG, "lancement de la requete: "+url);
-		
+		Log.w(TAG, "lancement de la requete: " + url);
+
 		Message msg = handler.obtainMessage(SynchThreadHandler.CODE_START);
 		handler.sendMessage(msg);
 		queue.add(stringRequest);
@@ -107,6 +120,10 @@ public class SynchThread extends Thread {
 
 	private void onErrorResponseHandler(VolleyError error) {
 		Log.e(TAG, "erreur de la requete: " + error.getMessage());
+		
+		Message msg = handler.obtainMessage(SynchThreadHandler.CODE_ERROR);
+		msg.getData().putString(IntentKey.SYNCH_ERROR_TEXT.toString(), error.getMessage());
+		handler.sendMessage(msg);
 	}
 
 	/**

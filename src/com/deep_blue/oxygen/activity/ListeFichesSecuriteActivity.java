@@ -19,6 +19,7 @@ import com.deep_blue.oxygen.model.ListeFichesSecurite;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.thread.SynchThread;
 import com.deep_blue.oxygen.util.DateStringUtils;
+import com.deep_blue.oxygen.util.IntentKey;
 
 public class ListeFichesSecuriteActivity extends Activity {
 

@@ -55,5 +55,11 @@
 	<string name="palanquee_info_duree_prevue_labelle">Durée prévue</string>
 	<string name="palanquee_info_duree_realisee_labelle">Durée réalisée</string>
     <!-- PALANQUEE INFO FIN -->
+    
+    <!-- SYNCH DEBUT -->
+    <string name="synch_start">Début de la synchronisation</string>
+    <string name="synch_success">Synchronisation effectuée</string>
+    <string name="synch_error">Erreur lors de la synchronisation: </string>
+    <!-- SYNCh FIN -->
 
 </resources>
