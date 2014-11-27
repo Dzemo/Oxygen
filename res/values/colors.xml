@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name='background_gen'>#293442</color>
+    
+    <color name="background_moniteur">#E9BFBA</color>
+    
+    <color name="background_plongeur_1">#AE9AB6</color>
+    <color name="background_plongeur_2">#897A8F</color>
+    
+    <color name="background_list_item_1">#cccccc</color>
+    <color name="background_list_item_2">#e6e0e0</color>
 </resources>

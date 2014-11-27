@@ -9,47 +9,20 @@
     <TableLayout
         android:id="@+id/activity_fiche_securite_fragment_palanquee"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:scrollbars="vertical" >
 
         <TableRow
-            android:id="@+id/palanquee_info_gaz"
+            android:id="@+id/palanquee_moniteur"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/list_item_background_1"
+            android:background="@drawable/list_item_background_moniteur"
             android:padding="@dimen/panel_padding_size" >
 
             <TextView
-                android:id="@+id/textView_palanquee_info_gaz_labelle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/palanquee_info_gaz_labelle" />
-
-            <TextView
-                android:id="@+id/textView_palanquee_info_gaz_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="@dimen/panel_padding_size"
-                android:text="" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/palanquee_info_plongee"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/list_item_background_2"
-            android:padding="@dimen/panel_padding_size" >
-
-            <TextView
-                android:id="@+id/textView_palanquee_info_plongee_labelle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/palanquee_info_plongee_labelle" />
-
-            <TextView
-                android:id="@+id/textView_palanquee_info_plongee_value"
-                android:layout_width="wrap_content"
+                android:id="@+id/textView_palanquee_moniteur"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="" />
         </TableRow>
@@ -69,6 +42,32 @@
 
             <TextView
                 android:id="@+id/textView_palanquee_info_profondeur_prevue_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+        </TableRow>
+
+        <TableLayout
+            android:id="@+id/TableLayout_palanquee_plongeurs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </TableLayout>
+
+        <TableRow
+            android:id="@+id/palanquee_info_duree_prevue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_background_1"
+            android:padding="@dimen/panel_padding_size" >
+
+            <TextView
+                android:id="@+id/textView_palanquee_info_duree_prevue_labelle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/palanquee_info_duree_prevue_labelle" />
+
+            <TextView
+                android:id="@+id/textView_palanquee_info_duree_prevue_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="" />
@@ -95,30 +94,10 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/palanquee_info_duree_prevue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/list_item_background_1"
-            android:padding="@dimen/panel_padding_size" >
-
-            <TextView
-                android:id="@+id/textView_palanquee_info_duree_prevue_labelle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/palanquee_info_duree_prevue_labelle" />
-
-            <TextView
-                android:id="@+id/textView_palanquee_info_duree_prevue_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
-        </TableRow>
-
-        <TableRow
             android:id="@+id/palanquee_info_duree_realisee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/list_item_background_2"
+            android:background="@drawable/list_item_background_1"
             android:padding="@dimen/panel_padding_size" >
 
             <TextView
@@ -135,24 +114,45 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/palanquee_moniteur"
+            android:id="@+id/palanquee_info_gaz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_background_2"
+            android:padding="@dimen/panel_padding_size" >
+
+            <TextView
+                android:id="@+id/textView_palanquee_info_gaz_labelle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/palanquee_info_gaz_labelle" />
+
+            <TextView
+                android:id="@+id/textView_palanquee_info_gaz_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/panel_padding_size"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/palanquee_info_plongee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/list_item_background_1"
             android:padding="@dimen/panel_padding_size" >
 
             <TextView
-                android:id="@+id/textView_palanquee_moniteur"
-                android:layout_width="match_parent"
+                android:id="@+id/textView_palanquee_info_plongee_labelle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/palanquee_info_plongee_labelle" />
+
+            <TextView
+                android:id="@+id/textView_palanquee_info_plongee_value"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="" />
         </TableRow>
-
-        <TableLayout
-            android:id="@+id/TableLayout_palanquee_plongeurs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </TableLayout>
     </TableLayout>
 
 </ScrollView>

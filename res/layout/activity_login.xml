@@ -55,28 +55,32 @@
         android:text="@string/login_title" />
 
     <EditText
-        android:id="@+id/editTextLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewTitle"
-        android:layout_alignRight="@+id/textViewTitle"
-        android:layout_below="@+id/view1"
-        android:layout_marginTop="54dp"
-        android:ems="10"
-        android:hint="@string/login_placeholder_login"
-        android:inputType="text"
-        android:singleLine="true" />
-
-    <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editTextLogin"
-        android:layout_alignRight="@+id/textViewTitle"
+        android:layout_alignRight="@+id/editTextLogin"
         android:layout_below="@+id/editTextLogin"
+        android:layout_marginTop="45dp"
         android:ems="10"
         android:hint="@string/login_placeholder_password"
         android:inputType="textPassword|textWebPassword"
         android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/editTextLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/view1"
+        android:layout_alignRight="@+id/view1"
+        android:layout_below="@+id/view1"
+        android:layout_marginTop="100dp"
+        android:ems="10"
+        android:hint="@string/login_placeholder_login"
+        android:inputType="text"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-   <solid android:color="@color/background_list_item_2"/>
+   <solid android:color="@color/background_moniteur"/>
    <stroke android:color="#c0c0c0"/>
    <padding android:left="0dp" android:top="@dimen/panel_padding_size"
 	android:right="0dp" android:bottom="@dimen/panel_padding_size" />

@@ -92,9 +92,9 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 				
 				// Coloration selon la parité de la row
 				if (parite_background % 2 == 0)
-					row.setBackgroundResource(R.drawable.list_item_background_1);
+					row.setBackgroundResource(R.drawable.list_item_background_plongeur_1);
 				else
-					row.setBackgroundResource(R.drawable.list_item_background_2);
+					row.setBackgroundResource(R.drawable.list_item_background_plongeur_2);
 				parite_background++;				
 
 				// Ajout du contenu de la row et ajout de la row dans la table
