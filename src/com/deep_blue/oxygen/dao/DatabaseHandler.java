@@ -65,9 +65,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL("INSERT INTO "+EmbarcationDao.TABLE_NAME +" ("+EmbarcationDao.ID +", "+EmbarcationDao.LIBELLE +", "+EmbarcationDao.COMMENTAIRE +", "+EmbarcationDao.DISPONIBLE +") VALUES (1, 'EMB-1', 'Embarcation-1, disponible', 1);");
 		db.execSQL("INSERT INTO "+EmbarcationDao.TABLE_NAME +" ("+EmbarcationDao.ID +", "+EmbarcationDao.LIBELLE +", "+EmbarcationDao.COMMENTAIRE +", "+EmbarcationDao.DISPONIBLE +") VALUES (2, 'EMB-2', 'Embarcation-2, indisponible', 0);");
 		
+		//Ajout des sites
+		db.execSQL("INSERT INTO "+SiteDao.TABLE_NAME +" ("+SiteDao.ID +", "+SiteDao.NOM +", "+SiteDao.COMMENTAIRE +", "+SiteDao.DESACTIVE +") VALUES (1, 'La plage sur mer', 'Pour débutant', 0);");
+		db.execSQL("INSERT INTO "+SiteDao.TABLE_NAME +" ("+SiteDao.ID +", "+SiteDao.NOM +", "+SiteDao.COMMENTAIRE +", "+SiteDao.DESACTIVE +") VALUES (2, 'Le grand bleu', 'Idéal 20m', 0);");
+		
+		
 		//Ajout des fiches de sécurités
-		db.execSQL("INSERT INTO "+FicheSecuriteDao.TABLE_NAME+" ("+FicheSecuriteDao.ID+", "+FicheSecuriteDao.ID_EMBARCATION+", "+FicheSecuriteDao.ID_DIRECTEUR_PLONGE+", "+FicheSecuriteDao.TIMESTAMP+", "+FicheSecuriteDao.SITE+", "+FicheSecuriteDao.ETAT+") VALUES (1, 1, 3, 1412931600, 'La plage sur mer', 'SYNCHRONISE');");
-		db.execSQL("INSERT INTO "+FicheSecuriteDao.TABLE_NAME+" ("+FicheSecuriteDao.ID+", "+FicheSecuriteDao.ID_EMBARCATION+", "+FicheSecuriteDao.ID_DIRECTEUR_PLONGE+", "+FicheSecuriteDao.TIMESTAMP+", "+FicheSecuriteDao.SITE+", "+FicheSecuriteDao.ETAT+") VALUES (2, 1, 4, 1412935200, 'Le grand bleu', 'SYNCHRONISE');");
+		db.execSQL("INSERT INTO "+FicheSecuriteDao.TABLE_NAME+" ("+FicheSecuriteDao.ID+", "+FicheSecuriteDao.ID_EMBARCATION+", "+FicheSecuriteDao.ID_DIRECTEUR_PLONGE+", "+FicheSecuriteDao.TIMESTAMP+", "+FicheSecuriteDao.ID_SITE+", "+FicheSecuriteDao.ETAT+") VALUES (1, 1, 3, 1412931600, 1, 'SYNCHRONISE');");
+		db.execSQL("INSERT INTO "+FicheSecuriteDao.TABLE_NAME+" ("+FicheSecuriteDao.ID+", "+FicheSecuriteDao.ID_EMBARCATION+", "+FicheSecuriteDao.ID_DIRECTEUR_PLONGE+", "+FicheSecuriteDao.TIMESTAMP+", "+FicheSecuriteDao.ID_SITE+", "+FicheSecuriteDao.ETAT+") VALUES (2, 1, 4, 1412935200, 2, 'SYNCHRONISE');");
 		
 		//PAS D'AJOUT D'HISTORIQUES !!
 		

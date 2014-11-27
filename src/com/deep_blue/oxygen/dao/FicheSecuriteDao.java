@@ -17,7 +17,7 @@ public class FicheSecuriteDao extends BaseDao {
 	public static final String ID_EMBARCATION = "id_embarcation";
 	public static final String ID_DIRECTEUR_PLONGE = "id_directeur_plonge";
 	public static final String TIMESTAMP = "timestamp";
-	public static final String SITE = "site";
+	public static final String ID_SITE = "id_site";
 	public static final String ETAT = "etat";
 	public static final String VERSION = "version";
 	
@@ -26,7 +26,7 @@ public class FicheSecuriteDao extends BaseDao {
 			ID_EMBARCATION + " INTEGER, " +
 			ID_DIRECTEUR_PLONGE + " INTEGER, " +
 			TIMESTAMP + " INTEGER, " +
-			SITE + " TEXT, " +
+			ID_SITE + " TEXT, " +
 			ETAT + " TEXT, " +
 		    VERSION + " INTEGER INTEGER DEFAULT 0" +
 	    ");";
@@ -104,7 +104,7 @@ public class FicheSecuriteDao extends BaseDao {
 		value.put(ID_EMBARCATION, ficheSecurite.getEmbarcation() != null ? ficheSecurite.getEmbarcation().getId() : null);
 		value.put(ID_DIRECTEUR_PLONGE, ficheSecurite.getDirecteurPlonge() != null ? ficheSecurite.getDirecteurPlonge().getId() : null);
 		value.put(TIMESTAMP, ficheSecurite.getTimestamp());
-		value.put(SITE, ficheSecurite.getSite());
+		value.put(ID_SITE, ficheSecurite.getSite() != null ? ficheSecurite.getSite().getId() : null);
 		value.put(ETAT, ficheSecurite.getEtat().toString());
 		value.put(VERSION, ficheSecurite.getVersion());
 		
@@ -127,7 +127,7 @@ public class FicheSecuriteDao extends BaseDao {
 		value.put(ID_EMBARCATION, ficheSecurite.getEmbarcation() != null ? ficheSecurite.getEmbarcation().getId() : null);
 		value.put(ID_DIRECTEUR_PLONGE, ficheSecurite.getDirecteurPlonge() != null ? ficheSecurite.getDirecteurPlonge().getId() : null);
 		value.put(TIMESTAMP, ficheSecurite.getTimestamp());
-		value.put(SITE, ficheSecurite.getSite());
+		value.put(ID_SITE, ficheSecurite.getSite() != null ? ficheSecurite.getSite().getId() : null);
 		value.put(ETAT, ficheSecurite.getEtat().toString());
 		value.put(VERSION, ficheSecurite.getVersion());
 		
@@ -148,6 +148,7 @@ public class FicheSecuriteDao extends BaseDao {
 		MoniteurDao moniteurDao = new MoniteurDao(pContext);
 		PalanqueeDao palanqueeDao = new PalanqueeDao(pContext);
 		EmbarcationDao embarcationDao = new EmbarcationDao(pContext);
+		SiteDao siteDao = new SiteDao(pContext);
 		
 		while(cursor.moveToNext()){
 			FicheSecurite ficheSecurite = new FicheSecurite(
@@ -155,7 +156,7 @@ public class FicheSecuriteDao extends BaseDao {
 					embarcationDao.getById(cursor.getInt(cursor.getColumnIndex(ID_EMBARCATION))),
 					moniteurDao.getById(cursor.getInt(cursor.getColumnIndex(ID_DIRECTEUR_PLONGE))),
 					cursor.getLong(cursor.getColumnIndex(TIMESTAMP)),
-					cursor.getString(cursor.getColumnIndex(SITE)),
+					siteDao.getById((cursor.getColumnIndex(ID_SITE))),
 					EnumEtat.valueOf(cursor.getString(cursor.getColumnIndex(ETAT))),
 					cursor.getInt(cursor.getColumnIndex(VERSION)),
 					palanqueeDao.getByIdFicheSecurite(cursor.getInt(cursor.getColumnIndex(ID)))

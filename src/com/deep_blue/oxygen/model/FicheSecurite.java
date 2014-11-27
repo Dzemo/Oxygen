@@ -22,7 +22,7 @@ public class FicheSecurite  implements Parcelable {
 	private Embarcation embarcation;
 	private Moniteur directeurPlonge;
 	private Long timestamp;
-	private String site;
+	private Site site;
 	private EnumEtat etat;
 	private Integer version;
 	private ListePalanquees palanquees;
@@ -38,7 +38,7 @@ public class FicheSecurite  implements Parcelable {
 	 * @param palanquees
 	 */
 	public FicheSecurite(Integer id, Embarcation embarcation,
-			Moniteur directeurPlonge, Long timestamp, String site, EnumEtat etat,
+			Moniteur directeurPlonge, Long timestamp, Site site, EnumEtat etat,
 			Integer version, ListePalanquees palanquees) {
 		super();
 		this.id = id;
@@ -63,15 +63,19 @@ public class FicheSecurite  implements Parcelable {
 		if(isPresent)
 			embarcation = source.readParcelable(Embarcation.class.getClassLoader());
 		else
-			embarcation = new Embarcation(0, "", "", false, 0);
+			embarcation = null;
 		
 		timestamp = source.readLong();
-		site = source.readString();
+		isPresent = source.readByte() == 1;
+		if(isPresent)
+			site = source.readParcelable(Site.class.getClassLoader());
+		else
+			site = null;
 		isPresent = source.readByte() == 1;
 		if(isPresent)
 			directeurPlonge = source.readParcelable(Moniteur.class.getClassLoader());
 		else
-			directeurPlonge = new Moniteur(0, "", "", new ListeAptitudes(), false, false, "", "", 0);
+			directeurPlonge = null;
 		etat = EnumEtat.valueOf(source.readString());
 		version = source.readInt();		
 		isPresent = source.readByte() == 1;
@@ -140,14 +144,14 @@ public class FicheSecurite  implements Parcelable {
 	/**
 	 * @return the site
 	 */
-	public String getSite() {
+	public Site getSite() {
 		return site;
 	}
 
 	/**
 	 * @param site the site to set
 	 */
-	public void setSite(String site) {
+	public void setSite(Site site) {
 		this.site = site;
 	}
 
@@ -214,7 +218,9 @@ public class FicheSecurite  implements Parcelable {
 		if(embarcation != null)
 			dest.writeParcelable(embarcation, flags);
 		dest.writeLong(timestamp);
-		dest.writeString(site != null ? site : "");
+		dest.writeByte((byte)(site != null ? 1 : 0));
+		if(site != null)
+		dest.writeParcelable(site,flags);
 		dest.writeByte((byte)(directeurPlonge != null ? 1 : 0));
 		if(directeurPlonge != null)
 			dest.writeParcelable(directeurPlonge, flags);

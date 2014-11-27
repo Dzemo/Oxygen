@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.model.FicheSecurite;
+import com.deep_blue.oxygen.util.DateStringUtils;
 
 public class FicheSecuriteTabsInfoFragment extends Fragment {
 
@@ -35,13 +36,10 @@ public class FicheSecuriteTabsInfoFragment extends Fragment {
 			// Info général de la fiche
 			((TextView) rootView
 					.findViewById(R.id.textView_fiche_infos_date_value))
-					.setText(ficheSecurite.getTimestamp().toString());
-			((TextView) rootView
-					.findViewById(R.id.textView_fiche_infos_heure_value))
-					.setText(ficheSecurite.getTimestamp().toString());
+					.setText(DateStringUtils.timestampsToDate(ficheSecurite.getTimestamp()));
 			((TextView) rootView
 					.findViewById(R.id.textView_fiche_infos_site_value))
-					.setText(ficheSecurite.getSite());
+					.setText(ficheSecurite.getSite() != null ? ficheSecurite.getSite().getNom() : "");
 			String directeurPlongeValue = ficheSecurite.getDirecteurPlonge()
 					.getPrenom()
 					+ " "
