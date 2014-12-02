@@ -245,6 +245,7 @@ public class FicheSecurite  implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(id);
+		dest.writeInt(idWeb);
 		dest.writeByte((byte)(embarcation != null ? 1 : 0));
 		if(embarcation != null)
 			dest.writeParcelable(embarcation, flags);

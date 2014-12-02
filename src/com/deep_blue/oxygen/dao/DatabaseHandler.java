@@ -22,6 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL(PalanqueeDao.TABLE_CREATE);
 		db.execSQL(PlongeurDao.TABLE_CREATE);
 		db.execSQL(UtilisateurDao.TABLE_CREATE);
+		db.execSQL(SiteDao.TABLE_CREATE);
 		
 		//Ajout des "+PlongeurDao.APTITUDES+"
 		//Debutant
@@ -122,6 +123,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL(PlongeurDao.TABLE_DROP);
 		db.execSQL(PalanqueeDao.TABLE_DROP);
 		db.execSQL(UtilisateurDao.TABLE_DROP);
+		db.execSQL(SiteDao.TABLE_DROP);
 
 		onCreate(db);
 	}

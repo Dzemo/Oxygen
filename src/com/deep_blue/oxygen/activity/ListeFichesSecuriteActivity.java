@@ -66,7 +66,7 @@ public class ListeFichesSecuriteActivity extends Activity {
 			String hourString = DateStringUtils.timestampsToHeure(ficheSecurite
 					.getTimestamp());
 
-			String textDescription = "Plongé à " + ficheSecurite.getSite()
+			String textDescription = "Plongé" + (ficheSecurite.getSite() != null ? " à "+ficheSecurite.getSite().getNom(): "")
 					+ " le " + dateString + " à " + hourString;
 			tvDescription.setText(textDescription);
 			// tvDescription.setPadding(15, 0, 15, 0);
