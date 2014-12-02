@@ -45,20 +45,18 @@ public class ListeFichesSecuriteActivity extends Activity {
 			TableRow.LayoutParams lp = new TableRow.LayoutParams(
 					TableRow.LayoutParams.WRAP_CONTENT);
 			row.setLayoutParams(lp);
+			
 			ImageView ivIcon = new ImageView(this);
 			if (ficheSecurite.getEtat().equals(EnumEtat.SYNCHRONISE)) {
-				ivIcon.setMaxWidth(40);
-				ivIcon.setPadding(2, 2, 2, 2);
-				ivIcon.setAdjustViewBounds(true);
-				ivIcon.setImageDrawable(getResources().getDrawable(
-						R.drawable.inprogressstatus));
-				// ivIcon.setPadding(5, 25, 5, 25);
+				ivIcon.setImageDrawable(getResources().getDrawable(R.drawable.inprogressstatus));
 			} else if (ficheSecurite.getEtat().equals(EnumEtat.VALIDE)) {
-				ivIcon.setImageDrawable(getResources().getDrawable(
-						R.drawable.closedstatus));
+				ivIcon.setImageDrawable(getResources().getDrawable(R.drawable.closedstatus));
 				ivIcon.setAdjustViewBounds(true);
-				// ivIcon.setPadding(5, 25, 5, 25);
 			}
+			ivIcon.setMaxHeight(40);
+			ivIcon.setMaxWidth(40);
+			ivIcon.setPadding(2, 2, 2, 2);
+			ivIcon.setAdjustViewBounds(true);
 
 			TextView tvDescription = new TextView(this);
 			String dateString = DateStringUtils.timestampsToDate(ficheSecurite
