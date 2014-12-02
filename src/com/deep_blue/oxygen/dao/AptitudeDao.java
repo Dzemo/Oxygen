@@ -14,7 +14,7 @@ public class AptitudeDao extends BaseDao {
 	
 	public static final String TABLE_NAME = "db_aptitude";
 	
-	public static final String ID = "id";
+	public static final String ID_WEB = "id_web";
 	public static final String LIBELLE_COURT = "libelle_court";
 	public static final String LIBELLE_LONG = "libelle_long";
 	
@@ -32,7 +32,7 @@ public class AptitudeDao extends BaseDao {
 	public static final String VERSION = "version";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
-																		    ID +" INTEGER PRIMARY KEY," +
+																		    ID_WEB +" INTEGER PRIMARY KEY," +
 																		    LIBELLE_COURT + " TEXT," +
 																		    LIBELLE_LONG + " TEXT, " +
 																		    TECHNIQUE_MAX + " INTEGER, " +
@@ -52,13 +52,30 @@ public class AptitudeDao extends BaseDao {
 	}
 	
 	/**
+	 * Renvoi le timestamp de la dernière modification ou 0 si aucune modification
+	 * @return
+	 */
+	public Long getMaxVersion(){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+		mDb.close();
+		
+		if(cursor.getCount() == 1){
+			return cursor.getLong(0);
+		}
+		else{
+			return Long.valueOf(0);
+		}
+	}
+	
+	/**
 	 * Return an Aptitude or null
 	 * @param aptitudeId
 	 * @return
 	 */
 	public Aptitude getById(Integer aptitudeId){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID+" = ?", new String[]{String.valueOf(aptitudeId)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_WEB+" = ?", new String[]{String.valueOf(aptitudeId)});
 		
 		SparseArray<Aptitude> resultList  = cursorToAptitudeList(cursor);
 		
@@ -99,10 +116,10 @@ public class AptitudeDao extends BaseDao {
 		int i = 0;
 		for(Integer id : ids){
 			if(queryWhereClause.isEmpty()){
-				queryWhereClause += " WHERE "+ID+" = ?";
+				queryWhereClause += " WHERE "+ID_WEB+" = ?";
 			}
 			else{
-				queryWhereClause += " OR "+ID+" = ?";
+				queryWhereClause += " OR "+ID_WEB+" = ?";
 			}
 			param[i] = String.valueOf(id);
 		}
@@ -126,7 +143,7 @@ public class AptitudeDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
-		value.put(ID, aptitude.getId());
+		value.put(ID_WEB, aptitude.getIdWeb());
 		value.put(LIBELLE_COURT, aptitude.getLibelleCourt());
 		value.put(LIBELLE_LONG, aptitude.getLibelleLong());
 		
@@ -174,7 +191,7 @@ public class AptitudeDao extends BaseDao {
 		
 		value.put(VERSION, aptitude.getVersion());
 		
-		mDb.update(TABLE_NAME, value, ID  + " = ?", new String[] {String.valueOf(aptitude.getId())});
+		mDb.update(TABLE_NAME, value, ID_WEB  + " = ?", new String[] {String.valueOf(aptitude.getIdWeb())});
 		mDb.close();
 		
 		return aptitude;
@@ -187,7 +204,7 @@ public class AptitudeDao extends BaseDao {
 	public void delete(Integer aptitudeId){
 		SQLiteDatabase mDb = open();
 	
-		mDb.delete(TABLE_NAME, ID + " = ?", new String[] {String.valueOf(aptitudeId)});
+		mDb.delete(TABLE_NAME, ID_WEB + " = ?", new String[] {String.valueOf(aptitudeId)});
 		
 		mDb.close();
 	}
@@ -202,7 +219,7 @@ public class AptitudeDao extends BaseDao {
 		
 		while(cursor.moveToNext()){
 			Aptitude aptitude = new Aptitude(
-					cursor.getInt(cursor.getColumnIndex(ID)),
+					cursor.getInt(cursor.getColumnIndex(ID_WEB)),
 					cursor.getString(cursor.getColumnIndex(LIBELLE_COURT)),
 					cursor.getString(cursor.getColumnIndex(LIBELLE_LONG)),
 					
@@ -217,10 +234,10 @@ public class AptitudeDao extends BaseDao {
 					cursor.getInt(cursor.getColumnIndex(ENSEIGNEMENT_NITROX_MAX)),
 					cursor.getInt(cursor.getColumnIndex(ENCADREMENT_MAX)),
 					
-					cursor.getInt(cursor.getColumnIndex(VERSION))
+					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 			
-			resultList.put(aptitude.getId(), aptitude);			
+			resultList.put(aptitude.getIdWeb(), aptitude);			
 		}
 		cursor.close();
 		

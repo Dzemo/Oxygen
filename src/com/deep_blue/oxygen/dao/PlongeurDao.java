@@ -18,6 +18,7 @@ public class PlongeurDao extends BaseDao {
 	public static final String TABLE_NAME = "db_plongeur";
 	
 	public static final String ID = "id";
+	public static final String ID_WEB = "id_web";
 	public static final String ID_PALANQUEE = "id_palanquee";
 	public static final String ID_FICHE_SECURITE = "id_fiche_securite";
 	public static final String NOM = "nom";
@@ -30,6 +31,7 @@ public class PlongeurDao extends BaseDao {
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
 		    ID +" INTEGER PRIMARY KEY," +
+		    ID_WEB + " INTEGER," +
 		    ID_PALANQUEE + " INTEGER," +
 		    ID_FICHE_SECURITE + " INTEGER," +
 		    NOM + " TEXT, " +
@@ -47,6 +49,23 @@ public class PlongeurDao extends BaseDao {
 	public PlongeurDao(Context pContext){
 		super(pContext);
 		this.pContext = pContext;
+	}
+	
+	/**
+	 * Renvoi le timestamp de la dernière modification ou 0 si aucune modification
+	 * @return
+	 */
+	public Long getMaxVersion(){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+		mDb.close();
+		
+		if(cursor.getCount() == 1){
+			return cursor.getLong(0);
+		}
+		else{
+			return Long.valueOf(0);
+		}
 	}
 	
 	/**
@@ -127,8 +146,9 @@ public class PlongeurDao extends BaseDao {
 		
 		ContentValues value = new ContentValues();
 		value.put(ID, plongeur.getId());
-		value.put(ID_PALANQUEE, plongeur.getId());
-		value.put(ID_FICHE_SECURITE, plongeur.getId());
+		value.put(ID_WEB, plongeur.getIdWeb());
+		value.put(ID_PALANQUEE, plongeur.getIdPalanquee());
+		value.put(ID_FICHE_SECURITE, plongeur.getIdFicheSecurite());
 		value.put(NOM, plongeur.getNom());
 		value.put(PRENOM, plongeur.getPrenom());		
 		value.put(APTITUDES, plongeur.getAptitudes().toIdsList());
@@ -152,8 +172,9 @@ public class PlongeurDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
-		value.put(ID_PALANQUEE, plongeur.getId());
-		value.put(ID_FICHE_SECURITE, plongeur.getId());
+		value.put(ID_WEB, plongeur.getIdWeb());
+		value.put(ID_PALANQUEE, plongeur.getIdPalanquee());
+		value.put(ID_FICHE_SECURITE, plongeur.getIdFicheSecurite());
 		value.put(NOM, plongeur.getNom());
 		value.put(PRENOM, plongeur.getPrenom());		
 		value.put(APTITUDES, plongeur.getAptitudes().toIdsList());
@@ -194,6 +215,7 @@ public class PlongeurDao extends BaseDao {
 		while(cursor.moveToNext()){
 			Plongeur plongeur = new Plongeur(
 					cursor.getInt(cursor.getColumnIndex(ID)),
+					cursor.getInt(cursor.getColumnIndex(ID_WEB)),
 					cursor.getInt(cursor.getColumnIndex(ID_PALANQUEE)),
 					cursor.getInt(cursor.getColumnIndex(ID_FICHE_SECURITE)),
 					cursor.getString(cursor.getColumnIndex(NOM)),
@@ -202,7 +224,7 @@ public class PlongeurDao extends BaseDao {
 					cursor.getString(cursor.getColumnIndex(TELEPHONE)),
 					cursor.getString(cursor.getColumnIndex(TELEPHONE_URGENCE)),
 					cursor.getString(cursor.getColumnIndex(DATE_NAISSANCE)),
-					cursor.getInt(cursor.getColumnIndex(VERSION))
+					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 			
 			resultList.add(plongeur);			

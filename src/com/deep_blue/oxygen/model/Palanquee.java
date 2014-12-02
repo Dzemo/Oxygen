@@ -1,5 +1,7 @@
 package com.deep_blue.oxygen.model;
 
+import java.util.Date;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -24,6 +26,7 @@ public class Palanquee implements Parcelable {
 
 
 	private Integer id;
+	private Integer idWeb;
 	private Integer idFicheSecurite;
 	private Moniteur moniteur;
 	private Integer numero;
@@ -33,11 +36,12 @@ public class Palanquee implements Parcelable {
 	private Float profondeurRealisee;
 	private Integer dureePrevue;
 	private Integer dureeRealisee;
-	private Integer version;
+	private Long version;
 	private ListePlongeurs plongeurs;
 	
 	/**
 	 * @param id
+	 * @param idWeb
 	 * @param idFicheSecurite
 	 * @param moniteur
 	 * @param numero
@@ -50,13 +54,14 @@ public class Palanquee implements Parcelable {
 	 * @param version
 	 * @param plongeurs
 	 */
-	public Palanquee(Integer id, Integer idFicheSecurite, Moniteur moniteur,
+	public Palanquee(Integer id, Integer idWeb, Integer idFicheSecurite, Moniteur moniteur,
 			Integer numero, EnumTypePlonge typePlonge, EnumTypeGaz typeGaz,
 			Float profondeurPrevue, Float profondeurRealisee,
-			Integer dureePrevue, Integer dureeRealisee, Integer version,
+			Integer dureePrevue, Integer dureeRealisee, Long version,
 			ListePlongeurs plongeurs) {
 		super();
 		this.id = id;
+		this.idWeb = idWeb;
 		this.idFicheSecurite = idFicheSecurite;
 		this.moniteur = moniteur;
 		this.numero = numero;
@@ -72,6 +77,7 @@ public class Palanquee implements Parcelable {
 	
 	public Palanquee(Parcel source){
 		id = source.readInt();
+		idWeb = source.readInt();
 		idFicheSecurite = source.readInt();
 		moniteur = source.readParcelable(Moniteur.class.getClassLoader());
 		numero = source.readInt();
@@ -81,7 +87,7 @@ public class Palanquee implements Parcelable {
 		profondeurRealisee = source.readFloat();
 		dureePrevue = source.readInt();
 		dureeRealisee = source.readInt();
-		version = source.readInt();
+		version = source.readLong();
 		plongeurs = source.readParcelable(ListePlongeurs.class.getClassLoader());
 	}
 
@@ -91,6 +97,20 @@ public class Palanquee implements Parcelable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the idWeb
+	 */
+	public Integer getIdWeb() {
+		return idWeb;
+	}
+
+	/**
+	 * @param idWeb the idWeb to set
+	 */
+	public void setIdWeb(Integer idWeb) {
+		this.idWeb = idWeb;
 	}
 
 	public Integer getIdFicheSecurite() {
@@ -165,14 +185,21 @@ public class Palanquee implements Parcelable {
 		this.dureeRealisee = dureeRealisee;
 	}
 
-	public Integer getVersion() {
+	public Long getVersion() {
 		return version;
 	}
 
-	public void setVersion(Integer version) {
+	public void setVersion(Long version) {
 		this.version = version;
 	}
 
+	/**
+	 * Met à jours la version
+	 */
+	public void updateVersion(){
+		this.version = (new Date()).getTime() / 1000;
+	}
+	
 	public ListePlongeurs getPlongeurs() {
 		return plongeurs;
 	}
@@ -180,17 +207,21 @@ public class Palanquee implements Parcelable {
 	public void setPlongeurs(ListePlongeurs plongeurs) {
 		this.plongeurs = plongeurs;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "Palanquee [id=" + id + ", idFicheSecurite=" + idFicheSecurite
-				+ ", moniteur=" + moniteur + ", numero=" + numero
-				+ ", typePlonge=" + typePlonge + ", typeGaz=" + typeGaz
-				+ ", profondeurPrevue=" + profondeurPrevue
-				+ ", profondeurRealisee=" + profondeurRealisee
-				+ ", dureePrevue=" + dureePrevue + ", dureeRealisee="
-				+ dureeRealisee + ", version=" + version + ", plongeurs="
-				+ plongeurs + "]";
+		return getClass().getName() + " {\n\tid: " + id + "\n\tidWeb: " + idWeb
+				+ "\n\tidFicheSecurite: " + idFicheSecurite + "\n\tmoniteur: "
+				+ moniteur + "\n\tnumero: " + numero + "\n\ttypePlonge: "
+				+ typePlonge + "\n\ttypeGaz: " + typeGaz
+				+ "\n\tprofondeurPrevue: " + profondeurPrevue
+				+ "\n\tprofondeurRealisee: " + profondeurRealisee
+				+ "\n\tdureePrevue: " + dureePrevue + "\n\tdureeRealisee: "
+				+ dureeRealisee + "\n\tversion: " + version + "\n\tplongeurs: "
+				+ plongeurs + "\n}";
 	}
 
 	@Override
@@ -201,6 +232,7 @@ public class Palanquee implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(id);
+		dest.writeInt(idWeb);
 		dest.writeInt(idFicheSecurite);
 		dest.writeParcelable(moniteur, flags);
 		dest.writeInt(numero);
@@ -210,7 +242,7 @@ public class Palanquee implements Parcelable {
 		dest.writeFloat(profondeurRealisee);
 		dest.writeInt(dureePrevue);
 		dest.writeInt(dureeRealisee);
-		dest.writeInt(version);
+		dest.writeLong(version);
 		dest.writeParcelable(plongeurs, flags);
 	}
 }

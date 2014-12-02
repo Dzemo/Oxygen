@@ -1,5 +1,7 @@
 package com.deep_blue.oxygen.model;
 
+import java.util.Date;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -26,6 +28,11 @@ public class Plongeur implements Parcelable {
 	 * Id du plongeur
 	 */
 	private Integer id;
+	
+	/**
+	 * Id du plongeur sur le serveur distant
+	 */
+	private Integer idWeb;
 
 	/**
 	 * Id de la palanquée à laquel appartient ce plongeur
@@ -70,11 +77,12 @@ public class Plongeur implements Parcelable {
 	/**
 	 * Version du plongeur, pour la synchronisation
 	 */
-	private Integer version;
+	private Long version;
 
 	/**
 	 * 
 	 * @param id
+	 * @param idWeb
 	 * @param idPalanquee
 	 * @param idFicheSecurite
 	 * @param nom
@@ -85,12 +93,13 @@ public class Plongeur implements Parcelable {
 	 * @param dateNaissance
 	 * @param version
 	 */
-	public Plongeur(Integer id, Integer idPalanquee, Integer idFicheSecurite,
+	public Plongeur(Integer id, Integer idWeb, Integer idPalanquee, Integer idFicheSecurite,
 			String nom, String prenom, ListeAptitudes aptitudes,
 			String telephone, String telephoneUrgence, String dateNaissance,
-			Integer version) {
+			Long version) {
 		super();
 		this.id = id;
+		this.idWeb = idWeb;
 		this.idPalanquee = idPalanquee;
 		this.idFicheSecurite = idFicheSecurite;
 		this.nom = nom;
@@ -108,6 +117,7 @@ public class Plongeur implements Parcelable {
 	 */
 	public Plongeur(Parcel source){
 		id = source.readInt();
+		idWeb = source.readInt();
 		idPalanquee = source.readInt();
 		idFicheSecurite = source.readInt();
 		nom = source.readString();
@@ -116,7 +126,7 @@ public class Plongeur implements Parcelable {
 		telephone = source.readString();
 		telephoneUrgence = source.readString();
 		dateNaissance = source.readString();
-		version = source.readInt();
+		version = source.readLong();
 	}
 
 	public Integer getId() {
@@ -125,6 +135,20 @@ public class Plongeur implements Parcelable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the idWeb
+	 */
+	public Integer getIdWeb() {
+		return idWeb;
+	}
+
+	/**
+	 * @param idWeb the idWeb to set
+	 */
+	public void setIdWeb(Integer idWeb) {
+		this.idWeb = idWeb;
 	}
 
 	public Integer getIdPalanquee() {
@@ -191,22 +215,33 @@ public class Plongeur implements Parcelable {
 		this.dateNaissance = dateNaissance;
 	}
 
-	public Integer getVersion() {
+	public Long getVersion() {
 		return version;
 	}
 
-	public void setVersion(Integer version) {
+	public void setVersion(Long version) {
 		this.version = version;
 	}
+	
+	/**
+	 * Met à jours la version
+	 */
+	public void updateVersion(){
+		this.version = (new Date()).getTime() / 1000;
+	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "Plongeur [id=" + id + ", idPalanquee=" + idPalanquee
-				+ ", idFicheSecurite=" + idFicheSecurite + ", nom=" + nom
-				+ ", prenom=" + prenom + ", aptitudes=" + aptitudes
-				+ ", telephone=" + telephone + ", telephoneUrgence="
-				+ telephoneUrgence + ", dateNaissance=" + dateNaissance
-				+ ", version=" + version + "]";
+		return getClass().getName() + " {\n\tid: " + id + "\n\tidWeb: " + idWeb
+				+ "\n\tidPalanquee: " + idPalanquee + "\n\tidFicheSecurite: "
+				+ idFicheSecurite + "\n\tnom: " + nom + "\n\tprenom: " + prenom
+				+ "\n\taptitudes: " + aptitudes + "\n\ttelephone: " + telephone
+				+ "\n\ttelephoneUrgence: " + telephoneUrgence
+				+ "\n\tdateNaissance: " + dateNaissance + "\n\tversion: "
+				+ version + "\n}";
 	}
 
 	@Override
@@ -217,6 +252,7 @@ public class Plongeur implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(id);
+		dest.writeInt(idWeb);
 		dest.writeInt(idPalanquee);
 		dest.writeInt(idFicheSecurite);
 		dest.writeString(nom != null ? nom : "");
@@ -225,6 +261,6 @@ public class Plongeur implements Parcelable {
 		dest.writeString(telephone != null ? telephone : "");
 		dest.writeString(telephoneUrgence != null ? telephoneUrgence : "");
 		dest.writeString(dateNaissance != null ? dateNaissance : "");
-		dest.writeInt(version);		
+		dest.writeLong(version);		
 	}
 }

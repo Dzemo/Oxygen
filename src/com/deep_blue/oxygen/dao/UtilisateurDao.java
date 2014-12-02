@@ -46,6 +46,23 @@ public class UtilisateurDao extends BaseDao{
 	}
 	
 	/**
+	 * Renvoi le timestamp de la dernière modification ou 0 si aucune modification
+	 * @return
+	 */
+	public Long getMaxVersion(){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+		mDb.close();
+		
+		if(cursor.getCount() == 1){
+			return cursor.getLong(0);
+		}
+		else{
+			return Long.valueOf(0);
+		}
+	}
+	
+	/**
 	 * Retourne tout les utilisateur
 	 * @return
 	 */
@@ -172,7 +189,7 @@ public class UtilisateurDao extends BaseDao{
 					cursor.getInt(cursor.getColumnIndex(ADMINISTRATEUR)) > 0,
 					cursor.getString(cursor.getColumnIndex(EMAIL)),
 					cursor.getInt(cursor.getColumnIndex(ACTIF)) > 0,
-					cursor.getInt(cursor.getColumnIndex(VERSION))
+					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 			
 			resultList.add(utilisateur);			

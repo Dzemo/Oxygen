@@ -15,8 +15,9 @@ public class PalanqueeDao extends BaseDao {
 	public static final String TABLE_NAME = "db_palanquee";
 	
 	public static final String ID = "id_palanque";
+	public static final String ID_WEB = "id_palanque_web";
 	public static final String ID_FICHE_SECURITE = "id_fiche_securite";
-	public static final String ID_MONITEUR = "id_moniteur";
+	public static final String ID_MONITEUR_WEB = "id_moniteur_web";
 	public static final String NUMERO = "numero";
 	public static final String TYPE_PLONGE = "type_plonge";
 	public static final String TYPE_GAZ = "type_gaz";
@@ -28,8 +29,9 @@ public class PalanqueeDao extends BaseDao {
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
 			ID + " INTEGER PRIMARY KEY, " +
+			ID_WEB + " INTEGER, " +
 		    ID_FICHE_SECURITE + " INTEGER, " +
-		    ID_MONITEUR + " INTEGER, " +
+		    ID_MONITEUR_WEB + " INTEGER, " +
 		    NUMERO + " INTEGER, " +
 		    TYPE_PLONGE + " TEXT, " +
 		    TYPE_GAZ + " TEXT, " +
@@ -47,6 +49,23 @@ public class PalanqueeDao extends BaseDao {
 		super(pContext);
 		
 		this.pContext = pContext;
+	}
+	
+	/**
+	 * Renvoi le timestamp de la dernière modification ou 0 si aucune modification
+	 * @return
+	 */
+	public Long getMaxVersion(){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+		mDb.close();
+		
+		if(cursor.getCount() == 1){
+			return cursor.getLong(0);
+		}
+		else{
+			return Long.valueOf(0);
+		}
 	}
 	
 	/**
@@ -110,8 +129,9 @@ public class PalanqueeDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
+		value.put(ID_WEB, palanquee.getId());
 		value.put(ID_FICHE_SECURITE, palanquee.getId());
-		value.put(ID_MONITEUR, palanquee.getMoniteur() != null ? palanquee.getMoniteur().getId() : null);
+		value.put(ID_MONITEUR_WEB, palanquee.getMoniteur() != null ? palanquee.getMoniteur().getIdWeb() : null);
 		value.put(NUMERO, palanquee.getNumero());
 		value.put(TYPE_PLONGE, palanquee.getTypePlonge().toString());
 		value.put(TYPE_GAZ, palanquee.getTypeGaz().toString());
@@ -137,8 +157,9 @@ public class PalanqueeDao extends BaseDao {
 		
 		ContentValues value = new ContentValues();
 		value.put(ID, palanquee.getId());
+		value.put(ID_WEB, palanquee.getId());
 		value.put(ID_FICHE_SECURITE, palanquee.getId());
-		value.put(ID_MONITEUR, palanquee.getMoniteur() != null ? palanquee.getMoniteur().getId() : null);
+		value.put(ID_MONITEUR_WEB, palanquee.getMoniteur() != null ? palanquee.getMoniteur().getIdWeb() : null);
 		value.put(NUMERO, palanquee.getNumero());
 		value.put(TYPE_PLONGE, palanquee.getTypePlonge().toString());
 		value.put(TYPE_GAZ, palanquee.getTypeGaz().toString());
@@ -168,8 +189,9 @@ public class PalanqueeDao extends BaseDao {
 		while(cursor.moveToNext()){
 			Palanquee palanquee = new Palanquee(
 					cursor.getInt(cursor.getColumnIndex(ID)),
+					cursor.getInt(cursor.getColumnIndex(ID_WEB)),
 					cursor.getInt(cursor.getColumnIndex(ID_FICHE_SECURITE)),
-					moniteurDao.getById(cursor.getInt(cursor.getColumnIndex(ID_MONITEUR))),
+					moniteurDao.getById(cursor.getInt(cursor.getColumnIndex(ID_MONITEUR_WEB))),
 					cursor.getInt(cursor.getColumnIndex(NUMERO)),
 					EnumTypePlonge.valueOf(cursor.getString(cursor.getColumnIndex(TYPE_PLONGE))),
 					EnumTypeGaz.valueOf(cursor.getString(cursor.getColumnIndex(TYPE_GAZ))),
@@ -177,7 +199,7 @@ public class PalanqueeDao extends BaseDao {
 					cursor.getFloat(cursor.getColumnIndex(PROFONDEUR_REALISE)),
 					cursor.getInt(cursor.getColumnIndex(DUREE_PREVUE)),
 					cursor.getInt(cursor.getColumnIndex(DUREE_REALISE)),
-					cursor.getInt(cursor.getColumnIndex(VERSION)),
+					cursor.getLong(cursor.getColumnIndex(VERSION)),
 					plongeurDao.getByIdPalanquee(cursor.getInt(cursor.getColumnIndex(ID)))
 					);
 			

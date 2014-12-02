@@ -13,18 +13,20 @@ public class FicheSecuriteDao extends BaseDao {
 
 	public static final String TABLE_NAME = "db_fiche_securite";
 	
-	public static final String ID = "id";
-	public static final String ID_EMBARCATION = "id_embarcation";
-	public static final String ID_DIRECTEUR_PLONGE = "id_directeur_plonge";
+	public static final String ID_LOCAL = "id_local";
+	public static final String ID_WEB = "id_web";
+	public static final String ID_EMBARCATION_WEB = "id_embarcation_web";
+	public static final String ID_DIRECTEUR_PLONGE_WEB = "id_directeur_plonge_web";
 	public static final String TIMESTAMP = "timestamp";
 	public static final String ID_SITE = "id_site";
 	public static final String ETAT = "etat";
 	public static final String VERSION = "version";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
-			ID + " INTEGER PRIMARY KEY, " +
-			ID_EMBARCATION + " INTEGER, " +
-			ID_DIRECTEUR_PLONGE + " INTEGER, " +
+			ID_LOCAL + " INTEGER PRIMARY KEY, " +
+			ID_WEB +" INTEGER, "+
+			ID_EMBARCATION_WEB + " INTEGER, " +
+			ID_DIRECTEUR_PLONGE_WEB + " INTEGER, " +
 			TIMESTAMP + " INTEGER, " +
 			ID_SITE + " TEXT, " +
 			ETAT + " TEXT, " +
@@ -41,13 +43,30 @@ public class FicheSecuriteDao extends BaseDao {
 	}
 	
 	/**
+	 * Renvoi le timestamp de la dernière modification ou 0 si aucune modification
+	 * @return
+	 */
+	public Long getMaxVersion(){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+		mDb.close();
+		
+		if(cursor.getCount() == 1){
+			return cursor.getLong(0);
+		}
+		else{
+			return Long.valueOf(0);
+		}
+	}
+	
+	/**
 	 * Return la fiche de sécurite d'id spécifié
 	 * @param idFicheSecurite
 	 * @return
 	 */
 	public FicheSecurite getById(int idFicheSecurite){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID+" = ?", new String[]{String.valueOf(idFicheSecurite)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_LOCAL+" = ?", new String[]{String.valueOf(idFicheSecurite)});
 		
 		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
 		
@@ -101,14 +120,15 @@ public class FicheSecuriteDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
-		value.put(ID_EMBARCATION, ficheSecurite.getEmbarcation() != null ? ficheSecurite.getEmbarcation().getId() : null);
-		value.put(ID_DIRECTEUR_PLONGE, ficheSecurite.getDirecteurPlonge() != null ? ficheSecurite.getDirecteurPlonge().getId() : null);
+		value.put(ID_WEB, ficheSecurite.getIdWeb());
+		value.put(ID_EMBARCATION_WEB, ficheSecurite.getEmbarcation() != null ? ficheSecurite.getEmbarcation().getIdWeb() : null);
+		value.put(ID_DIRECTEUR_PLONGE_WEB, ficheSecurite.getDirecteurPlonge() != null ? ficheSecurite.getDirecteurPlonge().getIdWeb() : null);
 		value.put(TIMESTAMP, ficheSecurite.getTimestamp());
 		value.put(ID_SITE, ficheSecurite.getSite() != null ? ficheSecurite.getSite().getId() : null);
 		value.put(ETAT, ficheSecurite.getEtat().toString());
 		value.put(VERSION, ficheSecurite.getVersion());
 		
-		mDb.update(TABLE_NAME, value, "WHERE "+ID+" = ?", new String[]{ficheSecurite.getId().toString()});
+		mDb.update(TABLE_NAME, value, "WHERE "+ID_LOCAL+" = ?", new String[]{ficheSecurite.getId().toString()});
 		mDb.close();
 		
 		return ficheSecurite;
@@ -123,9 +143,10 @@ public class FicheSecuriteDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
-		value.put(ID, ficheSecurite.getId());
-		value.put(ID_EMBARCATION, ficheSecurite.getEmbarcation() != null ? ficheSecurite.getEmbarcation().getId() : null);
-		value.put(ID_DIRECTEUR_PLONGE, ficheSecurite.getDirecteurPlonge() != null ? ficheSecurite.getDirecteurPlonge().getId() : null);
+		value.put(ID_LOCAL, ficheSecurite.getId());
+		value.put(ID_WEB, ficheSecurite.getIdWeb());
+		value.put(ID_EMBARCATION_WEB, ficheSecurite.getEmbarcation() != null ? ficheSecurite.getEmbarcation().getIdWeb() : null);
+		value.put(ID_DIRECTEUR_PLONGE_WEB, ficheSecurite.getDirecteurPlonge() != null ? ficheSecurite.getDirecteurPlonge().getIdWeb() : null);
 		value.put(TIMESTAMP, ficheSecurite.getTimestamp());
 		value.put(ID_SITE, ficheSecurite.getSite() != null ? ficheSecurite.getSite().getId() : null);
 		value.put(ETAT, ficheSecurite.getEtat().toString());
@@ -152,14 +173,15 @@ public class FicheSecuriteDao extends BaseDao {
 		
 		while(cursor.moveToNext()){
 			FicheSecurite ficheSecurite = new FicheSecurite(
-					cursor.getInt(cursor.getColumnIndex(ID)),
-					embarcationDao.getById(cursor.getInt(cursor.getColumnIndex(ID_EMBARCATION))),
-					moniteurDao.getById(cursor.getInt(cursor.getColumnIndex(ID_DIRECTEUR_PLONGE))),
+					cursor.getInt(cursor.getColumnIndex(ID_LOCAL)),
+					cursor.getInt(cursor.getColumnIndex(ID_WEB)),
+					embarcationDao.getById(cursor.getInt(cursor.getColumnIndex(ID_EMBARCATION_WEB))),
+					moniteurDao.getById(cursor.getInt(cursor.getColumnIndex(ID_DIRECTEUR_PLONGE_WEB))),
 					cursor.getLong(cursor.getColumnIndex(TIMESTAMP)),
 					siteDao.getById((cursor.getColumnIndex(ID_SITE))),
 					EnumEtat.valueOf(cursor.getString(cursor.getColumnIndex(ETAT))),
-					cursor.getInt(cursor.getColumnIndex(VERSION)),
-					palanqueeDao.getByIdFicheSecurite(cursor.getInt(cursor.getColumnIndex(ID)))
+					cursor.getLong(cursor.getColumnIndex(VERSION)),
+					palanqueeDao.getByIdFicheSecurite(cursor.getInt(cursor.getColumnIndex(ID_LOCAL)))
 					);
 			
 			resultList.add(ficheSecurite);

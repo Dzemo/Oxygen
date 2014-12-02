@@ -1,5 +1,7 @@
 package com.deep_blue.oxygen.model;
 
+import java.util.Date;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -19,16 +21,18 @@ public class FicheSecurite  implements Parcelable {
 
 	
 	private Integer id;
+	private Integer idWeb;
 	private Embarcation embarcation;
 	private Moniteur directeurPlonge;
 	private Long timestamp;
 	private Site site;
 	private EnumEtat etat;
-	private Integer version;
+	private Long version;
 	private ListePalanquees palanquees;
 	
 	/**
 	 * @param id
+	 * @param idWeb
 	 * @param embarcation
 	 * @param directeurPlonge
 	 * @param timestamp
@@ -37,11 +41,12 @@ public class FicheSecurite  implements Parcelable {
 	 * @param version
 	 * @param palanquees
 	 */
-	public FicheSecurite(Integer id, Embarcation embarcation,
+	public FicheSecurite(Integer id, Integer idWeb, Embarcation embarcation,
 			Moniteur directeurPlonge, Long timestamp, Site site, EnumEtat etat,
-			Integer version, ListePalanquees palanquees) {
+			Long version, ListePalanquees palanquees) {
 		super();
 		this.id = id;
+		this.idWeb = idWeb;
 		this.embarcation = embarcation;
 		this.directeurPlonge = directeurPlonge;
 		this.timestamp = timestamp;
@@ -59,6 +64,8 @@ public class FicheSecurite  implements Parcelable {
 		boolean isPresent;
 		
 		id = source.readInt();
+		idWeb = source.readInt();
+		
 		isPresent = source.readByte() == 1;
 		if(isPresent)
 			embarcation = source.readParcelable(Embarcation.class.getClassLoader());
@@ -77,7 +84,7 @@ public class FicheSecurite  implements Parcelable {
 		else
 			directeurPlonge = null;
 		etat = EnumEtat.valueOf(source.readString());
-		version = source.readInt();		
+		version = source.readLong();		
 		isPresent = source.readByte() == 1;
 		if(isPresent)
 			palanquees = source.readParcelable(ListePalanquees.class.getClassLoader());
@@ -97,6 +104,20 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the idWeb
+	 */
+	public Integer getIdWeb() {
+		return idWeb;
+	}
+
+	/**
+	 * @param idWeb the idWeb to set
+	 */
+	public void setIdWeb(Integer idWeb) {
+		this.idWeb = idWeb;
 	}
 
 	/**
@@ -172,15 +193,22 @@ public class FicheSecurite  implements Parcelable {
 	/**
 	 * @return the version
 	 */
-	public Integer getVersion() {
+	public Long getVersion() {
 		return version;
 	}
 
 	/**
 	 * @param version the version to set
 	 */
-	public void setVersion(Integer version) {
+	public void setVersion(Long version) {
 		this.version = version;
+	}
+	
+	/**
+	 * Met à jours la version
+	 */
+	public void updateVersion(){
+		this.version = (new Date()).getTime() / 1000;
 	}
 
 	/**
@@ -197,15 +225,18 @@ public class FicheSecurite  implements Parcelable {
 		this.palanquees = palanquees;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return getClass().getName() + " {\n\tid: " + id + "\n\tembarcation: "
-				+ embarcation + "\n\tdirecteurPlonge: " + directeurPlonge
-				+ "\n\ttimestamp: " + timestamp + "\n\tsite: " + site
-				+ "\n\tetat: " + etat + "\n\tversion: " + version
-				+ "\n\tpalanquees: " + palanquees + "\n}";
+		return getClass().getName() + " {\n\tid: " + id + "\n\tidWeb: " + idWeb
+				+ "\n\tembarcation: " + embarcation + "\n\tdirecteurPlonge: "
+				+ directeurPlonge + "\n\ttimestamp: " + timestamp
+				+ "\n\tsite: " + site + "\n\tetat: " + etat + "\n\tversion: "
+				+ version + "\n\tpalanquees: " + palanquees + "\n}";
 	}
-	
+
 	@Override
 	public int describeContents() {
 		return 0;
@@ -225,7 +256,7 @@ public class FicheSecurite  implements Parcelable {
 		if(directeurPlonge != null)
 			dest.writeParcelable(directeurPlonge, flags);
 		dest.writeString(etat != null ? etat.toString() : null);
-		dest.writeInt(version);
+		dest.writeLong(version);
 		dest.writeByte((byte)(palanquees != null ? 1 : 0));
 		dest.writeParcelable(palanquees, flags);
 	}

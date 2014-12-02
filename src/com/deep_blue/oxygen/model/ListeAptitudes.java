@@ -59,7 +59,7 @@ public class ListeAptitudes extends ArrayList<Aptitude> implements Parcelable {
 			if (!result.isEmpty())
 				result += Aptitude.SEPARATOR;
 
-			result += aptitude.getId();
+			result += aptitude.getIdWeb();
 		}
 
 		return result;

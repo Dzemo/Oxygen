@@ -1,5 +1,7 @@
 package com.deep_blue.oxygen.model;
 
+import java.util.Date;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -29,7 +31,7 @@ public class Utilisateur implements Parcelable {
 	private Boolean administrateur;
 	private String email;
 	private Boolean actif;
-	private int version;
+	private Long version;
 
 	/**
 	 * 
@@ -44,7 +46,7 @@ public class Utilisateur implements Parcelable {
 	 */
 	public Utilisateur(String login, String nom, String prenom,
 			String motDePasse, Boolean administrateur, String email,
-			Boolean actif, int version) {
+			Boolean actif, Long version) {
 		super();
 		this.login = login;
 		this.nom = nom;
@@ -64,7 +66,7 @@ public class Utilisateur implements Parcelable {
 		administrateur = in.readInt() > 0;
 		email = in.readString();
 		actif = in.readInt() > 0;
-		version = in.readInt();
+		version = in.readLong();
 	}
 
 	// GETTER and SETTER
@@ -185,7 +187,7 @@ public class Utilisateur implements Parcelable {
 	 * 
 	 * @return
 	 */
-	public int getVersion() {
+	public Long getVersion() {
 		return version;
 	}
 
@@ -193,9 +195,15 @@ public class Utilisateur implements Parcelable {
 	 * 
 	 * @param version
 	 */
-	public void setVersion(int version) {
+	public void setVersion(Long version) {
 		this.version = version;
-	}
+	}	
+	/**
+	 * Met à jours la version
+	 */
+	public void updateVersion(){
+		this.version = (new Date()).getTime() / 1000;
+	}	
 
 	@Override
 	public String toString() {
@@ -219,6 +227,6 @@ public class Utilisateur implements Parcelable {
 		dest.writeInt(administrateur ? 1 : 0);
 		dest.writeString(email != null ? email : "");
 		dest.writeInt(actif ? 1 : 0);
-		dest.writeInt(version);
+		dest.writeLong(version);
 	}
 }

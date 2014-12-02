@@ -26,9 +26,9 @@ public class Aptitude implements Parcelable {
 	};
 	
 	/**
-	 * Id de l'aptitude
+	 * Id de l'aptitude local et idWeb web, vu qu'on ne créer pas d'aptitude ici
 	 */
-	private int id;
+	private int idWeb;
 	
 	/**
 	 * Libelle raccourci de l'aptitude
@@ -98,13 +98,13 @@ public class Aptitude implements Parcelable {
 	private int encadrementMax;
 	
 	/**
-	 * Version de l'aptitude, utilisé pour la synchronisation
+	 * Version de l'aptitude, utilisé pour la synchronisation. Timestamp de derniere modification
 	 */
-	private int version;	
+	private Long version;	
 	
 	/**
 	 * 
-	 * @param id
+	 * @param idWeb
 	 * @param libelleCourt
 	 * @param libelleLong
 	 * @param techniqueMax
@@ -117,12 +117,12 @@ public class Aptitude implements Parcelable {
 	 * @param encadrementMax
 	 * @param version
 	 */
-	public Aptitude(int id, String libelleCourt, String libelleLong,
+	public Aptitude(int idWeb, String libelleCourt, String libelleLong,
 			int techniqueMax, int encardeeMax, int autonomeMax, int nitroxMax,
 			int ajoutMax, int enseignementAirMax, int enseignementNitroxMax,
-			int encadrementMax, int version) {
+			int encadrementMax, Long version) {
 		super();
-		this.id = id;
+		this.idWeb = idWeb;
 		this.libelleCourt = libelleCourt;
 		this.libelleLong = libelleLong;
 		this.techniqueMax = techniqueMax;
@@ -138,7 +138,7 @@ public class Aptitude implements Parcelable {
 	
 	
 	public Aptitude(Parcel source) {
-		id = source.readInt();
+		idWeb = source.readInt();
 		libelleCourt = source.readString();
 		libelleLong = source.readString();
 		
@@ -153,31 +153,15 @@ public class Aptitude implements Parcelable {
 		enseignementNitroxMax = source.readInt();
 		encadrementMax = source.readInt();
 		
-		version  = source.readInt();
-		
-		libelleCourt = "";
-		libelleLong = "";
-		
-		techniqueMax = 0;
-		encardeeMax = 0;
-		autonomeMax = 0;
-		
-		nitroxMax = 0;
-		ajoutMax = 0;
-		
-		enseignementAirMax = 0;
-		enseignementNitroxMax = 0;
-		encadrementMax = 0;
-		
-		version  = 0;
+		version  = source.readLong();
 	}
 
 
-	public int getId() {
-		return id;
+	public int getIdWeb() {
+		return idWeb;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setIdWeb(int id) {
+		this.idWeb = id;
 	}
 	public String getLibelleCourt() {
 		return libelleCourt;
@@ -239,16 +223,16 @@ public class Aptitude implements Parcelable {
 	public void setEncadrementMax(int encadrementMax) {
 		this.encadrementMax = encadrementMax;
 	}
-	public int getVersion() {
+	public Long getVersion() {
 		return version;
 	}
-	public void setVersion(int version) {
+	public void setVersion(Long version) {
 		this.version = version;
 	}
 
 	@Override
 	public String toString() {
-		return "Aptitude [id=" + id + ", libelleCourt=" + libelleCourt
+		return "Aptitude [idWeb=" + idWeb + ", libelleCourt=" + libelleCourt
 				+ ", libelleLong=" + libelleLong + ", techniqueMax="
 				+ techniqueMax + ", encardeeMax=" + encardeeMax
 				+ ", autonomeMax=" + autonomeMax + ", nitroxMax=" + nitroxMax
@@ -267,7 +251,7 @@ public class Aptitude implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
+		dest.writeInt(idWeb);
 		dest.writeString(libelleCourt != null ? libelleCourt : "");
 		dest.writeString(libelleLong != null ? libelleLong : "");
 		
@@ -282,7 +266,7 @@ public class Aptitude implements Parcelable {
 		dest.writeInt(enseignementNitroxMax);
 		dest.writeInt(encadrementMax);
 		
-		dest.writeInt(version);
+		dest.writeLong(version);
 	}
 	
 	

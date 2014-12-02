@@ -22,9 +22,9 @@ public class Embarcation implements Parcelable {
 	};
 	
 	/**
-	 * Id de l'embarcation.
+	 * Id de l'embarcation sur le serveur web distant
 	 */
-	private Integer id;
+	private Integer idWeb;
 	
 	/**
 	 * Libelle court de l'embarcation=
@@ -43,22 +43,22 @@ public class Embarcation implements Parcelable {
 	
 	/**
 	 * Version de cette embarcation, utilisé pour la synchronisation entre l'interface web
-	 * et l'application de plongé.
+	 * et l'application de plongé. Timestamp de dernière modification
 	 */
-	private Integer version;
+	private Long version;
 
 	/**
 	 * 
-	 * @param id
+	 * @param idWeb
 	 * @param libelle
 	 * @param comentaire
 	 * @param disponible
 	 * @param version
 	 */
-	public Embarcation(int id, String libelle, String comentaire,
-			boolean disponible, Integer version) {
+	public Embarcation(int idWeb, String libelle, String comentaire,
+			boolean disponible, Long version) {
 		super();
-		this.id = id;
+		this.idWeb = idWeb;
 		this.libelle = libelle;
 		this.comentaire = comentaire;
 		this.disponible = disponible;
@@ -70,19 +70,17 @@ public class Embarcation implements Parcelable {
 	 * @param source
 	 */
 	public Embarcation(Parcel source){
-		id = source.readInt();
+		idWeb = source.readInt();
 		libelle = source.readString();
 		comentaire = source.readString();
 		disponible = source.readInt() > 0;
-		version = source.readInt();
+		version = source.readLong();
+	}public Integer getIdWeb() {
+		return idWeb;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+	public void setIdWeb(Integer idWeb) {
+		this.idWeb = idWeb;
 	}
 
 	public String getLibelle() {
@@ -109,17 +107,17 @@ public class Embarcation implements Parcelable {
 		this.disponible = disponible;
 	}
 
-	public Integer getVersion() {
+	public Long getVersion() {
 		return version;
 	}
 
-	public void setVersion(int version) {
+	public void setVersion(long version) {
 		this.version = version;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Embarcation [id=" + id + ", libelle=" + libelle
+		return "Embarcation [idWeb=" + idWeb + ", libelle=" + libelle
 				+ ", comentaire=" + comentaire + ", disponible=" + disponible
 				+ ", version=" + version + "]";
 	}
@@ -131,11 +129,11 @@ public class Embarcation implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
+		dest.writeInt(idWeb);
 		dest.writeString(libelle != null ? libelle : "");
 		dest.writeString(comentaire != null ? comentaire : "");
 		dest.writeInt(disponible ? 1 : 0);
-		dest.writeInt(version);
+		dest.writeLong(version);
 	}
 
 }

@@ -17,7 +17,7 @@ public class MoniteurDao extends BaseDao {
 
 public static final String TABLE_NAME = "db_moniteur";
 	
-	public static final String ID = "id";
+	public static final String ID_WEB = "id_web";
 	public static final String NOM = "nom";
 	public static final String PRENOM = "prenom";
 	public static final String APTITUDES = "aptitudes";
@@ -28,7 +28,7 @@ public static final String TABLE_NAME = "db_moniteur";
 	public static final String VERSION = "version";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
-		    ID +" INTEGER PRIMARY KEY," +
+		    ID_WEB +" INTEGER PRIMARY KEY," +
 		    NOM + " TEXT, " +
 		    PRENOM + " TEXT, " +
 		    APTITUDES + " TEXT, " +
@@ -48,13 +48,30 @@ public static final String TABLE_NAME = "db_moniteur";
 	}
 	
 	/**
+	 * Renvoi le timestamp de la dernière modification ou 0 si aucune modification
+	 * @return
+	 */
+	public Long getMaxVersion(){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+		mDb.close();
+		
+		if(cursor.getCount() == 1){
+			return cursor.getLong(0);
+		}
+		else{
+			return Long.valueOf(0);
+		}
+	}
+	
+	/**
 	 * Return le moniteur d'id spécifié
 	 * @param idMoniteur
 	 * @return
 	 */
 	public Moniteur getById(int idMoniteur){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID+" = ?", new String[]{String.valueOf(idMoniteur)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_WEB+" = ?", new String[]{String.valueOf(idMoniteur)});
 		
 		List<Moniteur> resultList  = cursorToMoniteurList(cursor);
 		
@@ -122,7 +139,7 @@ public static final String TABLE_NAME = "db_moniteur";
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
-		value.put(ID, moniteur.getId());;
+		value.put(ID_WEB, moniteur.getIdWeb());;
 		value.put(NOM, moniteur.getNom());
 		value.put(PRENOM, moniteur.getPrenom());		
 		value.put(APTITUDES, ((ListeAptitudes)moniteur.getAptitudes()).toIdsList());
@@ -156,7 +173,7 @@ public static final String TABLE_NAME = "db_moniteur";
 		value.put(TELEPHONE, moniteur.getTelephone());
 		value.put(VERSION, moniteur.getVersion());
 		
-		mDb.update(TABLE_NAME, value, ID  + " = ?", new String[] {String.valueOf(moniteur.getId())});
+		mDb.update(TABLE_NAME, value, ID_WEB  + " = ?", new String[] {String.valueOf(moniteur.getIdWeb())});
 		mDb.close();
 		
 		return moniteur;
@@ -169,7 +186,7 @@ public static final String TABLE_NAME = "db_moniteur";
 	public void delete(Integer MoniteurId){
 		SQLiteDatabase mDb = open();
 	
-		mDb.delete(TABLE_NAME, ID + " = ?", new String[] {String.valueOf(MoniteurId)});
+		mDb.delete(TABLE_NAME, ID_WEB + " = ?", new String[] {String.valueOf(MoniteurId)});
 		
 		mDb.close();
 	}
@@ -187,7 +204,7 @@ public static final String TABLE_NAME = "db_moniteur";
 		
 		while(cursor.moveToNext()){
 			Moniteur moniteur = new Moniteur(
-					cursor.getInt(cursor.getColumnIndex(ID)),
+					cursor.getInt(cursor.getColumnIndex(ID_WEB)),
 					cursor.getString(cursor.getColumnIndex(NOM)),
 					cursor.getString(cursor.getColumnIndex(PRENOM)),
 					new ListeAptitudes(cursor.getString(cursor.getColumnIndex(APTITUDES)), allAptitudes),
@@ -195,7 +212,7 @@ public static final String TABLE_NAME = "db_moniteur";
 					cursor.getInt(cursor.getColumnIndex(DIRECTEUR_PLONGE)) > 0,
 					cursor.getString(cursor.getColumnIndex(EMAIL)),					
 					cursor.getString(cursor.getColumnIndex(TELEPHONE)),
-					cursor.getInt(cursor.getColumnIndex(VERSION))
+					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 			
 			resultList.add(moniteur);			

@@ -19,7 +19,7 @@ public class Moniteur implements Parcelable{
 		}
 	};
 	
-	private Integer id;
+	private Integer idWeb;
 	private String nom;
 	private String prenom;
 	private ListeAptitudes aptitudes;
@@ -27,11 +27,11 @@ public class Moniteur implements Parcelable{
 	private boolean directeurPlongee;
 	private String email;
 	private String telephone;
-	private Integer version;
+	private Long version;
 	
 	/**
 	 * 
-	 * @param id
+	 * @param idWeb
 	 * @param nom
 	 * @param prenom
 	 * @param aptitudes
@@ -41,11 +41,11 @@ public class Moniteur implements Parcelable{
 	 * @param telephone
 	 * @param version
 	 */
-	public Moniteur(Integer id, String nom, String prenom,
+	public Moniteur(Integer idWeb, String nom, String prenom,
 			ListeAptitudes aptitudes, boolean actif, boolean directeurPlongee,
-			String email, String telephone, Integer version) {
+			String email, String telephone, Long version) {
 		super();
-		this.id = id;
+		this.idWeb = idWeb;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.aptitudes = aptitudes;
@@ -57,7 +57,7 @@ public class Moniteur implements Parcelable{
 	}
 	
 	public Moniteur(Parcel source){
-		id = source.readInt();
+		idWeb = source.readInt();
 		nom = source.readString();
 		prenom = source.readString();
 		aptitudes = source.readParcelable(ListeAptitudes.class.getClassLoader());
@@ -65,15 +65,15 @@ public class Moniteur implements Parcelable{
 		directeurPlongee = source.readInt() > 0;
 		telephone = source.readString();
 		email = source.readString();
-		version = source.readInt();
+		version = source.readLong();
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getIdWeb() {
+		return idWeb;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setIdWeb(Integer id) {
+		this.idWeb = id;
 	}
 
 	public String getNom() {
@@ -132,11 +132,11 @@ public class Moniteur implements Parcelable{
 		this.telephone = telephone;
 	}
 
-	public Integer getVersion() {
+	public Long getVersion() {
 		return version;
 	}
 
-	public void setVersion(Integer version) {
+	public void setVersion(Long version) {
 		this.version = version;
 	}
 
@@ -146,7 +146,7 @@ public class Moniteur implements Parcelable{
 
 	@Override
 	public String toString() {
-		return "Moniteur [id=" + id + ", nom=" + nom + ", prenom=" + prenom
+		return "Moniteur [idWeb=" + idWeb + ", nom=" + nom + ", prenom=" + prenom
 				+ ", aptitudes=" + aptitudes + ", actif=" + actif
 				+ ", directeurPlongee=" + directeurPlongee + ", email=" + email
 				+ ", telephone=" + telephone + ", version=" + version + "]";
@@ -159,7 +159,7 @@ public class Moniteur implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
+		dest.writeInt(idWeb);
 		dest.writeString(nom != null ? nom : "");
 		dest.writeString(prenom != null ? prenom : "");
 		dest.writeParcelable(aptitudes != null ? aptitudes : new ListeAptitudes(), flags);
@@ -167,7 +167,7 @@ public class Moniteur implements Parcelable{
 		dest.writeInt(directeurPlongee ? 1 : 0);
 		dest.writeString(email != null ? email : "");
 		dest.writeString(telephone != null ? telephone : "");
-		dest.writeInt(version);		
+		dest.writeLong(version);		
 	}
 	
 	
