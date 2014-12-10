@@ -22,9 +22,9 @@ public class PalanqueeDao extends BaseDao {
 	public static final String TYPE_PLONGE = "type_plonge";
 	public static final String TYPE_GAZ = "type_gaz";
 	public static final String PROFONDEUR_PREVUE = "profondeur_prevue";
-	public static final String PROFONDEUR_REALISE = "profondeur_realise";
+	public static final String PROFONDEUR_REALISE_MONITEUR = "profondeur_realise_moniteur";
 	public static final String DUREE_PREVUE = "duree_prevue";
-	public static final String DUREE_REALISE = "duree_realise";
+	public static final String DUREE_REALISE_MONITEUR = "duree_realise_moniteur";
 	public static final String VERSION = "version";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
@@ -36,9 +36,9 @@ public class PalanqueeDao extends BaseDao {
 		    TYPE_PLONGE + " TEXT, " +
 		    TYPE_GAZ + " TEXT, " +
 		    PROFONDEUR_PREVUE +" REAL, " +
-		    PROFONDEUR_REALISE + " REAL, " +
+		    PROFONDEUR_REALISE_MONITEUR + " REAL, " +
 		    DUREE_PREVUE + " INTEGER, " +
-		    DUREE_REALISE + " INTEGER, " +
+		    DUREE_REALISE_MONITEUR + " INTEGER, " +
 		    VERSION + " INTEGER INTEGER DEFAULT 0" +
 	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
@@ -136,9 +136,9 @@ public class PalanqueeDao extends BaseDao {
 		value.put(TYPE_PLONGE, palanquee.getTypePlonge().toString());
 		value.put(TYPE_GAZ, palanquee.getTypeGaz().toString());
 		value.put(PROFONDEUR_PREVUE, palanquee.getProfondeurPrevue());
-		value.put(PROFONDEUR_REALISE, palanquee.getProfondeurRealisee());
+		value.put(PROFONDEUR_REALISE_MONITEUR, palanquee.getProfondeurRealiseeMoniteur());
 		value.put(DUREE_PREVUE, palanquee.getDureePrevue());
-		value.put(DUREE_REALISE, palanquee.getDureeRealisee());
+		value.put(DUREE_REALISE_MONITEUR, palanquee.getDureeRealiseeMoniteur());
 		value.put(VERSION, palanquee.getVersion());
 		
 		mDb.update(TABLE_NAME, value, "WHERE "+ID+" = ?", new String[]{palanquee.getId().toString()});
@@ -164,9 +164,9 @@ public class PalanqueeDao extends BaseDao {
 		value.put(TYPE_PLONGE, palanquee.getTypePlonge().toString());
 		value.put(TYPE_GAZ, palanquee.getTypeGaz().toString());
 		value.put(PROFONDEUR_PREVUE, palanquee.getProfondeurPrevue());
-		value.put(PROFONDEUR_REALISE, palanquee.getProfondeurRealisee());
+		value.put(PROFONDEUR_REALISE_MONITEUR, palanquee.getProfondeurRealiseeMoniteur());
 		value.put(DUREE_PREVUE, palanquee.getDureePrevue());
-		value.put(DUREE_REALISE, palanquee.getDureeRealisee());
+		value.put(DUREE_REALISE_MONITEUR, palanquee.getDureeRealiseeMoniteur());
 		value.put(VERSION, palanquee.getVersion());
 		
 		mDb.insert(TABLE_NAME, null, value);
@@ -196,9 +196,9 @@ public class PalanqueeDao extends BaseDao {
 					EnumTypePlonge.valueOf(cursor.getString(cursor.getColumnIndex(TYPE_PLONGE))),
 					EnumTypeGaz.valueOf(cursor.getString(cursor.getColumnIndex(TYPE_GAZ))),
 					cursor.getFloat(cursor.getColumnIndex(PROFONDEUR_PREVUE)),
-					cursor.getFloat(cursor.getColumnIndex(PROFONDEUR_REALISE)),
+					cursor.getFloat(cursor.getColumnIndex(PROFONDEUR_REALISE_MONITEUR)),
 					cursor.getInt(cursor.getColumnIndex(DUREE_PREVUE)),
-					cursor.getInt(cursor.getColumnIndex(DUREE_REALISE)),
+					cursor.getInt(cursor.getColumnIndex(DUREE_REALISE_MONITEUR)),
 					cursor.getLong(cursor.getColumnIndex(VERSION)),
 					plongeurDao.getByIdPalanquee(cursor.getInt(cursor.getColumnIndex(ID)))
 					);

@@ -33,9 +33,9 @@ public class Palanquee implements Parcelable {
 	private EnumTypePlonge typePlonge;
 	private EnumTypeGaz typeGaz;
 	private Float profondeurPrevue;
-	private Float profondeurRealisee;
+	private Float profondeurRealiseeMoniteur;
 	private Integer dureePrevue;
-	private Integer dureeRealisee;
+	private Integer dureeRealiseeMoniteur;
 	private Long version;
 	private ListePlongeurs plongeurs;
 	
@@ -48,9 +48,9 @@ public class Palanquee implements Parcelable {
 	 * @param typePlonge
 	 * @param typeGaz
 	 * @param profondeurPrevue
-	 * @param profondeurRealisee
+	 * @param profondeurRealiseeMoniteur
 	 * @param dureePrevue
-	 * @param dureeRealisee
+	 * @param dureeRealiseeMoniteur
 	 * @param version
 	 * @param plongeurs
 	 */
@@ -68,9 +68,9 @@ public class Palanquee implements Parcelable {
 		this.typePlonge = typePlonge;
 		this.typeGaz = typeGaz;
 		this.profondeurPrevue = profondeurPrevue;
-		this.profondeurRealisee = profondeurRealisee;
+		this.profondeurRealiseeMoniteur = profondeurRealisee;
 		this.dureePrevue = dureePrevue;
-		this.dureeRealisee = dureeRealisee;
+		this.dureeRealiseeMoniteur = dureeRealisee;
 		this.version = version;
 		this.plongeurs = plongeurs;
 	}
@@ -84,9 +84,9 @@ public class Palanquee implements Parcelable {
 		typePlonge = EnumTypePlonge.valueOf(source.readString());
 		typeGaz = EnumTypeGaz.valueOf(source.readString());
 		profondeurPrevue = source.readFloat();
-		profondeurRealisee = source.readFloat();
+		profondeurRealiseeMoniteur = source.readFloat();
 		dureePrevue = source.readInt();
-		dureeRealisee = source.readInt();
+		dureeRealiseeMoniteur = source.readInt();
 		version = source.readLong();
 		plongeurs = source.readParcelable(ListePlongeurs.class.getClassLoader());
 	}
@@ -161,12 +161,12 @@ public class Palanquee implements Parcelable {
 		this.profondeurPrevue = profondeurPrevue;
 	}
 
-	public Float getProfondeurRealisee() {
-		return profondeurRealisee;
+	public Float getProfondeurRealiseeMoniteur() {
+		return profondeurRealiseeMoniteur;
 	}
 
-	public void setProfondeurRealisee(Float profondeurRealisee) {
-		this.profondeurRealisee = profondeurRealisee;
+	public void setProfondeurRealiseeMoniteur(Float profondeurRealisee) {
+		this.profondeurRealiseeMoniteur = profondeurRealisee;
 	}
 
 	public Integer getDureePrevue() {
@@ -177,12 +177,12 @@ public class Palanquee implements Parcelable {
 		this.dureePrevue = dureePrevue;
 	}
 
-	public Integer getDureeRealisee() {
-		return dureeRealisee;
+	public Integer getDureeRealiseeMoniteur() {
+		return dureeRealiseeMoniteur;
 	}
 
-	public void setDureeRealisee(Integer dureeRealisee) {
-		this.dureeRealisee = dureeRealisee;
+	public void setDureeRealiseeMoniteur(Integer dureeRealisee) {
+		this.dureeRealiseeMoniteur = dureeRealisee;
 	}
 
 	public Long getVersion() {
@@ -218,9 +218,9 @@ public class Palanquee implements Parcelable {
 				+ moniteur + "\n\tnumero: " + numero + "\n\ttypePlonge: "
 				+ typePlonge + "\n\ttypeGaz: " + typeGaz
 				+ "\n\tprofondeurPrevue: " + profondeurPrevue
-				+ "\n\tprofondeurRealisee: " + profondeurRealisee
-				+ "\n\tdureePrevue: " + dureePrevue + "\n\tdureeRealisee: "
-				+ dureeRealisee + "\n\tversion: " + version + "\n\tplongeurs: "
+				+ "\n\tprofondeurRealiseeMoniteur: " + profondeurRealiseeMoniteur
+				+ "\n\tdureePrevue: " + dureePrevue + "\n\tdureeRealiseeMoniteur: "
+				+ dureeRealiseeMoniteur + "\n\tversion: " + version + "\n\tplongeurs: "
 				+ plongeurs + "\n}";
 	}
 
@@ -239,9 +239,9 @@ public class Palanquee implements Parcelable {
 		dest.writeString(typePlonge.toString());
 		dest.writeString(typeGaz.toString());
 		dest.writeFloat(profondeurPrevue);
-		dest.writeFloat(profondeurRealisee);
+		dest.writeFloat(profondeurRealiseeMoniteur);
 		dest.writeInt(dureePrevue);
-		dest.writeInt(dureeRealisee);
+		dest.writeInt(dureeRealiseeMoniteur);
 		dest.writeLong(version);
 		dest.writeParcelable(plongeurs, flags);
 	}

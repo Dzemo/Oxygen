@@ -65,17 +65,17 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_profondeur_prevue_value))
 					.setText(palanquee.getProfondeurPrevue().toString()+" mètres");
-			if(palanquee.getProfondeurRealisee() > 0)
+			if(palanquee.getProfondeurRealiseeMoniteur() > 0)
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_profondeur_realisee_value))
-					.setText(palanquee.getProfondeurRealisee().toString()+ "mètres");
+					.setText(palanquee.getProfondeurRealiseeMoniteur().toString()+ "mètres");
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_duree_prevue_value))
 					.setText(DateStringUtils.secondsToNiceString(palanquee.getDureePrevue()));
-			if(palanquee.getDureeRealisee() > 0)
+			if(palanquee.getDureeRealiseeMoniteur() > 0)
 				((TextView) rootView
 						.findViewById(R.id.textView_palanquee_info_duree_realisee_value))
-						.setText(DateStringUtils.secondsToNiceString(palanquee.getDureeRealisee()));
+						.setText(DateStringUtils.secondsToNiceString(palanquee.getDureeRealiseeMoniteur()));
 			
 			//Moniteur si présent
 			if(palanquee.getMoniteur() != null){

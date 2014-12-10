@@ -27,6 +27,8 @@ public class PlongeurDao extends BaseDao {
 	public static final String TELEPHONE = "telephone";
 	public static final String TELEPHONE_URGENCE = "telephone_urgence";
 	public static final String DATE_NAISSANCE = "date_naissance";
+	public static final String PROFONDEUR_REALISEE = "profondeur_realisee";
+	public static final String DUREE_REALISEE = "duree_realisee";
 	public static final String VERSION = "version";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
@@ -40,6 +42,8 @@ public class PlongeurDao extends BaseDao {
 		    TELEPHONE + " TEXT, " +
 		    TELEPHONE_URGENCE + " TEXT, " +
 		    DATE_NAISSANCE + " TEXT, " +
+		    PROFONDEUR_REALISEE + " REAL" +
+		    DUREE_REALISEE + " INTEGER" +
 		    VERSION + " INTEGER INTEGER DEFAULT 0" +
 	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
@@ -155,6 +159,8 @@ public class PlongeurDao extends BaseDao {
 		value.put(TELEPHONE, plongeur.getTelephone());
 		value.put(TELEPHONE_URGENCE, plongeur.getPrenom());
 		value.put(DATE_NAISSANCE, plongeur.getDateNaissance());
+		value.put(PROFONDEUR_REALISEE, plongeur.getProfondeurRealisee());
+		value.put(DUREE_REALISEE, plongeur.getDureeRealisee());
 		value.put(VERSION, plongeur.getVersion());
 		
 		mDb.insert(TABLE_NAME, null, value);
@@ -181,6 +187,8 @@ public class PlongeurDao extends BaseDao {
 		value.put(TELEPHONE, plongeur.getTelephone());
 		value.put(TELEPHONE_URGENCE, plongeur.getPrenom());
 		value.put(DATE_NAISSANCE, plongeur.getDateNaissance());
+		value.put(PROFONDEUR_REALISEE, plongeur.getProfondeurRealisee());
+		value.put(DUREE_REALISEE, plongeur.getDureeRealisee());
 		value.put(VERSION, plongeur.getVersion());
 		
 		mDb.update(TABLE_NAME, value, ID  + " = ?", new String[] {String.valueOf(plongeur.getId())});
@@ -224,6 +232,8 @@ public class PlongeurDao extends BaseDao {
 					cursor.getString(cursor.getColumnIndex(TELEPHONE)),
 					cursor.getString(cursor.getColumnIndex(TELEPHONE_URGENCE)),
 					cursor.getString(cursor.getColumnIndex(DATE_NAISSANCE)),
+					cursor.getFloat(cursor.getColumnIndex(PROFONDEUR_REALISEE)),
+					cursor.getInt(cursor.getColumnIndex(DUREE_REALISEE)),
 					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 			

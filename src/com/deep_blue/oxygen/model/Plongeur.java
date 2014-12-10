@@ -78,6 +78,16 @@ public class Plongeur implements Parcelable {
 	 * Version du plongeur, pour la synchronisation
 	 */
 	private Long version;
+	
+	/**
+	 * Profondeur qu'a réalisé le plongeur (en mètre)
+	 */
+	private Float profondeurRealisee;
+	
+	/**
+	 * Durée de plongé réalisé par le plongeur (en seconde)
+	 */
+	private Integer dureeRealisee;
 
 	/**
 	 * 
@@ -91,11 +101,14 @@ public class Plongeur implements Parcelable {
 	 * @param telephone
 	 * @param telephoneUrgence
 	 * @param dateNaissance
+	 * @param profondeurRealisee
+	 * @param dureeRealisee
 	 * @param version
 	 */
 	public Plongeur(Integer id, Integer idWeb, Integer idPalanquee, Integer idFicheSecurite,
 			String nom, String prenom, ListeAptitudes aptitudes,
-			String telephone, String telephoneUrgence, String dateNaissance,
+			String telephone, String telephoneUrgence, String dateNaissance, Float profondeurRealisee,
+			Integer dureeRealisee,
 			Long version) {
 		super();
 		this.id = id;
@@ -108,6 +121,8 @@ public class Plongeur implements Parcelable {
 		this.telephone = telephone;
 		this.telephoneUrgence = telephoneUrgence;
 		this.dateNaissance = dateNaissance;
+		this.profondeurRealisee = profondeurRealisee;
+		this.dureeRealisee = dureeRealisee;
 		this.version = version;
 	}
 	
@@ -126,6 +141,8 @@ public class Plongeur implements Parcelable {
 		telephone = source.readString();
 		telephoneUrgence = source.readString();
 		dateNaissance = source.readString();
+		profondeurRealisee = source.readFloat();
+		dureeRealisee = source.readInt();
 		version = source.readLong();
 	}
 
@@ -214,6 +231,22 @@ public class Plongeur implements Parcelable {
 	public void setDateNaissance(String dateNaissance) {
 		this.dateNaissance = dateNaissance;
 	}
+	
+	public Float getProfondeurRealisee() {
+		return profondeurRealisee;
+	}
+
+	public void setProfondeurRealisee(Float profondeurRealisee) {
+		this.profondeurRealisee = profondeurRealisee;
+	}
+	
+	public Integer getDureeRealisee() {
+		return dureeRealisee;
+	}
+
+	public void setDureeRealisee(Integer dureeRealisee) {
+		this.dureeRealisee = dureeRealisee;
+	}
 
 	public Long getVersion() {
 		return version;
@@ -241,7 +274,8 @@ public class Plongeur implements Parcelable {
 				+ "\n\taptitudes: " + aptitudes + "\n\ttelephone: " + telephone
 				+ "\n\ttelephoneUrgence: " + telephoneUrgence
 				+ "\n\tdateNaissance: " + dateNaissance + "\n\tversion: "
-				+ version + "\n}";
+				+ version + "\n\tprofondeurRealisee: " + profondeurRealisee
+				+ "\n\tdureeRealisee: " + dureeRealisee + "\n}";
 	}
 
 	@Override
@@ -261,6 +295,8 @@ public class Plongeur implements Parcelable {
 		dest.writeString(telephone != null ? telephone : "");
 		dest.writeString(telephoneUrgence != null ? telephoneUrgence : "");
 		dest.writeString(dateNaissance != null ? dateNaissance : "");
+		dest.writeFloat(profondeurRealisee);
+		dest.writeInt(dureeRealisee);
 		dest.writeLong(version);		
 	}
 }
