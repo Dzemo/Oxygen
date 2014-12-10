@@ -54,6 +54,22 @@
 	<string name="palanquee_info_profondeur_realisee_labelle">Profondeur réalisée</string>
 	<string name="palanquee_info_duree_prevue_labelle">Durée prévue</string>
 	<string name="palanquee_info_duree_realisee_labelle">Durée réalisée</string>
+	
+		<!-- PALANQUEE DIALOG INFO DEBUT -->
+			<string name="palanquee_dialog_profondeur_realisee_title">Profondeur réalisée</string>
+			<string name="palanquee_dialog_profondeur_prevue_title">Profondeur prévue</string>
+			<string name="palanquee_dialog_duree_realisee_title">Durée réalisée</string>
+			<string name="palanquee_dialog_duree_prevue_title">Durée prévue</string>
+			<string name="palanquee_dialog_virgule">.</string>
+			
+			
+			<string name="palanquee_dialog_type_gaz_title">Type de gaz</string>
+			<string name="palanquee_dialog_type_plongee_title">Type de plongée</string>
+			
+			<string name="palanquee_dialog_ok">Ok</string>
+			<string name="palanquee_dialog_annuler">Annuler</string>
+			
+		<!-- PALANQUEE DIALOG INFO DEBUT -->
     <!-- PALANQUEE INFO FIN -->
     
     <!-- SYNCH DEBUT -->
