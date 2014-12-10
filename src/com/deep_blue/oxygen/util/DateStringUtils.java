@@ -17,7 +17,7 @@ public class DateStringUtils {
 	 * @return
 	 */
 	public static String timestampsToDate(Long timestamp){
-		return new SimpleDateFormat("MM/dd/yyyy", new Locale("fr_FR")).format(new Date(timestamp*1000));
+		return new SimpleDateFormat("dd MMM yyyy", new Locale("fr_FR")).format(new Date(timestamp*1000));
 	}
 	
 	/**
@@ -35,7 +35,7 @@ public class DateStringUtils {
 	 * @return
 	 */
 	public static String dateToString(Date date){
-		return new SimpleDateFormat("MM/dd/yyyy hh:mm", new Locale("fr_FR")).format(date);
+		return new SimpleDateFormat("dd MMM yyyy hh:mm", new Locale("fr_FR")).format(date);
 	}
 	
 	/**

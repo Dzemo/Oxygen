@@ -24,6 +24,7 @@ public class PalanqueeDao extends BaseDao {
 	public static final String PROFONDEUR_PREVUE = "profondeur_prevue";
 	public static final String PROFONDEUR_REALISE_MONITEUR = "profondeur_realise_moniteur";
 	public static final String DUREE_PREVUE = "duree_prevue";
+	public static final String HEURE = "heure";
 	public static final String DUREE_REALISE_MONITEUR = "duree_realise_moniteur";
 	public static final String VERSION = "version";
 	
@@ -38,6 +39,7 @@ public class PalanqueeDao extends BaseDao {
 		    PROFONDEUR_PREVUE +" REAL, " +
 		    PROFONDEUR_REALISE_MONITEUR + " REAL, " +
 		    DUREE_PREVUE + " INTEGER, " +
+		    HEURE + " TEXT," +
 		    DUREE_REALISE_MONITEUR + " INTEGER, " +
 		    VERSION + " INTEGER INTEGER DEFAULT 0" +
 	    ");";
@@ -139,6 +141,7 @@ public class PalanqueeDao extends BaseDao {
 		value.put(PROFONDEUR_REALISE_MONITEUR, palanquee.getProfondeurRealiseeMoniteur());
 		value.put(DUREE_PREVUE, palanquee.getDureePrevue());
 		value.put(DUREE_REALISE_MONITEUR, palanquee.getDureeRealiseeMoniteur());
+		value.put(HEURE, palanquee.getHeure());
 		value.put(VERSION, palanquee.getVersion());
 		
 		mDb.update(TABLE_NAME, value, "WHERE "+ID+" = ?", new String[]{palanquee.getId().toString()});
@@ -167,6 +170,7 @@ public class PalanqueeDao extends BaseDao {
 		value.put(PROFONDEUR_REALISE_MONITEUR, palanquee.getProfondeurRealiseeMoniteur());
 		value.put(DUREE_PREVUE, palanquee.getDureePrevue());
 		value.put(DUREE_REALISE_MONITEUR, palanquee.getDureeRealiseeMoniteur());
+		value.put(HEURE, palanquee.getHeure());
 		value.put(VERSION, palanquee.getVersion());
 		
 		mDb.insert(TABLE_NAME, null, value);
@@ -199,6 +203,7 @@ public class PalanqueeDao extends BaseDao {
 					cursor.getFloat(cursor.getColumnIndex(PROFONDEUR_REALISE_MONITEUR)),
 					cursor.getInt(cursor.getColumnIndex(DUREE_PREVUE)),
 					cursor.getInt(cursor.getColumnIndex(DUREE_REALISE_MONITEUR)),
+					cursor.getString(cursor.getColumnIndex(HEURE)),
 					cursor.getLong(cursor.getColumnIndex(VERSION)),
 					plongeurDao.getByIdPalanquee(cursor.getInt(cursor.getColumnIndex(ID)))
 					);

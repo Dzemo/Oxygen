@@ -4,17 +4,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.activity.fragment.dialog.FicheDateDialogFragment;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.util.DateStringUtils;
 
 public class FicheSecuriteTabsInfoFragment extends Fragment {
 
 	private FicheSecurite ficheSecurite = null;
-
+	private View rootView;
+	
 	public FicheSecuriteTabsInfoFragment(FicheSecurite ficheSecurite) {
 		super();
 		this.ficheSecurite = ficheSecurite;
@@ -26,7 +29,7 @@ public class FicheSecuriteTabsInfoFragment extends Fragment {
 
 		// The last two arguments ensure LayoutParams are inflated
 		// properly.
-		View rootView = inflater.inflate(
+		rootView = inflater.inflate(
 				R.layout.activity_fiche_securite_fragment_info, container,
 				false);
 
@@ -48,6 +51,15 @@ public class FicheSecuriteTabsInfoFragment extends Fragment {
 					.findViewById(R.id.textView_fiche_infos_directeur_plonge_value))
 					.setText(directeurPlongeValue);
 		}
+		
+		//Ajout du clique de modification de la date
+		rootView.findViewById(R.id.iB_infos_date).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {				
+				FicheDateDialogFragment ndf = new FicheDateDialogFragment(rootView,ficheSecurite);
+				ndf.show(getFragmentManager(),"TAG");
+			}			
+		});
 
 		return rootView;
 	}

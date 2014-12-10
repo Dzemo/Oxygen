@@ -161,6 +161,14 @@ public class FicheSecurite  implements Parcelable {
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
+	
+	public void setDate(Date date){
+		timestamp = date.getTime() / 1000;
+	}
+	
+	public Date getDate(){
+		return new Date(timestamp*1000);
+	}
 
 	/**
 	 * @return the site

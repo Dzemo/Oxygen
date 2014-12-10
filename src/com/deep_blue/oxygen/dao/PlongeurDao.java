@@ -42,8 +42,8 @@ public class PlongeurDao extends BaseDao {
 		    TELEPHONE + " TEXT, " +
 		    TELEPHONE_URGENCE + " TEXT, " +
 		    DATE_NAISSANCE + " TEXT, " +
-		    PROFONDEUR_REALISEE + " REAL" +
-		    DUREE_REALISEE + " INTEGER" +
+		    PROFONDEUR_REALISEE + " REAL, " +
+		    DUREE_REALISEE + " INTEGER, " +
 		    VERSION + " INTEGER INTEGER DEFAULT 0" +
 	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";

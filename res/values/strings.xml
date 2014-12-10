@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-	<!-- GENERAL/MENU DEBUT -->
+
+    <!-- GENERAL/MENU DEBUT -->
     <string name="app_name">Oxygen</string>
     <string name="action_settings">Settings</string>
-    
+    <string name="general_modifier">Modifier</string>
     <string name="menu_synch">Sychroniser</string>
     <string name="menu_save">Enregistrer</string>
     <string name="menu_param">Parametres</string>
     <string name="menu_logout">Deconnexion</string>
-    
     <string name="parametre_title">Paramètres</string>
     <string name="parametre_remote_url">Addresse du serveur: </string>
     <string name="parametre_save_login">Se souvenir du login</string>
     <string name="parametre_last_synch_label">Dernière synchronisation :</string>
     <string name="parametre_saved">Paramètres enregistrés</string>
     <!-- GENERAL/MENU FIN -->
-    
+
+
     <!-- LOGIN DEBUT -->
     <string name="login_cancel">Annuler</string>
     <string name="login_login">Login</string>
@@ -24,12 +24,12 @@
     <string name="login_placeholder_login">Nom d\'utilisateur</string>
     <string name="login_title">Connexion</string>
     <string name="login_invalide">identifiants invalides</string>
-    
     <string name="imageTitle">Un beau logo mon flavio</string>
     <string name="imageAnnuler">Cross icon with Annuler string</string>
     <string name="imageValider">Validate icon with Valider string</string>
     <!-- LOGIN FIN -->
-    
+
+
     <!-- LISTE FICHES SECURITE DEBUT -->
     <string name="title_activity_list">Liste des fiches</string>
     <string name="list_icon_edit">Editable</string>
@@ -38,6 +38,7 @@
     <string name="list_fiche_desc">Plongée [type] à [lieu]</string>
     <!-- LISTE FICHES SECURITE FIN -->
 
+
     <!-- FICHE INFO DEBUT -->
     <string name="fiche_infos_title_palanquees">Palanquées :</string>
     <string name="title_activity_fiche_securite">Fiche de Sécurité</string>
@@ -45,33 +46,42 @@
     <string name="fiche_infos_heure_labelle">Heure :</string>
     <string name="fiche_infos_site_labelle">Site :</string>
     <string name="fiche_infos_directeur_plonge_labelle">Directeur :</string>
+
+    <!-- FICHE DIALOG INFO DEBUT -->
+    <string name="fiche_info_dialogie_date_title">Date de plongée</string>
+    <string name="fiche_info_dialogie_site_title">Site de plongée</string>
+    <string name="fiche_info_dialogie_directeur_plonge_title">Directeur de plongée</string>
+    <!-- FICHE DIALOG INFO DEBUT -->
+
     <!-- FICHE INFO FIN -->
 
-	<!-- PALANQUEE INFO DEBUT -->
-	<string name="palanquee_info_gaz_labelle">Type de gaz</string>
-	<string name="palanquee_info_plongee_labelle">Type de plongée</string>
-	<string name="palanquee_info_profondeur_prevue_labelle">Profondeur prévue</string>
-	<string name="palanquee_info_profondeur_realisee_labelle">Profondeur réalisée</string>
-	<string name="palanquee_info_duree_prevue_labelle">Durée prévue</string>
-	<string name="palanquee_info_duree_realisee_labelle">Durée réalisée</string>
-	
-		<!-- PALANQUEE DIALOG INFO DEBUT -->
-			<string name="palanquee_dialog_profondeur_realisee_title">Profondeur réalisée</string>
-			<string name="palanquee_dialog_profondeur_prevue_title">Profondeur prévue</string>
-			<string name="palanquee_dialog_duree_realisee_title">Durée réalisée</string>
-			<string name="palanquee_dialog_duree_prevue_title">Durée prévue</string>
-			<string name="palanquee_dialog_virgule">.</string>
-			
-			
-			<string name="palanquee_dialog_type_gaz_title">Type de gaz</string>
-			<string name="palanquee_dialog_type_plongee_title">Type de plongée</string>
-			
-			<string name="palanquee_dialog_ok">Ok</string>
-			<string name="palanquee_dialog_annuler">Annuler</string>
-			
-		<!-- PALANQUEE DIALOG INFO DEBUT -->
-    <!-- PALANQUEE INFO FIN -->
+
+    <!-- PALANQUEE INFO DEBUT -->
+    <string name="palanquee_heure_labelle">Heure :</string>
+    <string name="palanquee_info_moniteur_labelle">Moniteur :</string>
+    <string name="palanquee_info_gaz_labelle">Type de gaz :</string>
+    <string name="palanquee_info_plongee_labelle">Type de plongée :</string>
+    <string name="palanquee_info_profondeur_prevue_labelle">Profondeur prévue :</string>
+    <string name="palanquee_info_profondeur_realisee_labelle">Profondeur réalisée :</string>
+    <string name="palanquee_info_duree_prevue_labelle">Durée prévue :</string>
+    <string name="palanquee_info_duree_realisee_labelle">Durée réalisée :</string>
+
+    <!-- PALANQUEE DIALOG INFO DEBUT -->
+    <string name="palanquee_dialog_profondeur_realisee_title">Profondeur réalisée</string>
+    <string name="palanquee_dialog_profondeur_prevue_title">Profondeur prévue</string>
+    <string name="palanquee_dialog_duree_realisee_title">Durée réalisée</string>
+    <string name="palanquee_dialog_duree_prevue_title">Durée prévue</string>
+    <string name="palanquee_dialog_virgule">.</string>
+    <string name="palanquee_dialog_type_gaz_title">Type de gaz</string>
+    <string name="palanquee_dialog_type_plongee_title">Type de plongée</string>
     
+    <string name="palanquee_dialog_ok">Valider</string>
+    <string name="palanquee_dialog_annuler">Annuler</string>
+    <!-- PALANQUEE DIALOG INFO DEBUT -->
+    
+    <!-- PALANQUEE INFO FIN -->
+
+
     <!-- SYNCH DEBUT -->
     <string name="synch_start">Début de la synchronisation</string>
     <string name="synch_success">Synchronisation effectuée</string>

@@ -10,18 +10,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/list_item_background_1"
-        android:padding="@dimen/panel_padding_size" >
+        android:padding="@dimen/tablerow_padding" >
+
+        <ImageButton
+            android:id="@+id/iB_infos_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
 
         <TextView
             android:id="@+id/textView_fiche_infos_date_labelle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
             android:text="@string/fiche_infos_date_labelle" />
 
         <TextView
             android:id="@+id/textView_fiche_infos_date_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
             android:text="" />
     </TableRow>
 
@@ -30,18 +39,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/list_item_background_2"
-        android:padding="@dimen/panel_padding_size" >
+        android:padding="@dimen/tablerow_padding" >
+
+        <ImageButton
+            android:id="@+id/iB_infos_site"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
 
         <TextView
             android:id="@+id/textView_fiche_infos_site_labelle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
             android:text="@string/fiche_infos_site_labelle" />
 
         <TextView
             android:id="@+id/textView_fiche_infos_site_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
             android:text="" />
     </TableRow>
 
@@ -50,18 +68,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/list_item_background_1"
-        android:padding="@dimen/panel_padding_size" >
+        android:padding="@dimen/tablerow_padding" >
+
+        <ImageButton
+            android:id="@+id/iB_infos_directeur_plonge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
 
         <TextView
             android:id="@+id/textView_fiche_infos_directeur_plonge_labelle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
             android:text="@string/fiche_infos_directeur_plonge_labelle" />
 
         <TextView
             android:id="@+id/textView_fiche_infos_directeur_plonge_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
             android:text="" />
     </TableRow>
 

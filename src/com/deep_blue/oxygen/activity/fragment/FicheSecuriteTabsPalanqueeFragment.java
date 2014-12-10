@@ -41,7 +41,7 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 			// Initialisation de la vue avec la palanquée séléctionné
         	
         	// Row Clickable
-        	((TableRow) rootView.findViewById(R.id.palanquee_info_profondeur_realisee))
+        	rootView.findViewById(R.id.palanquee_info_profondeur_realisee)
         			.setOnClickListener(new OnClickListener(){
 
 						@Override
@@ -76,6 +76,9 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 				((TextView) rootView
 						.findViewById(R.id.textView_palanquee_info_duree_realisee_value))
 						.setText(DateStringUtils.secondsToNiceString(palanquee.getDureeRealiseeMoniteur()));
+			((TextView) rootView
+					.findViewById(R.id.textView_palanquee_heure))
+					.setText(palanquee.getHeure());
 			
 			//Moniteur si présent
 			if(palanquee.getMoniteur() != null){

@@ -24,8 +24,8 @@ public class ProfondeurRealiseeDialogFragment extends DialogFragment {
 		super();
 		this.rootView = rootView;
 		this.palanquee = palanquee;
-		if (palanquee.getProfondeurRealisee() != 0.0)
-			profondeurParDefaut = palanquee.getProfondeurRealisee();
+		if (palanquee.getProfondeurRealiseeMoniteur() != 0.0)
+			profondeurParDefaut = palanquee.getProfondeurRealiseeMoniteur();
 		else if (palanquee.getProfondeurPrevue() != 0.0)
 			profondeurParDefaut = palanquee.getProfondeurPrevue();
 		else
@@ -40,7 +40,7 @@ public class ProfondeurRealiseeDialogFragment extends DialogFragment {
 		// Création de la vue
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		dialogView = inflater
-				.inflate(R.layout.dialog_profondeur_realisee, null);
+				.inflate(R.layout.dialog_palanquee_profondeur_realisee, null);
 
 		// Ajout du numberpicker
 		// On choisit d'abord le metre
@@ -93,12 +93,12 @@ public class ProfondeurRealiseeDialogFragment extends DialogFragment {
 		Float total = (float) metres + ((float) decimals)/10;
 		
 		// On set la profondeur realisee de la palanquee avec la nouvelle valeur
-		palanquee.setProfondeurRealisee(total);
+		palanquee.setProfondeurRealiseeMoniteur(total);
 
 		if (type) {
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_profondeur_realisee_value))
-					.setText(palanquee.getProfondeurRealisee() + " mètres");
+					.setText(palanquee.getProfondeurRealiseeMoniteur() + " mètres");
 		}
 		super.dismiss();
 	}
