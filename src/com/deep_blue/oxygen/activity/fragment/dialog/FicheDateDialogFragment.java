@@ -36,7 +36,7 @@ public class FicheDateDialogFragment extends DialogFragment {
 		}
 	}
 
-	@Override
+	@SuppressLint("InflateParams") @Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// INitialisation du builder
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

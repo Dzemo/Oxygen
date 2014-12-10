@@ -1,5 +1,6 @@
 package com.deep_blue.oxygen.activity.fragment.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -32,7 +33,7 @@ public class ProfondeurRealiseeDialogFragment extends DialogFragment {
 			profondeurParDefaut = 12.0f;
 	}
 
-	@Override
+	@SuppressLint("InflateParams") @Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// INitialisation du builder
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
