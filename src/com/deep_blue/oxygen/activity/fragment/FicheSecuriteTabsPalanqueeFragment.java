@@ -14,9 +14,13 @@ import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeDureePrevueDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeDureeRealiseeDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeHeureDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeMoniteurDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurPrevueDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurRealiseeDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeTypeGazDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeTypePlongeDialogFragment;
 import com.deep_blue.oxygen.listener.PlongeurOnClickListener;
+import com.deep_blue.oxygen.model.EnumTypePlonge;
 import com.deep_blue.oxygen.model.Moniteur;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
@@ -27,6 +31,10 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 	private Palanquee palanquee;
 	private View rootView;
 
+	public FicheSecuriteTabsPalanqueeFragment(){
+		super();
+	}
+	
 	public FicheSecuriteTabsPalanqueeFragment(Palanquee palanquee) {
 		super();
 		this.palanquee = palanquee;
@@ -49,10 +57,10 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 			// Info général de la palanquée
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_gaz_value))
-					.setText(palanquee.getTypeGaz().toString());
+					.setText(palanquee.getTypeGaz() != null ? palanquee.getTypeGaz().toString() : "");
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_plongee_value))
-					.setText(palanquee.getTypePlonge().toString());
+					.setText(palanquee.getTypePlonge() != null ? palanquee.getTypePlonge().toString() : "");
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_profondeur_prevue_value))
 					.setText(palanquee.getProfondeurPrevue().toString()
@@ -125,14 +133,44 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 					ndf.show(getFragmentManager(), "TAG");
 				}
 			});
+			//Type gaz
+			rootView.findViewById(R.id.iB_palanquee_gaz)
+			.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					PalanqueeTypeGazDialogFragment ndf = new PalanqueeTypeGazDialogFragment(
+							rootView, palanquee);
+					ndf.show(getFragmentManager(), "TAG");
+				}
+			});
+			//Type plonge
+			rootView.findViewById(R.id.iB_palanquee_plonge)
+			.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					PalanqueeTypePlongeDialogFragment ndf = new PalanqueeTypePlongeDialogFragment(
+							rootView, palanquee);
+					ndf.show(getFragmentManager(), "TAG");
+				}
+			});
+			//Moniteur
+			rootView.findViewById(R.id.iB_palanquee_moniteur)
+			.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					PalanqueeMoniteurDialogFragment ndf = new PalanqueeMoniteurDialogFragment(
+							rootView, palanquee);
+					ndf.show(getFragmentManager(), "TAG");
+				}
+			});
 
 			// Moniteur si présent
-			if (palanquee.getMoniteur() != null) {
+			if (palanquee.getTypePlonge() != EnumTypePlonge.AUTONOME) {
 				Moniteur moniteur = palanquee.getMoniteur();
-
+				
 				((TextView) rootView
 						.findViewById(R.id.textView_palanquee_moniteur))
-						.setText(moniteur.getPrenom() + " " + moniteur.getNom());
+						.setText(moniteur != null ? moniteur.getPrenom() + " " + moniteur.getNom() : "");
 			} else {
 				rootView.findViewById(R.id.palanquee_moniteur).setVisibility(
 						View.GONE);

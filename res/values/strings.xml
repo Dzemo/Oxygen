@@ -52,6 +52,7 @@
     <string name="fiche_info_dialogie_date_title">Date de plongée</string>
     <string name="fiche_info_dialogie_site_title">Site de plongée</string>
     <string name="fiche_info_dialogie_directeur_plonge_title">Directeur de plongée</string>
+    <string name="fiche_info_dialogie_embarcation_title">Embarcation</string>
     <!-- FICHE DIALOG INFO DEBUT -->
 
     <!-- FICHE INFO FIN -->
@@ -80,7 +81,7 @@
     <string name="palanquee_dialog_now">Maintenant</string>
     <string name="palanquee_dialog_type_gaz_title">Type de gaz</string>
     <string name="palanquee_dialog_type_plongee_title">Type de plongée</string>
-    
+    <string name="palanquee_dialog_moniteur_title">Moniteur</string>
     <string name="palanquee_dialog_ok">Valider</string>
     <string name="palanquee_dialog_annuler">Annuler</string>
     <!-- PALANQUEE DIALOG INFO DEBUT -->
