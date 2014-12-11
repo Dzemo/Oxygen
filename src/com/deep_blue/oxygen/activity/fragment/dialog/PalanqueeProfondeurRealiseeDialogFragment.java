@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -15,13 +14,13 @@ import android.widget.TextView;
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.model.Palanquee;
 
-public class ProfondeurRealiseeDialogFragment extends DialogFragment {
+public class PalanqueeProfondeurRealiseeDialogFragment extends DialogFragment {
 	private View rootView;
 	private View dialogView;
 	private Float profondeurParDefaut;
 	private Palanquee palanquee;
 
-	public ProfondeurRealiseeDialogFragment(View rootView, Palanquee palanquee) {
+	public PalanqueeProfondeurRealiseeDialogFragment(View rootView, Palanquee palanquee) {
 		super();
 		this.rootView = rootView;
 		this.palanquee = palanquee;
@@ -41,7 +40,7 @@ public class ProfondeurRealiseeDialogFragment extends DialogFragment {
 		// Création de la vue
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		dialogView = inflater
-				.inflate(R.layout.dialog_palanquee_profondeur_realisee, null);
+				.inflate(R.layout.dialog_palanquee_profondeur, null);
 
 		// Ajout du numberpicker
 		// On choisit d'abord le metre
@@ -50,8 +49,6 @@ public class ProfondeurRealiseeDialogFragment extends DialogFragment {
 		npMeter.setMaxValue(120);
 		npMeter.setMinValue(0);
 		npMeter.setValue(profondeurParDefaut.intValue());
-		
-		Log.i("toto","npMeter="+npMeter.getValue()+" profondeurParDefaut="+profondeurParDefaut.intValue());
 
 		// On cree l'array qui contient les decimales souhaitees
 		String[] decimalSelection = new String[10];
@@ -87,20 +84,22 @@ public class ProfondeurRealiseeDialogFragment extends DialogFragment {
 
 	public void dismiss(boolean type) {
 
-		int metres = ((NumberPicker) dialogView
-				.findViewById(R.id.depthPickerMeter)).getValue();
-		int decimals = ((NumberPicker) dialogView
-				.findViewById(R.id.decimalDepthPickerMeter)).getValue();
-		Float total = (float) metres + ((float) decimals)/10;
-		
-		// On set la profondeur realisee de la palanquee avec la nouvelle valeur
-		palanquee.setProfondeurRealiseeMoniteur(total);
-
 		if (type) {
+			
+			int metres = ((NumberPicker) dialogView
+					.findViewById(R.id.depthPickerMeter)).getValue();
+			int decimals = ((NumberPicker) dialogView
+					.findViewById(R.id.decimalDepthPickerMeter)).getValue();
+			Float total = (float) metres + ((float) decimals)/10;
+			
+			// On set la profondeur realisee de la palanquee avec la nouvelle valeur
+			palanquee.setProfondeurRealiseeMoniteur(total);
+			
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_profondeur_realisee_value))
 					.setText(palanquee.getProfondeurRealiseeMoniteur() + " mètres");
 		}
+		
 		super.dismiss();
 	}
 }

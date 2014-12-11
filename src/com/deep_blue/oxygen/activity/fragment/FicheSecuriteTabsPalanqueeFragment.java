@@ -11,7 +11,11 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
-import com.deep_blue.oxygen.activity.fragment.dialog.ProfondeurRealiseeDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeDureePrevueDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeDureeRealiseeDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeHeureDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurPrevueDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurRealiseeDialogFragment;
 import com.deep_blue.oxygen.listener.PlongeurOnClickListener;
 import com.deep_blue.oxygen.model.Moniteur;
 import com.deep_blue.oxygen.model.Palanquee;
@@ -71,15 +75,56 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 					.setText(palanquee.getHeure());
 
 			// onClick listener sur les images
+			//Profondeur réalisée
 			rootView.findViewById(R.id.iB_palanquee_profondeur_realisee)
 					.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							ProfondeurRealiseeDialogFragment ndf = new ProfondeurRealiseeDialogFragment(
+							PalanqueeProfondeurRealiseeDialogFragment ndf = new PalanqueeProfondeurRealiseeDialogFragment(
 									rootView, palanquee);
 							ndf.show(getFragmentManager(), "TAG");
 						}
 					});
+			//Profondeur prévue
+			rootView.findViewById(R.id.iB_palanquee_profondeur_prevue)
+			.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					PalanqueeProfondeurPrevueDialogFragment ndf = new PalanqueeProfondeurPrevueDialogFragment(
+							rootView, palanquee);
+					ndf.show(getFragmentManager(), "TAG");
+				}
+			});
+			//Duree prévue
+			rootView.findViewById(R.id.iB_palanquee_duree_prevue)
+			.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					PalanqueeDureePrevueDialogFragment ndf = new PalanqueeDureePrevueDialogFragment(
+							rootView, palanquee);
+					ndf.show(getFragmentManager(), "TAG");
+				}
+			});
+			//Duree réalisé
+			rootView.findViewById(R.id.iB_palanquee_duree_realisee)
+			.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					PalanqueeDureeRealiseeDialogFragment ndf = new PalanqueeDureeRealiseeDialogFragment(
+							rootView, palanquee);
+					ndf.show(getFragmentManager(), "TAG");
+				}
+			});
+			//Heure
+			rootView.findViewById(R.id.iB_palanquee_heure)
+			.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					PalanqueeHeureDialogFragment ndf = new PalanqueeHeureDialogFragment(
+							rootView, palanquee);
+					ndf.show(getFragmentManager(), "TAG");
+				}
+			});
 
 			// Moniteur si présent
 			if (palanquee.getMoniteur() != null) {
@@ -119,6 +164,7 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 				// Clik listener sur la row
 				row.findViewById(R.id.iB_palanquee_plongeur).setOnClickListener(new PlongeurOnClickListener(
 						plongeur, null, this.getActivity()));
+				
 				
 				// Ajout de la row dans la table
 				tableLayout.addView(row, index, row.getLayoutParams());
