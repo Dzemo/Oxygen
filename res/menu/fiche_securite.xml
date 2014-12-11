@@ -3,12 +3,12 @@
     tools:context="com.deep_blue.oxygen.activity.LoginActivity" >
 
     <item
-        android:id="@+id/itemSync"
+        android:id="@+id/itemSave"
         android:enabled="true"
-        android:icon="@android:drawable/ic_popup_sync"
+        android:icon="@android:drawable/ic_menu_save"
         android:showAsAction="always"
-        android:title="@string/menu_synch"
-        android:titleCondensed="@string/menu_synch"
+        android:title="@string/menu_save"
+        android:titleCondensed="@string/menu_save"
         android:visible="true">
     </item>
 

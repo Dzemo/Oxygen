@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.activity.adapter.FicheSecuriteTabsAdapter;
@@ -102,10 +103,10 @@ public class FicheSecuriteActivity extends FragmentActivity {
 			finish();
 			return true;
 
-		case R.id.itemParam:
-			Intent intent = new Intent(FicheSecuriteActivity.this,
-					ParametreActivity.class);
-			startActivity(intent);
+		case R.id.itemSave:
+			Toast toast = Toast.makeText(this, "soonTM",
+					Toast.LENGTH_SHORT);
+			toast.show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
