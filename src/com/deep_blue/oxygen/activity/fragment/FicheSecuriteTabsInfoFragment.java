@@ -50,6 +50,9 @@ public class FicheSecuriteTabsInfoFragment extends Fragment {
 			((TextView) rootView
 					.findViewById(R.id.textView_fiche_infos_directeur_plonge_value))
 					.setText(directeurPlongeValue);
+			((TextView) rootView
+					.findViewById(R.id.textView_fiche_infos_embarcation_value))
+					.setText(ficheSecurite.getEmbarcation() != null ? ficheSecurite.getEmbarcation().getLibelle() : "");
 		}
 		
 		//Ajout du clique de modification de la date

@@ -46,6 +46,7 @@
     <string name="fiche_infos_heure_labelle">Heure :</string>
     <string name="fiche_infos_site_labelle">Site :</string>
     <string name="fiche_infos_directeur_plonge_labelle">Directeur :</string>
+    <string name="fiche_infos_embarcation_labelle">Embarcation :</string>
 
     <!-- FICHE DIALOG INFO DEBUT -->
     <string name="fiche_info_dialogie_date_title">Date de plongée</string>
