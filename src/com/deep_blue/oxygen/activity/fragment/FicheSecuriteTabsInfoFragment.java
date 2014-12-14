@@ -12,6 +12,7 @@ import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheDateDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheDirecteurDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheEmbarcationDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.FicheSiteDialogFragment;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.util.DateStringUtils;
 
@@ -97,7 +98,17 @@ public class FicheSecuriteTabsInfoFragment extends Fragment {
 						ndf.show(getFragmentManager(), "TAG");
 					}
 				});
-
+		// Ajout du clique de modification du site
+		rootView.findViewById(R.id.iB_infos_site)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FicheSiteDialogFragment ndf = new FicheSiteDialogFragment(
+						rootView, ficheSecurite);
+				ndf.show(getFragmentManager(), "TAG");
+			}
+		});
+		
 		return rootView;
 	}
 }

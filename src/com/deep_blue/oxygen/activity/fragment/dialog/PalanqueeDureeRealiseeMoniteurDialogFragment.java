@@ -18,13 +18,13 @@ import android.widget.TextView;
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.model.Palanquee;
 
-public class PalanqueeDureeRealiseeDialogFragment extends DialogFragment implements OnClickListener{
+public class PalanqueeDureeRealiseeMoniteurDialogFragment extends DialogFragment implements OnClickListener{
 	private View rootView;
 	private View dialogView;
 	private Integer dureeParDefaut;
 	private Palanquee palanquee;
 
-	public PalanqueeDureeRealiseeDialogFragment(View rootView, Palanquee palanquee) {
+	public PalanqueeDureeRealiseeMoniteurDialogFragment(View rootView, Palanquee palanquee) {
 		super();
 		this.rootView = rootView;
 		this.palanquee = palanquee;
@@ -64,14 +64,14 @@ public class PalanqueeDureeRealiseeDialogFragment extends DialogFragment impleme
 		
 		// builder
 		builder.setView(dialogView)
-				.setTitle(R.string.palanquee_dialog_duree_realisee_title)
-				.setPositiveButton(R.string.palanquee_dialog_ok,
+				.setTitle(R.string.palanquee_dialog_duree_realisee_moniteur_title)
+				.setPositiveButton(R.string.dialog_ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(true);
 							}
 						})
-				.setNegativeButton(R.string.palanquee_dialog_annuler,
+				.setNegativeButton(R.string.dialog_annuler,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(false);
@@ -95,7 +95,7 @@ public class PalanqueeDureeRealiseeDialogFragment extends DialogFragment impleme
 			palanquee.setDureeRealiseeMoniteur(duree);
 			
 			((TextView) rootView
-					.findViewById(R.id.textView_palanquee_info_duree_realisee_value))
+					.findViewById(R.id.textView_palanquee_info_duree_realisee_moniteur_value))
 					.setText(minutes+"m"+secondes+"s");
 		}
 		

@@ -1,7 +1,9 @@
 package com.deep_blue.oxygen.activity.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,11 +14,11 @@ import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeDureePrevueDialogFragment;
-import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeDureeRealiseeDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeDureeRealiseeMoniteurDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeHeureDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeMoniteurDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurPrevueDialogFragment;
-import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurRealiseeDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurRealiseeMoniteurDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeTypeGazDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeTypePlongeDialogFragment;
 import com.deep_blue.oxygen.listener.PlongeurOnClickListener;
@@ -25,6 +27,7 @@ import com.deep_blue.oxygen.model.Moniteur;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
 import com.deep_blue.oxygen.util.DateStringUtils;
+import com.deep_blue.oxygen.util.IntentKey;
 
 public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 
@@ -65,18 +68,18 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 					.findViewById(R.id.textView_palanquee_info_profondeur_prevue_value))
 					.setText(palanquee.getProfondeurPrevue().toString()
 							+ " mètres");
-			if (palanquee.getProfondeurRealiseeMoniteur() > 0)
+			if (palanquee.getProfondeurRealiseeMoniteur() != null  && palanquee.getProfondeurRealiseeMoniteur() > 0)
 				((TextView) rootView
-						.findViewById(R.id.textView_palanquee_info_profondeur_realisee_value))
+						.findViewById(R.id.textView_palanquee_info_profondeur_realisee_moniteur_value))
 						.setText(palanquee.getProfondeurRealiseeMoniteur()
-								.toString() + "mètres");
+								.toString() + " mètres");
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_duree_prevue_value))
 					.setText(DateStringUtils.secondsToNiceString(palanquee
 							.getDureePrevue()));
 			if (palanquee.getDureeRealiseeMoniteur() > 0)
 				((TextView) rootView
-						.findViewById(R.id.textView_palanquee_info_duree_realisee_value))
+						.findViewById(R.id.textView_palanquee_info_duree_realisee_moniteur_value))
 						.setText(DateStringUtils.secondsToNiceString(palanquee
 								.getDureeRealiseeMoniteur()));
 			((TextView) rootView.findViewById(R.id.textView_palanquee_heure))
@@ -84,11 +87,11 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 
 			// onClick listener sur les images
 			//Profondeur réalisée
-			rootView.findViewById(R.id.iB_palanquee_profondeur_realisee)
+			rootView.findViewById(R.id.iB_palanquee_profondeur_realisee_moniteur)
 					.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							PalanqueeProfondeurRealiseeDialogFragment ndf = new PalanqueeProfondeurRealiseeDialogFragment(
+							PalanqueeProfondeurRealiseeMoniteurDialogFragment ndf = new PalanqueeProfondeurRealiseeMoniteurDialogFragment(
 									rootView, palanquee);
 							ndf.show(getFragmentManager(), "TAG");
 						}
@@ -114,11 +117,11 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 				}
 			});
 			//Duree réalisé
-			rootView.findViewById(R.id.iB_palanquee_duree_realisee)
+			rootView.findViewById(R.id.iB_palanquee_duree_realisee_moniteur)
 			.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					PalanqueeDureeRealiseeDialogFragment ndf = new PalanqueeDureeRealiseeDialogFragment(
+					PalanqueeDureeRealiseeMoniteurDialogFragment ndf = new PalanqueeDureeRealiseeMoniteurDialogFragment(
 							rootView, palanquee);
 					ndf.show(getFragmentManager(), "TAG");
 				}
@@ -180,7 +183,7 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 			TableLayout tableLayout = (TableLayout) rootView
 					.findViewById(R.id.activity_fiche_securite_fragment_palanquee);
 
-			int index = 3;
+			int index = 4;
 			int parite_background = palanquee.getMoniteur() != null ? 1 : 0;
 
 			for (Plongeur plongeur : palanquee.getPlongeurs()) {
@@ -201,7 +204,7 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 
 				// Clik listener sur la row
 				row.findViewById(R.id.iB_palanquee_plongeur).setOnClickListener(new PlongeurOnClickListener(
-						plongeur, null, this.getActivity()));
+						plongeur, null, palanquee, this.getActivity()));
 				
 				
 				// Ajout de la row dans la table
@@ -214,6 +217,12 @@ public class FicheSecuriteTabsPalanqueeFragment extends Fragment {
 			System.out.println("Affichage du fragment sans palanquee");
 
 		return rootView;
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Plongeur plongeur = (Plongeur) data.getExtras().get(IntentKey.RESULT_PLONGEUR.toString());
+		Log.w("Fragment", plongeur.toString());
 	}
 
 }

@@ -41,7 +41,7 @@ public class PalanqueeMoniteurDialogFragment extends DialogFragment implements
 		items = new ArrayList<String>();
 		for (int i = 0; i < moniteurs.size(); i++) {
 			Moniteur moniteur = moniteurs.get(i);
-			items.add(moniteur.getPrenom() + " " + moniteur.getNom());
+			items.add(moniteur.getPrenom() + " " + moniteur.getNom() + " (" + moniteur.getAptitudes().toString() + ")");
 
 			if (palanquee.getMoniteur() != null
 					&& moniteur.getIdWeb() == palanquee.getMoniteur()
@@ -61,13 +61,13 @@ public class PalanqueeMoniteurDialogFragment extends DialogFragment implements
 				.toArray(new CharSequence[items.size()]);
 		builder.setTitle(R.string.palanquee_dialog_moniteur_title)
 				.setSingleChoiceItems(charSequenceItems, selectedIndex, this)
-				.setPositiveButton(R.string.palanquee_dialog_ok,
+				.setPositiveButton(R.string.dialog_ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(true);
 							}
 						})
-				.setNegativeButton(R.string.palanquee_dialog_annuler,
+				.setNegativeButton(R.string.dialog_annuler,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(false);

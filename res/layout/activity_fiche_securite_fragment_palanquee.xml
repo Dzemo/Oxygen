@@ -100,6 +100,32 @@
                 android:layout_margin="@dimen/textview_margin"
                 android:text="" />
         </TableRow>
+        
+      <TableRow
+            android:id="@+id/palanquee_plongeur_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_gen"
+            android:padding="@dimen/tablerow_padding" >
+
+            <ImageButton
+                android:id="@+id/iB_palanquee_ajout_plongeur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/general_modifier"
+                android:src="@android:drawable/ic_menu_add" />
+
+            <TextView
+                android:id="@+id/textView_palanquee_plongeur_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/textview_margin"
+                android:layout_span="2"
+                android:gravity="center"
+                android:textAppearance="@style/PlongeurTitle"
+                
+                android:text="@string/palanquee_plongeur_title" />          
+        </TableRow>
 
         <TableRow
             android:id="@+id/palanquee_info_duree_prevue"
@@ -138,21 +164,21 @@
             android:padding="@dimen/tablerow_padding" >
 
             <ImageButton
-                android:id="@+id/iB_palanquee_profondeur_realisee"
+                android:id="@+id/iB_palanquee_profondeur_realisee_moniteur"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/general_modifier"
                 android:src="@android:drawable/ic_menu_edit" />
 
             <TextView
-                android:id="@+id/textView_palanquee_info_profondeur_realisee_labelle"
+                android:id="@+id/textView_palanquee_info_profondeur_realisee_moniteur_labelle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/textview_margin"
-                android:text="@string/palanquee_info_profondeur_realisee_labelle" />
+                android:text="@string/palanquee_info_profondeur_realisee_moniteur_labelle" />
 
             <TextView
-                android:id="@+id/textView_palanquee_info_profondeur_realisee_value"
+                android:id="@+id/textView_palanquee_info_profondeur_realisee_moniteur_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/textview_margin"
@@ -160,28 +186,28 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/palanquee_info_duree_realisee"
+            android:id="@+id/palanquee_info_duree_realisee_moniteur"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/list_item_background_1"
             android:padding="@dimen/tablerow_padding" >
 
             <ImageButton
-                android:id="@+id/iB_palanquee_duree_realisee"
+                android:id="@+id/iB_palanquee_duree_realisee_moniteur"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/general_modifier"
                 android:src="@android:drawable/ic_menu_edit" />
 
             <TextView
-                android:id="@+id/textView_palanquee_info_duree_realisee_labelle"
+                android:id="@+id/textView_palanquee_info_duree_realisee_moniteur_labelle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/textview_margin"
-                android:text="@string/palanquee_info_duree_realisee_labelle" />
+                android:text="@string/palanquee_info_duree_realisee_moniteur_labelle" />
 
             <TextView
-                android:id="@+id/textView_palanquee_info_duree_realisee_value"
+                android:id="@+id/textView_palanquee_info_duree_realisee_moniteur_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/textview_margin"

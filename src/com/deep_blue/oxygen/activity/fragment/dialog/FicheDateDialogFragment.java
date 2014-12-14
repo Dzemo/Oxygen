@@ -44,7 +44,7 @@ public class FicheDateDialogFragment extends DialogFragment {
 		// Création de la vue
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		dialogView = inflater
-				.inflate(R.layout.dialog_fiche_date_realisee, null);
+				.inflate(R.layout.dialog_fiche_date, null);
 
 		// Initialisation du datepicker
 		int year = date.getYear() + 1900;
@@ -57,13 +57,13 @@ public class FicheDateDialogFragment extends DialogFragment {
 		// builder
 		builder.setView(dialogView)
 				.setTitle(R.string.fiche_info_dialogie_date_title)
-				.setPositiveButton(R.string.palanquee_dialog_ok,
+				.setPositiveButton(R.string.dialog_ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(true);
 							}
 						})
-				.setNegativeButton(R.string.palanquee_dialog_annuler,
+				.setNegativeButton(R.string.dialog_annuler,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(false);

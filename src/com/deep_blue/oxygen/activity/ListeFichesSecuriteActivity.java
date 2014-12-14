@@ -17,7 +17,7 @@ import com.deep_blue.oxygen.model.EnumEtat;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.ListeFichesSecurite;
 import com.deep_blue.oxygen.model.Utilisateur;
-import com.deep_blue.oxygen.thread.SynchThread;
+import com.deep_blue.oxygen.synchronisation.SynchThread;
 import com.deep_blue.oxygen.util.DateStringUtils;
 import com.deep_blue.oxygen.util.IntentKey;
 

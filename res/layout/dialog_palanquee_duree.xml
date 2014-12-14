@@ -20,7 +20,7 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/palanquee_dialog_minute" >
+            android:text="@string/dialog_minute" >
         </TextView>
 
         <NumberPicker
@@ -33,7 +33,7 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/palanquee_dialog_secondes" >
+            android:text="@string/dialog_secondes" >
         </TextView>
     </LinearLayout>
 
@@ -41,6 +41,6 @@
         android:id="@+id/button_palanquee_dialog_duree_now"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/palanquee_dialog_now" />
+        android:text="@string/dialog_now" />
 
 </LinearLayout>

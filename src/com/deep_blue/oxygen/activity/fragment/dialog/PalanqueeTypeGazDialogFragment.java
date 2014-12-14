@@ -40,15 +40,14 @@ public class PalanqueeTypeGazDialogFragment extends DialogFragment implements Di
 		CharSequence[] items = {EnumTypeGaz.AIR.toString(), EnumTypeGaz.NITROX.toString()};
 		
 		builder.setTitle(R.string.palanquee_dialog_type_gaz_title)
-				.setSingleChoiceItems(items, gazParDefaut, this)				
-				.setTitle(R.string.palanquee_dialog_profondeur_realisee_title)
-				.setPositiveButton(R.string.palanquee_dialog_ok,
+				.setSingleChoiceItems(items, gazParDefaut, this)
+				.setPositiveButton(R.string.dialog_ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(true);
 							}
 						})
-				.setNegativeButton(R.string.palanquee_dialog_annuler,
+				.setNegativeButton(R.string.dialog_annuler,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(false);

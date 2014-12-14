@@ -6,7 +6,10 @@
     <string name="action_settings">Settings</string>
     <string name="general_modifier">Modifier</string>
     <string name="menu_synch">Sychroniser</string>
+    <string name="menu_delete">Supprimer</string>
     <string name="menu_save">Enregistrer</string>
+    <string name="menu_add_palanquee">Ajouter une palanquée</string>
+    <string name="menu_add_fiche">Créer une fiche</string>
     <string name="menu_param">Parametres</string>
     <string name="menu_logout">Deconnexion</string>
     <string name="parametre_title">Paramètres</string>
@@ -64,31 +67,56 @@
     <string name="palanquee_info_gaz_labelle">Type de gaz :</string>
     <string name="palanquee_info_plongee_labelle">Type de plongée :</string>
     <string name="palanquee_info_profondeur_prevue_labelle">Profondeur prévue :</string>
-    <string name="palanquee_info_profondeur_realisee_labelle">Profondeur réalisée :</string>
+    <string name="palanquee_info_profondeur_realisee_moniteur_labelle">Prof. réalisée (moni) :</string>
     <string name="palanquee_info_duree_prevue_labelle">Durée prévue :</string>
-    <string name="palanquee_info_duree_realisee_labelle">Durée réalisée :</string>
+    <string name="palanquee_info_duree_realisee_moniteur_labelle">Durée réalisée (moni):</string>
+    <string name="palanquee_plongeur_title">Liste des plongeurs</string>
 
     <!-- PALANQUEE DIALOG INFO DEBUT -->
-    <string name="palanquee_dialog_profondeur_realisee_title">Profondeur réalisée</string>
+    <string name="palanquee_dialog_profondeur_realisee_moniteur_title">Profondeur réalisée par le moniteur</string>
     <string name="palanquee_dialog_profondeur_prevue_title">Profondeur prévue</string>
-    <string name="palanquee_dialog_duree_realisee_title">Durée réalisée</string>
+    <string name="palanquee_dialog_duree_realisee_moniteur_title">Durée réalisée par le moniteur</string>
     <string name="palanquee_dialog_duree_prevue_title">Durée prévue</string>
     <string name="palanquee_dialog_heure_title">Heure de plongée</string>
-    <string name="palanquee_dialog_virgule">.</string>
-    <string name="palanquee_dialog_heure"> h </string>
-    <string name="palanquee_dialog_minute"> m </string>
-    <string name="palanquee_dialog_secondes"> s </string>
-    <string name="palanquee_dialog_now">Maintenant</string>
     <string name="palanquee_dialog_type_gaz_title">Type de gaz</string>
     <string name="palanquee_dialog_type_plongee_title">Type de plongée</string>
     <string name="palanquee_dialog_moniteur_title">Moniteur</string>
-    <string name="palanquee_dialog_ok">Valider</string>
-    <string name="palanquee_dialog_annuler">Annuler</string>
     <!-- PALANQUEE DIALOG INFO DEBUT -->
     
     <!-- PALANQUEE INFO FIN -->
 
-
+	<!-- PLONGEUR DEBUT -->
+	<string name="plongeur_nom_labelle">Nom :</string>
+	<string name="plongeur_prenom_labelle">Prenom :</string>
+	<string name="plongeur_aptitudes_labelle">Aptitudes :</string>
+	<string name="plongeur_date_naissance_labelle">Date de naissance :</string>
+	<string name="plongeur_profondeur_realisee_labelle">Profondeur realisée :</string>
+	<string name="plongeur_duree_realisee_labelle">Durée réalisée :</string>
+	<string name="plongeur_telephone_labelle">Téléphone : </string>
+	<string name="plongeur_telephone_urgence_labelle">Téléphone (urgence) :</string>
+	
+	<!-- PLONGEUR DIALOG DEBUT -->
+	<string name="plongeur_dialog_nom_title">Nom du plongeur</string>
+	<string name="plongeur_dialog_prenom_title">Prénom du plongeur</string>
+	<string name="plongeur_dialog_profondeur_realise_title">Profondeur réalisée par ce plongeur</string>
+	<string name="plongeur_dialog_duree_realisee_title">Durée réalisée par ce plongeur</string>
+	<string name="plongeur_dialog_aptitudes_title">Aptitudes du plongeur</string>
+	<string name="plongeur_dialog_date_naissance_title">Date de naissance</string>
+	<string name="plongeur_dialog_telephone_title">Téléphone personnel du plongeur</string>
+	<string name="plongeur_dialog_telephone_urgence_title">Téléphone de la personne à contacter en cas d\'urgence</string>
+	<!-- PLONGEUR DIALOG FIN -->
+	<!-- PLONGEUR FIN -->
+    
+    <!-- DIALOG GENERAL DEBUT -->
+    <string name="dialog_point">.</string>
+    <string name="dialog_heure"> h </string>
+    <string name="dialog_minute"> m </string>
+    <string name="dialog_secondes"> s </string>
+    <string name="dialog_now">Maintenant</string>
+    <string name="dialog_ok">Valider</string>
+    <string name="dialog_annuler">Annuler</string>
+    <!-- DIALOG GENERAL FIN -->
+    
     <!-- SYNCH DEBUT -->
     <string name="synch_start">Début de la synchronisation</string>
     <string name="synch_success">Synchronisation effectuée</string>

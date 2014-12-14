@@ -3,6 +3,15 @@
     tools:context="com.deep_blue.oxygen.ListActivity" >
 
     <item
+        android:id="@+id/itemAdd"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_add"
+        android:showAsAction="always"
+        android:title="@string/menu_add_fiche"
+        android:titleCondensed="@string/menu_add_fiche"
+        android:visible="true">
+    </item>
+    <item
         android:id="@+id/itemParam"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_preferences"

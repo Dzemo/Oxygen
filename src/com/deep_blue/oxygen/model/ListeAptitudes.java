@@ -67,15 +67,15 @@ public class ListeAptitudes extends ArrayList<Aptitude> implements Parcelable {
 
 	@Override
 	public String toString() {
-		String result = "[";
+		String result = "";
 
 		for (Aptitude aptitude : this) {
-			if (!result.equals("["))
+			if (!result.equals(""))
 				result += ", ";
 			result += aptitude.getLibelleCourt();
 		}
 
-		return result + "]";
+		return result + "";
 	}
 
 	@Override

@@ -1,13 +1,241 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_plongeur"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:gravity="center"
+    android:background="@color/background_gen" >
 
-    <TextView
-        android:id="@+id/textView_demo"
-        android:layout_width="wrap_content"
+    <TableRow
+        android:id="@+id/plongeur_nom"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/tablerow_padding" >
 
-</LinearLayout>
+        <ImageButton
+            android:id="@+id/iB_plongeur_nom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_nom_labelle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="@string/plongeur_nom_labelle" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_nom_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/plongeur_prenom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_2"
+        android:padding="@dimen/tablerow_padding" >
+
+        <ImageButton
+            android:id="@+id/iB_plongeur_prenom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_prenom_labelle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="@string/plongeur_prenom_labelle" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_prenom_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/plongeur_profondeur_realisee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/tablerow_padding" >
+
+        <ImageButton
+            android:id="@+id/iB_plongeur_profondeur_realisee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_profondeur_realisee_labelle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="@string/plongeur_profondeur_realisee_labelle" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_profondeur_realisee_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="" />
+    </TableRow>
+    
+     <TableRow
+        android:id="@+id/plongeur_duree_realisee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_2"
+        android:padding="@dimen/tablerow_padding" >
+
+        <ImageButton
+            android:id="@+id/iB_plongeur_duree_realisee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_duree_realisee_labelle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="@string/plongeur_duree_realisee_labelle" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_duree_realisee_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/plongeur_aptitudes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/tablerow_padding" >
+
+        <ImageButton
+            android:id="@+id/iB_plongeur_aptitudes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_aptitudes_labelle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="@string/plongeur_aptitudes_labelle" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_aptitudes_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="" />
+    </TableRow>
+    
+    <TableRow
+        android:id="@+id/plongeur_date_naissance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:background="@drawable/list_item_background_2"
+        android:padding="@dimen/tablerow_padding" >
+
+        <ImageButton
+            android:id="@+id/iB_plongeur_date_naissance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_date_naissance_labelle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="@string/plongeur_date_naissance_labelle" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_date_naissance_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="" />
+    </TableRow>
+    
+    <TableRow
+        android:id="@+id/plongeur_telephone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/tablerow_padding" >
+
+        <ImageButton
+            android:id="@+id/iB_plongeur_telephone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_telephone_labelle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="@string/plongeur_telephone_labelle" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_telephone_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="" />
+    </TableRow>
+    
+     <TableRow
+        android:id="@+id/plongeur_telephone_urgence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:background="@drawable/list_item_background_2"
+        android:padding="@dimen/tablerow_padding" >
+
+        <ImageButton
+            android:id="@+id/iB_plongeur_telephone_urgence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/general_modifier"
+            android:src="@android:drawable/ic_menu_edit" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_telephone_urgence_labelle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="@string/plongeur_telephone_urgence_labelle" />
+
+        <TextView
+            android:id="@+id/textView_plongeur_telephone_urgence_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:text="" />
+    </TableRow>
+
+</TableLayout>

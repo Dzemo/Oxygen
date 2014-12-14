@@ -3,4 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.deep_blue.oxygen.PlongeurActivity" >
 
+    <item
+        android:id="@+id/itemSave"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_save"
+        android:showAsAction="always"
+        android:title="@string/menu_save"
+        android:titleCondensed="@string/menu_save"
+        android:visible="true">
+    </item>
+    
+    <item
+        android:id="@+id/itemDelete"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:showAsAction="always"
+        android:title="@string/menu_delete"
+        android:titleCondensed="@string/menu_delete"
+        android:visible="true">
+    </item>
 </menu>

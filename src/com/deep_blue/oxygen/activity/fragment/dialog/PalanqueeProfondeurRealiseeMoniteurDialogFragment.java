@@ -14,22 +14,22 @@ import android.widget.TextView;
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.model.Palanquee;
 
-public class PalanqueeProfondeurRealiseeDialogFragment extends DialogFragment {
+public class PalanqueeProfondeurRealiseeMoniteurDialogFragment extends DialogFragment {
 	private View rootView;
 	private View dialogView;
-	private Float profondeurParDefaut;
+	private Float profondeurParDefautMoniteur;
 	private Palanquee palanquee;
 
-	public PalanqueeProfondeurRealiseeDialogFragment(View rootView, Palanquee palanquee) {
+	public PalanqueeProfondeurRealiseeMoniteurDialogFragment(View rootView, Palanquee palanquee) {
 		super();
 		this.rootView = rootView;
 		this.palanquee = palanquee;
 		if (palanquee.getProfondeurRealiseeMoniteur() != 0.0)
-			profondeurParDefaut = palanquee.getProfondeurRealiseeMoniteur();
+			profondeurParDefautMoniteur = palanquee.getProfondeurRealiseeMoniteur();
 		else if (palanquee.getProfondeurPrevue() != 0.0)
-			profondeurParDefaut = palanquee.getProfondeurPrevue();
+			profondeurParDefautMoniteur = palanquee.getProfondeurPrevue();
 		else
-			profondeurParDefaut = 12.0f;
+			profondeurParDefautMoniteur = 12.0f;
 	}
 
 	@SuppressLint("InflateParams") @Override
@@ -48,7 +48,7 @@ public class PalanqueeProfondeurRealiseeDialogFragment extends DialogFragment {
 				.findViewById(R.id.depthPickerMeter);
 		npMeter.setMaxValue(120);
 		npMeter.setMinValue(0);
-		npMeter.setValue(profondeurParDefaut.intValue());
+		npMeter.setValue(profondeurParDefautMoniteur.intValue());
 
 		// On cree l'array qui contient les decimales souhaitees
 		String[] decimalSelection = new String[10];
@@ -60,18 +60,18 @@ public class PalanqueeProfondeurRealiseeDialogFragment extends DialogFragment {
 		npDecimal.setMaxValue(decimalSelection.length - 1);
 		npDecimal.setMinValue(0);
 		npDecimal.setDisplayedValues(decimalSelection);
-		npDecimal.setValue(Float.valueOf(profondeurParDefaut*10).intValue()%10);
+		npDecimal.setValue(Float.valueOf(profondeurParDefautMoniteur*10).intValue()%10);
 
 		// builder
 		builder.setView(dialogView)
-				.setTitle(R.string.palanquee_dialog_profondeur_realisee_title)
-				.setPositiveButton(R.string.palanquee_dialog_ok,
+				.setTitle(R.string.palanquee_dialog_profondeur_realisee_moniteur_title)
+				.setPositiveButton(R.string.dialog_ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(true);
 							}
 						})
-				.setNegativeButton(R.string.palanquee_dialog_annuler,
+				.setNegativeButton(R.string.dialog_annuler,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(false);
@@ -96,7 +96,7 @@ public class PalanqueeProfondeurRealiseeDialogFragment extends DialogFragment {
 			palanquee.setProfondeurRealiseeMoniteur(total);
 			
 			((TextView) rootView
-					.findViewById(R.id.textView_palanquee_info_profondeur_realisee_value))
+					.findViewById(R.id.textView_palanquee_info_profondeur_realisee_moniteur_value))
 					.setText(palanquee.getProfondeurRealiseeMoniteur() + " mètres");
 		}
 		

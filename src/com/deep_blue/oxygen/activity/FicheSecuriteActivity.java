@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.activity.adapter.FicheSecuriteTabsAdapter;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Palanquee;
+import com.deep_blue.oxygen.model.Plongeur;
 import com.deep_blue.oxygen.util.IntentKey;
 
 public class FicheSecuriteActivity extends FragmentActivity {
@@ -36,6 +38,7 @@ public class FicheSecuriteActivity extends FragmentActivity {
 		ficheSecurite = intent
 				.getParcelableExtra(IntentKey.FICHE_SECURITE_COURANTE
 						.toString());
+
 		// ViewPager and its adapters use support library
 		// fragments, so use getSupportFragmentManager.
 		ficheSecuriteTabsAdapter = new FicheSecuriteTabsAdapter(
@@ -104,13 +107,18 @@ public class FicheSecuriteActivity extends FragmentActivity {
 			return true;
 
 		case R.id.itemSave:
-			Toast toast = Toast.makeText(this, "soonTM",
-					Toast.LENGTH_SHORT);
+			Toast toast = Toast.makeText(this, "soonTM", Toast.LENGTH_SHORT);
 			toast.show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Plongeur plongeur = (Plongeur) data.getExtras().get(IntentKey.RESULT_PLONGEUR.toString());
+		Log.w("FicheSecurite", plongeur.toString());
 	}
 
 }

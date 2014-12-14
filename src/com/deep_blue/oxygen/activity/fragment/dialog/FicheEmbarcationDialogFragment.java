@@ -60,13 +60,13 @@ public class FicheEmbarcationDialogFragment extends DialogFragment implements
 		builder.setTitle(R.string.fiche_info_dialogie_embarcation_title)
 				.setSingleChoiceItems(charSequenceItems,
 						selectedIndex, this)
-				.setPositiveButton(R.string.palanquee_dialog_ok,
+				.setPositiveButton(R.string.dialog_ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(true);
 							}
 						})
-				.setNegativeButton(R.string.palanquee_dialog_annuler,
+				.setNegativeButton(R.string.dialog_annuler,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(false);

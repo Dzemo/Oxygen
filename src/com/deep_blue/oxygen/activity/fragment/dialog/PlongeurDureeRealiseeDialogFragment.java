@@ -1,5 +1,7 @@
 package com.deep_blue.oxygen.activity.fragment.dialog;
 
+import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,23 +10,31 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.model.Palanquee;
+import com.deep_blue.oxygen.model.Plongeur;
 
-public class PalanqueeDureePrevueDialogFragment extends DialogFragment {
+public class PlongeurDureeRealiseeDialogFragment extends DialogFragment implements OnClickListener{
 	private View rootView;
 	private View dialogView;
 	private Integer dureeParDefaut;
+	private Plongeur plongeur;
 	private Palanquee palanquee;
 
-	public PalanqueeDureePrevueDialogFragment(View rootView, Palanquee palanquee) {
+	public PlongeurDureeRealiseeDialogFragment(View rootView, Plongeur plongeur, Palanquee palanquee) {
 		super();
 		this.rootView = rootView;
+		this.plongeur = plongeur;
 		this.palanquee = palanquee;
-		if (palanquee.getDureePrevue() != 0)
+		
+		if (plongeur.getDureeRealisee() != 0)
+			dureeParDefaut = plongeur.getDureeRealisee();
+		else if (palanquee.getDureePrevue() != 0)
 			dureeParDefaut = palanquee.getDureePrevue();
 		else
 			dureeParDefaut = 1200;
@@ -38,25 +48,27 @@ public class PalanqueeDureePrevueDialogFragment extends DialogFragment {
 		// Création de la vue
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		dialogView = inflater
-				.inflate(R.layout.dialog_palanquee_duree, null);
+				.inflate(R.layout.dialog_plongeur_duree_realise, null);
 
 		// Ajout des numberpicker
-		NumberPicker npMinute = (NumberPicker) dialogView
+		NumberPicker npMinutes = (NumberPicker) dialogView
 				.findViewById(R.id.dureePickerMinute);
-		npMinute.setMaxValue(120);
-		npMinute.setMinValue(0);
-		npMinute.setValue(dureeParDefaut.intValue()/60);
-		
+		npMinutes.setMaxValue(120);
+		npMinutes.setMinValue(0);
+		npMinutes.setValue(dureeParDefaut.intValue()/60);
+
 		NumberPicker npSecond = (NumberPicker) dialogView.findViewById(R.id.dureePickerSeconde);
 		npSecond.setMaxValue(59);
 		npSecond.setMinValue(0);
 		npSecond.setValue(dureeParDefaut%60);
 		
-		dialogView.findViewById(R.id.button_palanquee_dialog_duree_now).setVisibility(View.GONE);
-
+		//Onclick sur le boutton
+		Button now = (Button)dialogView.findViewById(R.id.button_plongeur_dialog_duree_now);
+		now.setOnClickListener(this);
+		
 		// builder
 		builder.setView(dialogView)
-				.setTitle(R.string.palanquee_dialog_duree_prevue_title)
+				.setTitle(R.string.plongeur_dialog_duree_realisee_title)
 				.setPositiveButton(R.string.dialog_ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
@@ -75,7 +87,7 @@ public class PalanqueeDureePrevueDialogFragment extends DialogFragment {
 	}
 
 	public void dismiss(boolean type) {
-
+		
 		if (type) {
 			int minutes = ((NumberPicker) dialogView
 					.findViewById(R.id.dureePickerMinute)).getValue();
@@ -83,14 +95,50 @@ public class PalanqueeDureePrevueDialogFragment extends DialogFragment {
 					.findViewById(R.id.dureePickerSeconde)).getValue();
 			int duree = minutes * 60 + secondes;
 			
-			// On set la profondeur realisee de la palanquee avec la nouvelle valeur
-			palanquee.setDureePrevue(duree);
+			// On set la profondeur realisee de la plongeur avec la nouvelle valeur
+			plongeur.setDureeRealisee(duree);
 			
 			((TextView) rootView
-					.findViewById(R.id.textView_palanquee_info_duree_prevue_value))
+					.findViewById(R.id.textView_plongeur_duree_realisee_value))
 					.setText(minutes+"m"+secondes+"s");
 		}
 		
 		super.dismiss();
+	}
+
+	@Override
+	public void onClick(View v) {
+		
+		if (palanquee.getHeure() != null && !palanquee.getHeure().isEmpty()){
+			String[] split = palanquee.getHeure().split(":");
+			int heureDepart = Integer.parseInt(split[0]);
+			int minuteDepart = Integer.parseInt(split[1]);
+			int secondDepart = Integer.parseInt(split[2]);	
+			
+			Date now = new Date();
+			int heureMaintenant = now.getHours();
+			int minuteMaintenant = now.getMinutes();
+			int secondMaintenant = now.getSeconds();
+			
+			int dureeMinute = 0, dureeSeconde = 0;
+			
+			if(heureMaintenant > heureDepart)
+				dureeMinute += (heureMaintenant - heureDepart)*60;
+			
+			dureeMinute += minuteMaintenant - minuteDepart;
+			dureeSeconde = secondMaintenant - secondDepart;
+			
+			if(dureeSeconde < 0){
+				dureeSeconde += 60;
+				dureeMinute -= 1;
+			}
+			
+			NumberPicker npMinute = (NumberPicker) dialogView.findViewById(R.id.dureePickerMinute);
+			npMinute.setValue(dureeMinute);
+			
+			NumberPicker npSecond = (NumberPicker) dialogView.findViewById(R.id.dureePickerSeconde);
+			npSecond.setValue(dureeSeconde);
+		}
+		
 	}
 }

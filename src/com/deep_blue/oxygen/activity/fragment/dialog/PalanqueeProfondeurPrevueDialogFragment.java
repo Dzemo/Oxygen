@@ -63,13 +63,13 @@ public class PalanqueeProfondeurPrevueDialogFragment extends DialogFragment {
 		// builder
 		builder.setView(dialogView)
 				.setTitle(R.string.palanquee_dialog_profondeur_prevue_title)
-				.setPositiveButton(R.string.palanquee_dialog_ok,
+				.setPositiveButton(R.string.dialog_ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(true);
 							}
 						})
-				.setNegativeButton(R.string.palanquee_dialog_annuler,
+				.setNegativeButton(R.string.dialog_annuler,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dismiss(false);
