@@ -16,12 +16,14 @@ public class SiteDao extends BaseDao {
 	public static final String NOM = "nom";
 	public static final String COMMENTAIRE = "commentaire";
 	public static final String DESACTIVE = "desactive";
+	public static final String VERSION = "version";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
 			ID + " INTEGER PRIMARY KEY, " +
 			NOM + " TEXT, " +
 			COMMENTAIRE + " TEXT, " +
-			DESACTIVE + " INTEGER INTEGER DEFAULT 0" +
+			DESACTIVE + " INTEGER INTEGER DEFAULT 0," +
+			VERSION +" INTEGER" +			
 	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	
@@ -82,6 +84,7 @@ public class SiteDao extends BaseDao {
 		value.put(NOM, site.getNom());
 		value.put(COMMENTAIRE, site.getCommentaire());
 		value.put(DESACTIVE, site.getDesactive() ? 1 : 0);
+		value.put(VERSION, site.getVersion());
 		
 		mDb.update(TABLE_NAME, value, "WHERE "+ID+" = ?", new String[]{site.getId().toString()});
 		mDb.close();
@@ -102,6 +105,7 @@ public class SiteDao extends BaseDao {
 		value.put(NOM, site.getNom());
 		value.put(COMMENTAIRE, site.getCommentaire());
 		value.put(DESACTIVE, site.getDesactive() ? 1 : 0);
+		value.put(VERSION, site.getVersion());
 		
 		mDb.insert(TABLE_NAME, null, value);
 		mDb.close();
@@ -122,7 +126,8 @@ public class SiteDao extends BaseDao {
 					cursor.getInt(cursor.getColumnIndex(ID)),
 					cursor.getString(cursor.getColumnIndex(NOM)),
 					cursor.getString(cursor.getColumnIndex(COMMENTAIRE)),
-					cursor.getInt(cursor.getColumnIndex(DESACTIVE)) == 1
+					cursor.getInt(cursor.getColumnIndex(DESACTIVE)) == 1,
+					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 			
 			resultList.put(site.getId(), site);			

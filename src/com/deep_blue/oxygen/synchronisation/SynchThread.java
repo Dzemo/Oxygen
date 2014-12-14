@@ -1,4 +1,4 @@
-package com.deep_blue.oxygen.thread;
+package com.deep_blue.oxygen.synchronisation;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.deep_blue.oxygen.model.Utilisateur;
-import com.deep_blue.oxygen.thread.handler.SynchThreadHandler;
+import com.deep_blue.oxygen.synchronisation.handler.SynchThreadHandler;
 import com.deep_blue.oxygen.util.IntentKey;
 import com.deep_blue.oxygen.util.PreferenceKey;
 

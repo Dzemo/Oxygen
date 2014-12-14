@@ -1,5 +1,7 @@
 package com.deep_blue.oxygen.model;
 
+import java.util.Date;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -21,8 +23,27 @@ public class Site implements Parcelable {
 	private String nom;
 	private String commentaire;
 	private Boolean desactive;
+	private Long version;
 
 	/**
+	 * Créer un nouveau site avec tout ses attributs, issue de la base de données ou de la synchronisation par exemple
+	 * @param id
+	 * @param nom
+	 * @param commentaire
+	 * @param desactive
+	 * @param version
+	 */
+	public Site(Integer id, String nom, String commentaire, Boolean desactive, Long version) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.commentaire = commentaire;
+		this.desactive = desactive;
+		this.version = version;
+	}
+
+	/**
+	 * Créer un nouveau site en initialisation la version au timestamps courant, lors de la création par l'utilisateur par exemple
 	 * @param id
 	 * @param nom
 	 * @param commentaire
@@ -34,8 +55,9 @@ public class Site implements Parcelable {
 		this.nom = nom;
 		this.commentaire = commentaire;
 		this.desactive = desactive;
+		Date now = new Date();
+		this.version = now.getTime() / 1000;
 	}
-
 	
 	public Site(Parcel source){
 		super();
@@ -43,6 +65,7 @@ public class Site implements Parcelable {
 		this.nom = source.readString();
 		this.commentaire = source.readString();
 		this.desactive = source.readInt() == 1;
+		this.version = source.readLong();
 	}
 	
 	/**
@@ -96,6 +119,21 @@ public class Site implements Parcelable {
 		this.desactive = desactive;
 	}
 	
+	/**
+	 * @return the version
+	 */
+	public Long getVersion() {
+		return version;
+	}
+
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -103,7 +141,7 @@ public class Site implements Parcelable {
 	public String toString() {
 		return getClass().getName() + " {\n\tid: " + id + "\n\tnom: " + nom
 				+ "\n\tcommentaire: " + commentaire + "\n\tdesactive: "
-				+ desactive + "\n}";
+				+ desactive + "\n\tversion: " + version + "\n}";
 	}
 
 
@@ -118,6 +156,7 @@ public class Site implements Parcelable {
 		dest.writeString(nom);
 		dest.writeString(commentaire);		
 		dest.writeInt(desactive ? 1 : 0);
+		dest.writeLong(version);
 	}
 	
 	

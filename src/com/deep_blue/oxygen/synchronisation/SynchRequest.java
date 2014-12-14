@@ -1,4 +1,4 @@
-package com.deep_blue.oxygen.thread;
+package com.deep_blue.oxygen.synchronisation;
 
 import java.util.Map;
 import java.util.Map.Entry;

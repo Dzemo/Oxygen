@@ -1,4 +1,4 @@
-package com.deep_blue.oxygen.thread.handler;
+package com.deep_blue.oxygen.synchronisation.handler;
 
 import java.util.Date;
 
