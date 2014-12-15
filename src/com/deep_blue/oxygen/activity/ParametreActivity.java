@@ -72,13 +72,20 @@ public class ParametreActivity extends Activity {
 				.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor pEditor = preferences.edit();
 
-		pEditor.putBoolean(PreferenceKey.SAVE_LOGIN.toString(),
-				((CheckBox) findViewById(R.id.checkBox_save_login))
-						.isChecked());
 		
-		pEditor.putBoolean(PreferenceKey.KEEP_CONNECTION.toString(),
-				((CheckBox) findViewById(R.id.checkBox_save_login))
-						.isChecked());
+		boolean checkedSaveLogin = ((CheckBox) findViewById(R.id.checkBox_save_login)).isChecked();
+		if(!checkedSaveLogin){
+			pEditor.remove(PreferenceKey.SAVED_LOGIN.toString());
+		}
+		pEditor.putBoolean(PreferenceKey.SAVE_LOGIN.toString(),checkedSaveLogin);
+		
+		boolean checkedKeepConnection = ((CheckBox) findViewById(R.id.checkBox_save_login)).isChecked();
+		if(!checkedKeepConnection){
+			pEditor.remove(PreferenceKey.KEPT_CONNECTION_LOGIN.toString());
+			pEditor.remove(PreferenceKey.KEPT_CONNECTION_VERSION.toString());
+		}
+		pEditor.putBoolean(PreferenceKey.KEEP_CONNECTION.toString(),checkedKeepConnection);
+		
 		
 		pEditor.putString(PreferenceKey.REMOTE_URL.toString(),
 				((EditText) findViewById(R.id.editText_parametre_remote_url))

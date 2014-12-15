@@ -44,7 +44,7 @@ public class LoginActivity extends Activity {
 			String login = preferences.getString(
 					PreferenceKey.KEPT_CONNECTION_LOGIN.toString(), "");
 			Long version = preferences.getLong(
-					PreferenceKey.KEPT_CONNECTION_LOGIN.toString(), 0);
+					PreferenceKey.KEPT_CONNECTION_VERSION.toString(), 0);
 
 			Utilisateur utilisateur = utilisateurDao.getByLogin(login);
 
