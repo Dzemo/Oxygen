@@ -15,6 +15,7 @@
     <string name="parametre_title">Paramètres</string>
     <string name="parametre_remote_url">Addresse du serveur: </string>
     <string name="parametre_save_login">Se souvenir du login</string>
+    <string name="parametre_keep_connection">Rester connecté</string>
     <string name="parametre_last_synch_label">Dernière synchronisation :</string>
     <string name="parametre_saved">Paramètres enregistrés</string>
     <!-- GENERAL/MENU FIN -->

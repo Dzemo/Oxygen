@@ -34,6 +34,9 @@ public class ParametreActivity extends Activity {
 		((CheckBox) findViewById(R.id.checkBox_save_login))
 				.setChecked(preferences.getBoolean(
 						PreferenceKey.SAVE_LOGIN.toString(), false));
+		((CheckBox) findViewById(R.id.checkBox_keep_connection))
+		.setChecked(preferences.getBoolean(
+				PreferenceKey.KEEP_CONNECTION.toString(), false));
 		((TextView) findViewById(R.id.textView_parametre_last_synch_value))
 				.setText(preferences.getString(
 						PreferenceKey.LAST_SYNCH.toString(), "jamais"));
@@ -70,6 +73,10 @@ public class ParametreActivity extends Activity {
 		SharedPreferences.Editor pEditor = preferences.edit();
 
 		pEditor.putBoolean(PreferenceKey.SAVE_LOGIN.toString(),
+				((CheckBox) findViewById(R.id.checkBox_save_login))
+						.isChecked());
+		
+		pEditor.putBoolean(PreferenceKey.KEEP_CONNECTION.toString(),
 				((CheckBox) findViewById(R.id.checkBox_save_login))
 						.isChecked());
 		
