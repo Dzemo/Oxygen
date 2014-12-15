@@ -48,22 +48,27 @@ public class ListeFichesSecuriteActivity extends Activity {
 			for (FicheSecurite ficheSecurite : listeFiche) {
 				if (ficheSecurite.getDirecteurPlonge().getIdWeb() == utilisateur
 						.getMoniteurAssocie().getIdWeb()) {
-					
-					
-					TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.activity_list_row_layout, tableLayout, false);
 
-					ImageView ivIcon = (ImageView)row.findViewById(R.id.iB_fiche);
+					TableRow row = (TableRow) getLayoutInflater().inflate(
+							R.layout.activity_list_row_layout, tableLayout,
+							false);
+
+					ImageView ivIcon = (ImageView) row
+							.findViewById(R.id.iB_fiche);
 					if (ficheSecurite.getEtat().equals(EnumEtat.SYNCHRONISE)) {
 						ivIcon.setImageDrawable(getResources().getDrawable(
 								R.drawable.inprogressstatus));
-						ivIcon.setContentDescription(getResources().getString(R.string.list_icon_edit));
+						ivIcon.setContentDescription(getResources().getString(
+								R.string.list_icon_edit));
 					} else if (ficheSecurite.getEtat().equals(EnumEtat.VALIDE)) {
 						ivIcon.setImageDrawable(getResources().getDrawable(
 								R.drawable.closedstatus));
-						ivIcon.setContentDescription(getResources().getString(R.string.list_icon_valid));
+						ivIcon.setContentDescription(getResources().getString(
+								R.string.list_icon_valid));
 					}
 
-					TextView tvDescription = (TextView) row.findViewById(R.id.textView_liste_fiche_row_label);
+					TextView tvDescription = (TextView) row
+							.findViewById(R.id.textView_liste_fiche_row_label);
 					String dateString = DateStringUtils
 							.timestampsToDate(ficheSecurite.getTimestamp());
 					String hourString = DateStringUtils
@@ -102,26 +107,24 @@ public class ListeFichesSecuriteActivity extends Activity {
 			if (utilisateur.getMoniteurAssocie() == null
 					|| ficheSecurite.getDirecteurPlonge().getIdWeb() != utilisateur
 							.getMoniteurAssocie().getIdWeb()) {
-				TableRow row = new TableRow(this);
-				TableRow.LayoutParams lp = new TableRow.LayoutParams(
-						TableRow.LayoutParams.WRAP_CONTENT);
-				row.setLayoutParams(lp);
+				TableRow row = (TableRow) getLayoutInflater().inflate(
+						R.layout.activity_list_row_layout, tableLayout, false);
 
-				ImageView ivIcon = new ImageView(this);
+				ImageView ivIcon = (ImageView) row.findViewById(R.id.iB_fiche);
 				if (ficheSecurite.getEtat().equals(EnumEtat.SYNCHRONISE)) {
 					ivIcon.setImageDrawable(getResources().getDrawable(
 							R.drawable.inprogressstatus));
+					ivIcon.setContentDescription(getResources().getString(
+							R.string.list_icon_edit));
 				} else if (ficheSecurite.getEtat().equals(EnumEtat.VALIDE)) {
 					ivIcon.setImageDrawable(getResources().getDrawable(
 							R.drawable.closedstatus));
-					ivIcon.setAdjustViewBounds(true);
+					ivIcon.setContentDescription(getResources().getString(
+							R.string.list_icon_valid));
 				}
-				ivIcon.setMaxHeight(40);
-				ivIcon.setMaxWidth(40);
-				ivIcon.setPadding(2, 2, 2, 2);
-				ivIcon.setAdjustViewBounds(true);
 
-				TextView tvDescription = new TextView(this);
+				TextView tvDescription = (TextView) row
+						.findViewById(R.id.textView_liste_fiche_row_label);
 				String dateString = DateStringUtils
 						.timestampsToDate(ficheSecurite.getTimestamp());
 				String hourString = DateStringUtils
@@ -132,7 +135,6 @@ public class ListeFichesSecuriteActivity extends Activity {
 								+ ficheSecurite.getSite().getNom() : "")
 						+ " le " + dateString + " à " + hourString;
 				tvDescription.setText(textDescription);
-				// tvDescription.setPadding(15, 0, 15, 0);
 
 				// Coloration selon la parité de la row
 				if (i % 2 == 0)
@@ -144,9 +146,7 @@ public class ListeFichesSecuriteActivity extends Activity {
 				row.setOnClickListener(new ListeFichesSecuriteOnClickListener(
 						ficheSecurite, utilisateur, this));
 
-				// Ajout du contenu de la row et ajout de la row dans la table
-				row.addView(ivIcon);
-				row.addView(tvDescription);
+				// Ajout de la row dans la table
 				tableLayout.addView(row, index);
 
 				i++;
