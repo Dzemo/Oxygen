@@ -31,10 +31,10 @@ public class Utilisateur implements Parcelable {
 	private Boolean administrateur;
 	private String email;
 	private Boolean actif;
+	private Moniteur moniteurAssocie;
 	private Long version;
 
 	/**
-	 * 
 	 * @param login
 	 * @param nom
 	 * @param prenom
@@ -42,11 +42,12 @@ public class Utilisateur implements Parcelable {
 	 * @param administrateur
 	 * @param email
 	 * @param actif
+	 * @param moniteurAssocie
 	 * @param version
 	 */
 	public Utilisateur(String login, String nom, String prenom,
 			String motDePasse, Boolean administrateur, String email,
-			Boolean actif, Long version) {
+			Boolean actif, Moniteur moniteurAssocie, Long version) {
 		super();
 		this.login = login;
 		this.nom = nom;
@@ -55,6 +56,7 @@ public class Utilisateur implements Parcelable {
 		this.administrateur = administrateur;
 		this.email = email;
 		this.actif = actif;
+		this.moniteurAssocie = moniteurAssocie;
 		this.version = version;
 	}
 	
@@ -66,6 +68,11 @@ public class Utilisateur implements Parcelable {
 		administrateur = in.readInt() > 0;
 		email = in.readString();
 		actif = in.readInt() > 0;
+		boolean isPresent = in.readByte() == 1;
+		if(isPresent)
+			moniteurAssocie = in.readParcelable(Moniteur.class.getClassLoader());
+		else
+			moniteurAssocie = null;
 		version = in.readLong();
 	}
 
@@ -184,6 +191,20 @@ public class Utilisateur implements Parcelable {
 	}
 
 	/**
+	 * @return the moniteurAssocie
+	 */
+	public Moniteur getMoniteurAssocie() {
+		return moniteurAssocie;
+	}
+
+	/**
+	 * @param moniteurAssocie the moniteurAssocie to set
+	 */
+	public void setMoniteurAssocie(Moniteur moniteurAssocie) {
+		this.moniteurAssocie = moniteurAssocie;
+	}
+
+	/**
 	 * 
 	 * @return
 	 */
@@ -198,6 +219,7 @@ public class Utilisateur implements Parcelable {
 	public void setVersion(Long version) {
 		this.version = version;
 	}	
+	
 	/**
 	 * Met à jours la version
 	 */
@@ -205,12 +227,17 @@ public class Utilisateur implements Parcelable {
 		this.version = (new Date()).getTime() / 1000;
 	}	
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "Utilisateur [login=" + login + ", nom=" + nom + ", prenom="
-				+ prenom + ", motDePasse=" + motDePasse + ", administrateur="
-				+ administrateur + ", email=" + email + ", actif=" + actif
-				+ ", version=" + version + "]";
+		return getClass().getName() + " {\n\tlogin: " + login + "\n\tnom: "
+				+ nom + "\n\tprenom: " + prenom + "\n\tmotDePasse: "
+				+ motDePasse + "\n\tadministrateur: " + administrateur
+				+ "\n\temail: " + email + "\n\tactif: " + actif
+				+ "\n\tmoniteurAssocie: " + moniteurAssocie + "\n\tversion: "
+				+ version + "\n}";
 	}
 
 	@Override
@@ -227,6 +254,9 @@ public class Utilisateur implements Parcelable {
 		dest.writeInt(administrateur ? 1 : 0);
 		dest.writeString(email != null ? email : "");
 		dest.writeInt(actif ? 1 : 0);
+		dest.writeByte((byte)(moniteurAssocie != null ? 1 : 0));
+		if(moniteurAssocie != null)
+			dest.writeParcelable(moniteurAssocie, flags);
 		dest.writeLong(version);
 	}
 }

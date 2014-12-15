@@ -26,6 +26,7 @@ public class UtilisateurDao extends BaseDao{
 	public static final String ADMINISTRATEUR = "administrateur";
 	public static final String EMAIL = "email";
 	public static final String ACTIF = "actif";
+	public static final String ID_MONITEUR_ASSOCIE = "id_moniteur_associe";
 	public static final String VERSION = "version";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" + 
@@ -36,13 +37,17 @@ public class UtilisateurDao extends BaseDao{
 					ADMINISTRATEUR + " INTEGER, " + 
 					EMAIL + " TEXT, " + 
 					ACTIF + " INTEGER, " + 
+					ID_MONITEUR_ASSOCIE +" INTEGER DEFAULT NULL," +
 					VERSION + " INTEGER INTEGER DEFAULT 0"+
 					");";
 	
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
+
+	private Context pContext;
 	
 	public UtilisateurDao(Context pContext){
 		super(pContext);
+		this.pContext = pContext;
 	}
 	
 	/**
@@ -179,6 +184,7 @@ public class UtilisateurDao extends BaseDao{
 	 */
 	private List<Utilisateur> cursorToUtilisateurList(Cursor cursor){
 		List<Utilisateur> resultList = new ArrayList<Utilisateur>();
+		MoniteurDao moniteurDao = new MoniteurDao(pContext);
 		
 		while(cursor.moveToNext()){
 			Utilisateur utilisateur = new Utilisateur(
@@ -189,8 +195,13 @@ public class UtilisateurDao extends BaseDao{
 					cursor.getInt(cursor.getColumnIndex(ADMINISTRATEUR)) > 0,
 					cursor.getString(cursor.getColumnIndex(EMAIL)),
 					cursor.getInt(cursor.getColumnIndex(ACTIF)) > 0,
+					null,
 					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
+
+			if(!cursor.isNull(cursor.getColumnIndex(ID_MONITEUR_ASSOCIE))){
+				utilisateur.setMoniteurAssocie(moniteurDao.getById(cursor.getInt(cursor.getColumnIndex(ID_MONITEUR_ASSOCIE))));
+			}
 			
 			resultList.add(utilisateur);			
 		}

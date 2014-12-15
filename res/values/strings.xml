@@ -39,6 +39,8 @@
     <string name="list_icon_valid">Validé</string>
     <string name="list_fiche_number">n°X</string>
     <string name="list_fiche_desc">Plongée [type] à [lieu]</string>
+    <string name="list_fiche_perso_title">Mes fiches (%s)</string>
+    <string name="list_fiche_autre_title">Autres fiches (%s)</string>
     <!-- LISTE FICHES SECURITE FIN -->
 
 

@@ -1,10 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout android:id="@+id/tableLayout1"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableLayout_listeFiches"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:shrinkColumns="*"
-    android:stretchColumns="*"
     android:background="@color/background_gen"
-    xmlns:android="http://schemas.android.com/apk/res/android">
- 	<!-- TITRE DE LA VIEW -->
+    android:shrinkColumns="*"
+    android:stretchColumns="*" >
+
+    <TableRow
+        android:id="@+id/liste_fiche_perso_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_gen"
+        android:padding="@dimen/tablerow_padding" >
+
+        <TextView
+            android:id="@+id/textView_liste_fiche_perso_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:layout_span="2"
+            android:gravity="center"
+            android:textAppearance="@style/ListeFichesTitle" />
+    </TableRow>
+    
+     <TableRow
+        android:id="@+id/liste_fiche_autre_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_gen"
+        android:padding="@dimen/tablerow_padding" >
+
+        <TextView
+            android:id="@+id/textView_liste_fiche_autre_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/textview_margin"
+            android:layout_span="2"
+            android:gravity="center"
+            android:textAppearance="@style/ListeFichesTitle" />
+    </TableRow>
+
 </TableLayout>

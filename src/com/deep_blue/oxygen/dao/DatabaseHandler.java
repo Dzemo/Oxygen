@@ -107,8 +107,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL("INSERT INTO "+MoniteurDao.TABLE_NAME+" ("+MoniteurDao.ID_WEB+", "+MoniteurDao.NOM+", "+MoniteurDao.PRENOM+", "+MoniteurDao.APTITUDES+", "+MoniteurDao.ACTIF+", "+MoniteurDao.DIRECTEUR_PLONGE+", "+MoniteurDao.EMAIL+", "+MoniteurDao.TELEPHONE+") VALUES (4, 'Eric', 'Delaunay', '21;11', 1, 1, 'eric.delaunay@email.com', '01 23 45 67 89');");
 
 		//Ajout d'un utilisateur admin de test
-		db.execSQL("INSERT INTO "+UtilisateurDao.TABLE_NAME+" ("+UtilisateurDao.LOGIN+","+UtilisateurDao.NOM+", "+UtilisateurDao.PRENOM+", "+UtilisateurDao.MOTDEPASSE+", "+UtilisateurDao.ADMINISTRATEUR+", "+UtilisateurDao.EMAIL+", "+UtilisateurDao.ACTIF+") VALUES ('admin','admin', 'admin', 'admin', 1, 'raphael.bideau@gmail.com', 1);");
-		db.execSQL("INSERT INTO "+UtilisateurDao.TABLE_NAME+" ("+UtilisateurDao.LOGIN+","+UtilisateurDao.NOM+", "+UtilisateurDao.PRENOM+", "+UtilisateurDao.MOTDEPASSE+", "+UtilisateurDao.ADMINISTRATEUR+", "+UtilisateurDao.EMAIL+", "+UtilisateurDao.ACTIF+") VALUES ('test','test', 'test', 'test', 1, 'raphael.bideau@gmail.com', 0);");
+		db.execSQL("INSERT INTO "+UtilisateurDao.TABLE_NAME+" ("+UtilisateurDao.LOGIN+","+UtilisateurDao.NOM+", "+UtilisateurDao.PRENOM+", "+UtilisateurDao.MOTDEPASSE+", "+UtilisateurDao.ADMINISTRATEUR+", "+UtilisateurDao.EMAIL+", "+UtilisateurDao.ACTIF+", "+UtilisateurDao.ID_MONITEUR_ASSOCIE+") VALUES ('admin','admin', 'admin', 'admin', 1, 'raphael.bideau@gmail.com', 1, 3);");
+		db.execSQL("INSERT INTO "+UtilisateurDao.TABLE_NAME+" ("+UtilisateurDao.LOGIN+","+UtilisateurDao.NOM+", "+UtilisateurDao.PRENOM+", "+UtilisateurDao.MOTDEPASSE+", "+UtilisateurDao.ADMINISTRATEUR+", "+UtilisateurDao.EMAIL+", "+UtilisateurDao.ACTIF+", "+UtilisateurDao.ID_MONITEUR_ASSOCIE+") VALUES ('test','test', 'test', 'test', 1, 'raphael.bideau@gmail.com', 0, NULL);");
 		
 		/** FIN AJOUT DONNES TEST */
 	}
