@@ -16,6 +16,15 @@
     <string name="parametre_remote_url">Addresse du serveur: </string>
     <string name="parametre_save_login">Se souvenir du login</string>
     <string name="parametre_keep_connection">Rester connecté</string>
+    <string name="parametre_retrieve_type_all">Récupérer toute les fiches</string>
+    <string name="parametre_retrieve_type_only_own">Récupérer seulement mes fiches</string>
+    <string name="parametre_retrieve_length_label_zero">Récupère uniquement les fiches du jour actuel</string>
+    <plurals name="parametre_retrieve_length_label">
+        <item quantity="zero">Récupère uniquement les fiches du jour actuel</item>
+        <item quantity="one">Récupère les fiches du prochain jour</item>
+        <item quantity="other">Récupère les fiches des %d prochains jours</item>
+    </plurals>
+
     <string name="parametre_last_synch_label">Dernière synchronisation :</string>
     <string name="parametre_saved">Paramètres enregistrés</string>
     <!-- GENERAL/MENU FIN -->
@@ -61,6 +70,7 @@
     <string name="fiche_info_dialogie_embarcation_title">Embarcation</string>
     <!-- FICHE DIALOG INFO DEBUT -->
 
+
     <!-- FICHE INFO FIN -->
 
 
@@ -85,31 +95,34 @@
     <string name="palanquee_dialog_type_plongee_title">Type de plongée</string>
     <string name="palanquee_dialog_moniteur_title">Moniteur</string>
     <!-- PALANQUEE DIALOG INFO DEBUT -->
-    
+
+
     <!-- PALANQUEE INFO FIN -->
 
-	<!-- PLONGEUR DEBUT -->
-	<string name="plongeur_nom_labelle">Nom :</string>
-	<string name="plongeur_prenom_labelle">Prenom :</string>
-	<string name="plongeur_aptitudes_labelle">Aptitudes :</string>
-	<string name="plongeur_date_naissance_labelle">Date de naissance :</string>
-	<string name="plongeur_profondeur_realisee_labelle">Profondeur realisée :</string>
-	<string name="plongeur_duree_realisee_labelle">Durée réalisée :</string>
-	<string name="plongeur_telephone_labelle">Téléphone : </string>
-	<string name="plongeur_telephone_urgence_labelle">Téléphone (urgence) :</string>
-	
-	<!-- PLONGEUR DIALOG DEBUT -->
-	<string name="plongeur_dialog_nom_title">Nom du plongeur</string>
-	<string name="plongeur_dialog_prenom_title">Prénom du plongeur</string>
-	<string name="plongeur_dialog_profondeur_realise_title">Profondeur réalisée par ce plongeur</string>
-	<string name="plongeur_dialog_duree_realisee_title">Durée réalisée par ce plongeur</string>
-	<string name="plongeur_dialog_aptitudes_title">Aptitudes du plongeur</string>
-	<string name="plongeur_dialog_date_naissance_title">Date de naissance</string>
-	<string name="plongeur_dialog_telephone_title">Téléphone personnel du plongeur</string>
-	<string name="plongeur_dialog_telephone_urgence_title">Téléphone de la personne à contacter en cas d\'urgence</string>
-	<!-- PLONGEUR DIALOG FIN -->
-	<!-- PLONGEUR FIN -->
-    
+
+    <!-- PLONGEUR DEBUT -->
+    <string name="plongeur_nom_labelle">Nom :</string>
+    <string name="plongeur_prenom_labelle">Prenom :</string>
+    <string name="plongeur_aptitudes_labelle">Aptitudes :</string>
+    <string name="plongeur_date_naissance_labelle">Date de naissance :</string>
+    <string name="plongeur_profondeur_realisee_labelle">Profondeur realisée :</string>
+    <string name="plongeur_duree_realisee_labelle">Durée réalisée :</string>
+    <string name="plongeur_telephone_labelle">Téléphone : </string>
+    <string name="plongeur_telephone_urgence_labelle">Téléphone (urgence) :</string>
+
+    <!-- PLONGEUR DIALOG DEBUT -->
+    <string name="plongeur_dialog_nom_title">Nom du plongeur</string>
+    <string name="plongeur_dialog_prenom_title">Prénom du plongeur</string>
+    <string name="plongeur_dialog_profondeur_realise_title">Profondeur réalisée par ce plongeur</string>
+    <string name="plongeur_dialog_duree_realisee_title">Durée réalisée par ce plongeur</string>
+    <string name="plongeur_dialog_aptitudes_title">Aptitudes du plongeur</string>
+    <string name="plongeur_dialog_date_naissance_title">Date de naissance</string>
+    <string name="plongeur_dialog_telephone_title">Téléphone personnel du plongeur</string>
+    <string name="plongeur_dialog_telephone_urgence_title">Téléphone de la personne à contacter en cas d\'urgence</string>
+    <!-- PLONGEUR DIALOG FIN -->
+    <!-- PLONGEUR FIN -->
+
+
     <!-- DIALOG GENERAL DEBUT -->
     <string name="dialog_point">.</string>
     <string name="dialog_heure"> h </string>
@@ -119,7 +132,8 @@
     <string name="dialog_ok">Valider</string>
     <string name="dialog_annuler">Annuler</string>
     <!-- DIALOG GENERAL FIN -->
-    
+
+
     <!-- SYNCH DEBUT -->
     <string name="synch_start">Début de la synchronisation</string>
     <string name="synch_success">Synchronisation effectuée</string>

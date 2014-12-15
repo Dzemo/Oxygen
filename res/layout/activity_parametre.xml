@@ -7,35 +7,6 @@
     tools:context="com.deep_blue.oxygen.activity.ParametreActivity" >
 
     <TableRow
-        android:id="@+id/parametre_remote_url_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/list_item_background_1"
-        android:padding="@dimen/panel_padding_size" >
-
-        <TextView
-            android:id="@+id/textView_parametre_remote_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/parametre_remote_url" />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/parametre_remote_url_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/list_item_background_1"
-        android:padding="@dimen/panel_padding_size" >
-
-        <EditText
-            android:id="@+id/editText_parametre_remote_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textUri" >
-        </EditText>
-    </TableRow>
-
-    <TableRow
         android:id="@+id/parametre_save_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,10 +34,37 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/parametre_last_synch_label"
+        android:id="@+id/parametre_remote_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/panel_padding_size" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView_parametre_remote_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/parametre_remote_url" />
+
+            <EditText
+                android:id="@+id/editText_parametre_remote_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textUri" >
+            </EditText>
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/parametre_last_synch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_2"
         android:padding="@dimen/panel_padding_size" >
 
         <LinearLayout
@@ -85,6 +83,59 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="" />
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/parametre_retrieve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_1"
+        android:padding="@dimen/panel_padding_size" >
+
+        <RadioGroup
+            android:id="@+id/radioGroup_retreive_type"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RadioButton
+                android:id="@+id/radio_parametre_retrieve_type_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/parametre_retrieve_type_all" />
+
+            <RadioButton
+                android:id="@+id/radio_parametre_retrieve_type_only_own"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/parametre_retrieve_type_only_own" />
+        </RadioGroup>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/parametre_retrieve_length"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_2"
+        android:padding="@dimen/panel_padding_size" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView_parametre_retrieve_length_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <SeekBar
+                android:id="@+id/seekBar_retrieve_length"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="1"
+                android:max="31" />
         </LinearLayout>
     </TableRow>
 
