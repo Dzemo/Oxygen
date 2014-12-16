@@ -2,6 +2,8 @@ package com.deep_blue.oxygen.model;
 
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonAnySetter;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -23,11 +25,24 @@ public class Moniteur implements Parcelable{
 	private String nom;
 	private String prenom;
 	private ListeAptitudes aptitudes;
-	private boolean actif;
-	private boolean directeurPlongee;
+	private Boolean actif;
+	private Boolean directeurPlongee;
 	private String email;
 	private String telephone;
 	private Long version;
+	
+	public Moniteur() {
+		super();
+		this.idWeb = null;
+		this.nom = null;
+		this.prenom = null;
+		this.aptitudes = null;
+		this.actif = null;
+		this.directeurPlongee = null;
+		this.email = null;
+		this.telephone = null;
+		this.version = null;
+	}
 	
 	/**
 	 * 
@@ -100,19 +115,19 @@ public class Moniteur implements Parcelable{
 		this.aptitudes = aptitudes;
 	}
 
-	public boolean isActif() {
+	public Boolean isActif() {
 		return actif;
 	}
 
-	public void setActif(boolean actif) {
+	public void setActif(Boolean actif) {
 		this.actif = actif;
 	}
 
-	public boolean isDirecteurPlongee() {
+	public Boolean isDirecteurPlongee() {
 		return directeurPlongee;
 	}
 
-	public void setDirecteurPlongee(boolean directeurPlongee) {
+	public void setDirecteurPlongee(Boolean directeurPlongee) {
 		this.directeurPlongee = directeurPlongee;
 	}
 
@@ -169,6 +184,9 @@ public class Moniteur implements Parcelable{
 		dest.writeString(telephone != null ? telephone : "");
 		dest.writeLong(version);		
 	}
-	
-	
+
+    @JsonAnySetter
+    public void set(String name, Object value) {
+        aptitudes.add((Aptitude)value);
+    }
 }

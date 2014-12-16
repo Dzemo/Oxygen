@@ -40,6 +40,24 @@ public class Palanquee implements Parcelable {
 	private Long version;
 	private ListePlongeurs plongeurs;
 	
+	public Palanquee() {
+		super();
+		this.id = null;
+		this.idWeb = null;
+		this.idFicheSecurite = null;
+		this.moniteur = null;
+		this.numero = null;
+		this.typePlonge = null;
+		this.typeGaz = null;
+		this.profondeurPrevue = null;
+		this.profondeurRealiseeMoniteur = null;
+		this.dureePrevue = null;
+		this.dureeRealiseeMoniteur = null;
+		this.heure = null;
+		this.version = null;
+		this.plongeurs = null;
+	}
+	
 	/**
 	 * @param id
 	 * @param idWeb

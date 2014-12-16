@@ -25,6 +25,15 @@ public class Site implements Parcelable {
 	private Boolean desactive;
 	private Long version;
 
+	public Site() {
+		super();
+		this.id = null;
+		this.nom = null;
+		this.commentaire = null;
+		this.desactive = null;
+		this.version = null;
+	}
+	
 	/**
 	 * Créer un nouveau site avec tout ses attributs, issue de la base de données ou de la synchronisation par exemple
 	 * @param id

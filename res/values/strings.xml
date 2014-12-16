@@ -28,7 +28,7 @@
     <string name="parametre_last_synch_label">Dernière synchronisation :</string>
     <string name="parametre_saved">Paramètres enregistrés</string>
     <!-- GENERAL/MENU FIN -->
-
+    
 
     <!-- LOGIN DEBUT -->
     <string name="login_cancel">Annuler</string>
@@ -70,7 +70,6 @@
     <string name="fiche_info_dialogie_embarcation_title">Embarcation</string>
     <!-- FICHE DIALOG INFO DEBUT -->
 
-
     <!-- FICHE INFO FIN -->
 
 
@@ -95,7 +94,6 @@
     <string name="palanquee_dialog_type_plongee_title">Type de plongée</string>
     <string name="palanquee_dialog_moniteur_title">Moniteur</string>
     <!-- PALANQUEE DIALOG INFO DEBUT -->
-
 
     <!-- PALANQUEE INFO FIN -->
 
@@ -137,7 +135,13 @@
     <!-- SYNCH DEBUT -->
     <string name="synch_start">Début de la synchronisation</string>
     <string name="synch_success">Synchronisation effectuée</string>
-    <string name="synch_error">Erreur lors de la synchronisation: </string>
+    <string name="synch_error">Erreur lors de la synchronisation: %s</string>
+    <string name="synch_error_host_unknown">Addresse du serveur incorrect</string>
+    <string name="synch_error_timeout">Pas de réponse du serveur (timeout)</string>
+    <string name="synch_error_generation">Impossible de récupérer les données à envoyer</string>
+    <string name="synch_error_no_data">Aucune données récupérés par le serveur</string>
+    <string name="synch_error_parse">Impossible de lire les données récupérées</string>
+    <string name="synch_error_no_connection">Appareil non connecté au réseau de données</string>
     <!-- SYNCh FIN -->
 
 </resources>

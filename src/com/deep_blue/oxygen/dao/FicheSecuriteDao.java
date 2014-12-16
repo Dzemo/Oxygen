@@ -48,15 +48,17 @@ public class FicheSecuriteDao extends BaseDao {
 	 */
 	public Long getMaxVersion(){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME + " WHERE "+ETAT+" != '" +EnumEtat.VALIDE.toString()+"'",null);
+
+		Long maxVersion = Long.valueOf(0);
+		if(cursor.getCount() == 1){
+			cursor.moveToNext();
+			maxVersion = cursor.getLong(0);
+		}
+		
 		mDb.close();
 		
-		if(cursor.getCount() == 1){
-			return cursor.getLong(0);
-		}
-		else{
-			return Long.valueOf(0);
-		}
+		return maxVersion;	
 	}
 	
 	/**
@@ -85,9 +87,9 @@ public class FicheSecuriteDao extends BaseDao {
 	 * @param etat
 	 * @return
 	 */
-	public ListeFichesSecurite getByIdFicheSecurite(EnumEtat etat){
+	public ListeFichesSecurite getByEtat(EnumEtat etat){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ETAT+" = ?", new String[]{String.valueOf(etat)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ETAT+" = '"+String.valueOf(etat)+"'", null);
 		
 		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
 		
@@ -128,7 +130,7 @@ public class FicheSecuriteDao extends BaseDao {
 		value.put(ETAT, ficheSecurite.getEtat().toString());
 		value.put(VERSION, ficheSecurite.getVersion());
 		
-		mDb.update(TABLE_NAME, value, "WHERE "+ID_LOCAL+" = ?", new String[]{ficheSecurite.getId().toString()});
+		mDb.update(TABLE_NAME, value, ID_LOCAL+" = ?", new String[]{ficheSecurite.getId().toString()});
 		mDb.close();
 		
 		return ficheSecurite;

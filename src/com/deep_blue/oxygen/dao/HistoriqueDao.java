@@ -8,20 +8,23 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Historique;
 
 public class HistoriqueDao extends BaseDao {
 
 	public static final String TABLE_NAME = "db_historique";
 	
+	public static final String ID_HISTORIQUE = "id_historique";
 	public static final String LOGIN_UTILISATEUR = "login_utilisateur";
 	public static final String TIMESTAMP = "timestamp";
 	public static final String ID_FICHE_SECURITE = "id_fiche_securite";
 	public static final String COMMENTAIRE = "commentaire";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
+			ID_HISTORIQUE + " INTEGER PRIMARY KEY, "+
 		    LOGIN_UTILISATEUR + " TEXT," +
-		    TIMESTAMP + " INTEGER PRIMARY KEY, " +
+		    TIMESTAMP + " INTEGER, " +
 		    COMMENTAIRE + " TEXT, " +
 		    ID_FICHE_SECURITE + " INTEGER " +
 	    ");";
@@ -39,19 +42,28 @@ public class HistoriqueDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 		
-		List<Historique> resultList = new ArrayList<Historique>();
+		List<Historique> resultList = cursorToHistoriqueList(cursor);
 		
-		while(cursor.moveToNext()){
-			Historique historique = new Historique(
-					cursor.getString(cursor.getColumnIndex(LOGIN_UTILISATEUR)),
-					cursor.getLong(cursor.getColumnIndex(TIMESTAMP)),
-					cursor.getInt(cursor.getColumnIndex(ID_FICHE_SECURITE)),
-					cursor.getString(cursor.getColumnIndex(COMMENTAIRE))
-					);
-			
-			resultList.add(historique);			
+		mDb.close();
+		
+		return resultList;
+	}
+	
+	public List<Historique> getForListFiche(List<FicheSecurite> listeFiches){
+		if(listeFiches.size() == 0){
+			return new ArrayList<Historique>();
 		}
-		cursor.close();
+		
+		String queryParametre = "";
+		for(FicheSecurite fiche : listeFiches){
+			if(!queryParametre.isEmpty()) queryParametre += " AND";
+			queryParametre += " " + ID_FICHE_SECURITE + " = " + fiche.getId();
+		}
+		
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE"+queryParametre, null);
+		
+		List<Historique> resultList = cursorToHistoriqueList(cursor);
 		
 		mDb.close();
 		
@@ -67,6 +79,7 @@ public class HistoriqueDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
+		value.put(HistoriqueDao.ID_HISTORIQUE, historique.getIdHistorique());
 		value.put(HistoriqueDao.LOGIN_UTILISATEUR, historique.getLoginUtilisateur());
 		value.put(HistoriqueDao.TIMESTAMP, historique.getTimestamp());
 		value.put(HistoriqueDao.ID_FICHE_SECURITE, historique.getIdFicheSecurite());
@@ -87,5 +100,29 @@ public class HistoriqueDao extends BaseDao {
 		mDb.delete(TABLE_NAME, "", new String[] {});
 		
 		mDb.close();
+	}
+	
+	/**
+	 * Transforme a cursor result of a query on the Historique table into an array of Historique
+	 * @param cursor
+	 * @return
+	 */
+	private List<Historique> cursorToHistoriqueList(Cursor cursor){
+		List<Historique> resultList = new ArrayList<Historique>();
+		
+		while(cursor.moveToNext()){
+			Historique historique = new Historique(
+					cursor.getInt(cursor.getColumnIndex(ID_HISTORIQUE)),
+					cursor.getString(cursor.getColumnIndex(LOGIN_UTILISATEUR)),
+					cursor.getLong(cursor.getColumnIndex(TIMESTAMP)),
+					cursor.getInt(cursor.getColumnIndex(ID_FICHE_SECURITE)),
+					cursor.getString(cursor.getColumnIndex(COMMENTAIRE))
+					);
+			
+			resultList.add(historique);			
+		}
+		cursor.close();
+		
+		return resultList;
 	}
 }

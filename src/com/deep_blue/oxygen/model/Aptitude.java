@@ -102,6 +102,22 @@ public class Aptitude implements Parcelable {
 	 */
 	private Long version;	
 	
+	public Aptitude() {
+		super();
+		this.idWeb = 0;
+		this.libelleCourt = null;
+		this.libelleLong = null;
+		this.techniqueMax = 0;
+		this.encardeeMax = 0;
+		this.autonomeMax = 0;
+		this.nitroxMax = 0;
+		this.ajoutMax = 0;
+		this.enseignementAirMax = 0;
+		this.enseignementNitroxMax = 0;
+		this.encadrementMax = 0;
+		this.version = null;
+	}
+	
 	/**
 	 * 
 	 * @param idWeb

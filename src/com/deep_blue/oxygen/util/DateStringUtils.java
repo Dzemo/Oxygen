@@ -35,7 +35,7 @@ public class DateStringUtils {
 	 * @return
 	 */
 	public static String dateToString(Date date){
-		return new SimpleDateFormat("dd MMM yyyy hh:mm", new Locale("fr_FR")).format(date);
+		return new SimpleDateFormat("dd MMM yyyy à HH:mm", new Locale("fr_FR")).format(date);
 	}
 	
 	/**

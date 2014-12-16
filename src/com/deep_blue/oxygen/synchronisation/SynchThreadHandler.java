@@ -1,4 +1,4 @@
-package com.deep_blue.oxygen.synchronisation.handler;
+package com.deep_blue.oxygen.synchronisation;
 
 import java.util.Date;
 
@@ -53,7 +53,7 @@ public class SynchThreadHandler extends Handler {
 			
 			break;
 		case CODE_ERROR:
-			text = pContext.getResources().getString(R.string.synch_error) + msg.getData().getString(IntentKey.SYNCH_ERROR_TEXT.toString());
+			text = String.format(pContext.getResources().getString(R.string.synch_error), msg.getData().getString(IntentKey.SYNCH_ERROR_TEXT.toString()));
 			break;
 		default:
 			break;

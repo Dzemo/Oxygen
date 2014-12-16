@@ -30,6 +30,19 @@ public class FicheSecurite  implements Parcelable {
 	private Long version;
 	private ListePalanquees palanquees;
 	
+	public FicheSecurite() {
+		super();
+		this.id = null;
+		this.idWeb = null;
+		this.embarcation = null;
+		this.directeurPlonge = null;
+		this.timestamp = null;
+		this.site = null;
+		this.etat = null;
+		this.version = null;
+		this.palanquees = null;
+	}
+	
 	/**
 	 * @param id
 	 * @param idWeb

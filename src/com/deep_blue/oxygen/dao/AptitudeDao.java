@@ -58,14 +58,16 @@ public class AptitudeDao extends BaseDao {
 	public Long getMaxVersion(){
 		SQLiteDatabase mDb = open();
 		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+
+		Long maxVersion = Long.valueOf(0);
+		if(cursor.getCount() == 1){
+			cursor.moveToNext();
+			maxVersion = cursor.getLong(0);
+		}
+		
 		mDb.close();
 		
-		if(cursor.getCount() == 1){
-			return cursor.getLong(0);
-		}
-		else{
-			return Long.valueOf(0);
-		}
+		return maxVersion;	
 	}
 	
 	/**

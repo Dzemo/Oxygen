@@ -26,7 +26,7 @@ public class UtilisateurDao extends BaseDao{
 	public static final String ADMINISTRATEUR = "administrateur";
 	public static final String EMAIL = "email";
 	public static final String ACTIF = "actif";
-	public static final String ID_MONITEUR_ASSOCIE = "id_moniteur_associe";
+	public static final String ID_WEB_MONITEUR_ASSOCIE = "id_moniteur_associe";
 	public static final String VERSION = "version";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" + 
@@ -37,7 +37,7 @@ public class UtilisateurDao extends BaseDao{
 					ADMINISTRATEUR + " INTEGER, " + 
 					EMAIL + " TEXT, " + 
 					ACTIF + " INTEGER, " + 
-					ID_MONITEUR_ASSOCIE +" INTEGER DEFAULT NULL," +
+					ID_WEB_MONITEUR_ASSOCIE +" INTEGER DEFAULT NULL," +
 					VERSION + " INTEGER INTEGER DEFAULT 0"+
 					");";
 	
@@ -57,14 +57,16 @@ public class UtilisateurDao extends BaseDao{
 	public Long getMaxVersion(){
 		SQLiteDatabase mDb = open();
 		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+		
+		Long maxVersion = Long.valueOf(0);
+		if(cursor.getCount() == 1){
+			cursor.moveToNext();
+			maxVersion = cursor.getLong(0);
+		}
+		
 		mDb.close();
 		
-		if(cursor.getCount() == 1){
-			return cursor.getLong(0);
-		}
-		else{
-			return Long.valueOf(0);
-		}
+		return maxVersion;	
 	}
 	
 	/**
@@ -132,6 +134,7 @@ public class UtilisateurDao extends BaseDao{
 		value.put(UtilisateurDao.ADMINISTRATEUR, utilisateur.getAdministrateur() ? 1 : 0);
 		value.put(UtilisateurDao.EMAIL, utilisateur.getEmail());
 		value.put(UtilisateurDao.ACTIF, utilisateur.getActif() ? 1 : 0);
+		value.put(UtilisateurDao.ID_WEB_MONITEUR_ASSOCIE, utilisateur.getMoniteurAssocie() != null ? utilisateur.getMoniteurAssocie().getIdWeb() : null);
 		value.put(UtilisateurDao.VERSION, utilisateur.getVersion());
 		
 		mDb.insert(UtilisateurDao.TABLE_NAME, null, value);
@@ -156,9 +159,10 @@ public class UtilisateurDao extends BaseDao{
 		value.put(UtilisateurDao.ADMINISTRATEUR, utilisateur.getAdministrateur() ? 1 : 0);
 		value.put(UtilisateurDao.EMAIL, utilisateur.getEmail());
 		value.put(UtilisateurDao.ACTIF, utilisateur.getActif() ? 1 : 0);
+		value.put(UtilisateurDao.ID_WEB_MONITEUR_ASSOCIE, utilisateur.getMoniteurAssocie() != null ? utilisateur.getMoniteurAssocie().getIdWeb() : null);
 		value.put(UtilisateurDao.VERSION, utilisateur.getVersion());
 		
-		mDb.update(UtilisateurDao.TABLE_NAME, null, "WHERE "+LOGIN+" = ?", new String[]{utilisateur.getLogin()});
+		mDb.update(UtilisateurDao.TABLE_NAME, value, LOGIN+" = ?", new String[]{utilisateur.getLogin()});
 		
 		mDb.close();
 		return utilisateur;
@@ -199,8 +203,8 @@ public class UtilisateurDao extends BaseDao{
 					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 
-			if(!cursor.isNull(cursor.getColumnIndex(ID_MONITEUR_ASSOCIE))){
-				utilisateur.setMoniteurAssocie(moniteurDao.getById(cursor.getInt(cursor.getColumnIndex(ID_MONITEUR_ASSOCIE))));
+			if(!cursor.isNull(cursor.getColumnIndex(ID_WEB_MONITEUR_ASSOCIE))){
+				utilisateur.setMoniteurAssocie(moniteurDao.getById(cursor.getInt(cursor.getColumnIndex(ID_WEB_MONITEUR_ASSOCIE))));
 			}
 			
 			resultList.add(utilisateur);			

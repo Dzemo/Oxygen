@@ -39,7 +39,7 @@ public class Embarcation implements Parcelable {
 	/**
 	 * Indique si l'embarcation est disponible ou si elle est supprimé/desactivé/vendu/perdu/cassé/en reparation
 	 */
-	private boolean disponible;
+	private Boolean disponible;
 	
 	/**
 	 * Nombre de personnes maximum que peut contenir cette embarcation
@@ -51,6 +51,17 @@ public class Embarcation implements Parcelable {
 	 * et l'application de plongé. Timestamp de dernière modification
 	 */
 	private Long version;
+	
+
+	public Embarcation() {
+		super();
+		this.idWeb = null;
+		this.libelle = null;
+		this.comentaire = null;
+		this.disponible = null;
+		this.contenance = null;
+		this.version = null;
+	}
 	
 	/**
 	 * @param idWeb

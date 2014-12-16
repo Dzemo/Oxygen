@@ -89,6 +89,23 @@ public class Plongeur implements Parcelable {
 	 */
 	private Integer dureeRealisee;
 
+	public Plongeur() {
+		super();
+		this.id = null;
+		this.idWeb = null;
+		this.idPalanquee = null;
+		this.idFicheSecurite = null;
+		this.nom = null;
+		this.prenom = null;
+		this.aptitudes = null;
+		this.telephone = null;
+		this.telephoneUrgence = null;
+		this.dateNaissance = null;
+		this.profondeurRealisee = null;
+		this.dureeRealisee = null;
+		this.version = null;
+	}
+	
 	/**
 	 * 
 	 * @param id

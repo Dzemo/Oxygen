@@ -144,7 +144,7 @@ public class PalanqueeDao extends BaseDao {
 		value.put(HEURE, palanquee.getHeure());
 		value.put(VERSION, palanquee.getVersion());
 		
-		mDb.update(TABLE_NAME, value, "WHERE "+ID+" = ?", new String[]{palanquee.getId().toString()});
+		mDb.update(TABLE_NAME, value, ID+" = ?", new String[]{palanquee.getId().toString()});
 		mDb.close();
 		
 		return palanquee;

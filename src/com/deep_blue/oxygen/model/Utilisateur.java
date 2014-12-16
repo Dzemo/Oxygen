@@ -34,6 +34,19 @@ public class Utilisateur implements Parcelable {
 	private Moniteur moniteurAssocie;
 	private Long version;
 
+	public Utilisateur() {
+		super();
+		this.login = null;
+		this.nom = null;
+		this.prenom = null;
+		this.motDePasse = null;
+		this.administrateur = null;
+		this.email = null;
+		this.actif = null;
+		this.moniteurAssocie = null;
+		this.version = null;
+	}
+	
 	/**
 	 * @param login
 	 * @param nom
@@ -202,6 +215,11 @@ public class Utilisateur implements Parcelable {
 	 */
 	public void setMoniteurAssocie(Moniteur moniteurAssocie) {
 		this.moniteurAssocie = moniteurAssocie;
+	}
+	
+	public void setMoniteurAssocieId(Integer id){
+		this.moniteurAssocie = new Moniteur();
+		this.moniteurAssocie.setIdWeb(id);
 	}
 
 	/**

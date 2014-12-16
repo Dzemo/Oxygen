@@ -37,6 +37,25 @@ public class SiteDao extends BaseDao {
 	}
 	
 	/**
+	 * Renvoi le timestamp de la dernière modification ou 0 si aucune modification
+	 * @return
+	 */
+	public Long getMaxVersion(){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+
+		Long maxVersion = Long.valueOf(0);
+		if(cursor.getCount() == 1){
+			cursor.moveToNext();
+			maxVersion = cursor.getLong(0);
+		}
+		
+		mDb.close();
+		
+		return maxVersion;	
+	}
+	
+	/**
 	 * Return le site d'id spécifié
 	 * @param idSite
 	 * @return
@@ -86,7 +105,7 @@ public class SiteDao extends BaseDao {
 		value.put(DESACTIVE, site.getDesactive() ? 1 : 0);
 		value.put(VERSION, site.getVersion());
 		
-		mDb.update(TABLE_NAME, value, "WHERE "+ID+" = ?", new String[]{site.getId().toString()});
+		mDb.update(TABLE_NAME, value, ID+" = ?", new String[]{site.getId().toString()});
 		mDb.close();
 		
 		return site;

@@ -53,7 +53,7 @@ public class ParametreActivity extends Activity {
 					.check(R.id.radio_parametre_retrieve_type_only_own);
 
 		int retrieveLength = preferences.getInt(
-				PreferenceKey.RETREIVE_LENGTH.toString(), 2);
+				PreferenceKey.RETREIVE_LENGTH.toString(), 0);
 		final TextView textViewRetrieveLength = (TextView) findViewById(R.id.textView_parametre_retrieve_length_label);
 		if (retrieveLength > 0)
 			textViewRetrieveLength.setText(getResources().getQuantityString(
