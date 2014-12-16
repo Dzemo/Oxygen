@@ -63,8 +63,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//TODO retirer les donnes de tests
 		
 		//Ajout des embarcations de tests
-		db.execSQL("INSERT INTO "+EmbarcationDao.TABLE_NAME +" ("+EmbarcationDao.ID_WEB +", "+EmbarcationDao.LIBELLE +", "+EmbarcationDao.COMMENTAIRE +", "+EmbarcationDao.DISPONIBLE +") VALUES (1, 'EMB-1', 'Embarcation-1, disponible', 1);");
-		db.execSQL("INSERT INTO "+EmbarcationDao.TABLE_NAME +" ("+EmbarcationDao.ID_WEB +", "+EmbarcationDao.LIBELLE +", "+EmbarcationDao.COMMENTAIRE +", "+EmbarcationDao.DISPONIBLE +") VALUES (2, 'EMB-2', 'Embarcation-2, indisponible', 0);");
+		db.execSQL("INSERT INTO "+EmbarcationDao.TABLE_NAME +" ("+EmbarcationDao.ID_WEB +", "+EmbarcationDao.LIBELLE +", "+EmbarcationDao.COMMENTAIRE +", "+EmbarcationDao.DISPONIBLE +", "+EmbarcationDao.CONTENANCE +") VALUES (1, 'EMB-1', 'Embarcation-1, disponible', 1, 10);");
+		db.execSQL("INSERT INTO "+EmbarcationDao.TABLE_NAME +" ("+EmbarcationDao.ID_WEB +", "+EmbarcationDao.LIBELLE +", "+EmbarcationDao.COMMENTAIRE +", "+EmbarcationDao.DISPONIBLE +", "+EmbarcationDao.CONTENANCE +") VALUES (2, 'EMB-2', 'Embarcation-2, indisponible', 0, 10);");
 		
 		//Ajout des sites
 		db.execSQL("INSERT INTO "+SiteDao.TABLE_NAME +" ("+SiteDao.ID +", "+SiteDao.NOM +", "+SiteDao.COMMENTAIRE +", "+SiteDao.DESACTIVE +", "+SiteDao.VERSION+") VALUES (1, 'La plage sur mer', 'Pour débutant', 0, 0);");

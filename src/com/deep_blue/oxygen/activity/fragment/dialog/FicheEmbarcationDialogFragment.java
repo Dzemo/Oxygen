@@ -40,7 +40,7 @@ public class FicheEmbarcationDialogFragment extends DialogFragment implements
 		items = new ArrayList<String>();
 		for (int i = 0; i < embarcations.size(); i++) {
 			Embarcation embarcation = embarcations.get(i);
-			items.add(embarcation.getLibelle());
+			items.add(embarcation.getLibelle()+" ("+embarcation.getContenance()+" pers.)");
 
 			if (ficheSecurite.getEmbarcation() != null
 					&& embarcation.getIdWeb() == ficheSecurite

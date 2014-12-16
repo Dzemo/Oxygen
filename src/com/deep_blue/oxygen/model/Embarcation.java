@@ -42,26 +42,32 @@ public class Embarcation implements Parcelable {
 	private boolean disponible;
 	
 	/**
+	 * Nombre de personnes maximum que peut contenir cette embarcation
+	 */
+	private Integer contenance;
+	
+	/**
 	 * Version de cette embarcation, utilisé pour la synchronisation entre l'interface web
 	 * et l'application de plongé. Timestamp de dernière modification
 	 */
 	private Long version;
-
+	
 	/**
-	 * 
 	 * @param idWeb
 	 * @param libelle
 	 * @param comentaire
 	 * @param disponible
+	 * @param contenance
 	 * @param version
 	 */
-	public Embarcation(int idWeb, String libelle, String comentaire,
-			boolean disponible, Long version) {
+	public Embarcation(Integer idWeb, String libelle, String comentaire,
+			boolean disponible, Integer contenance, Long version) {
 		super();
 		this.idWeb = idWeb;
 		this.libelle = libelle;
 		this.comentaire = comentaire;
 		this.disponible = disponible;
+		this.contenance = contenance;
 		this.version = version;
 	}
 	
@@ -74,8 +80,11 @@ public class Embarcation implements Parcelable {
 		libelle = source.readString();
 		comentaire = source.readString();
 		disponible = source.readInt() > 0;
+		contenance = source.readInt();
 		version = source.readLong();
-	}public Integer getIdWeb() {
+	}
+	
+	public Integer getIdWeb() {
 		return idWeb;
 	}
 
@@ -107,6 +116,20 @@ public class Embarcation implements Parcelable {
 		this.disponible = disponible;
 	}
 
+	/**
+	 * @return the contenance
+	 */
+	public Integer getContenance() {
+		return contenance;
+	}
+
+	/**
+	 * @param contenance the contenance to set
+	 */
+	public void setContenance(Integer contenance) {
+		this.contenance = contenance;
+	}
+
 	public Long getVersion() {
 		return version;
 	}
@@ -114,12 +137,16 @@ public class Embarcation implements Parcelable {
 	public void setVersion(long version) {
 		this.version = version;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "Embarcation [idWeb=" + idWeb + ", libelle=" + libelle
-				+ ", comentaire=" + comentaire + ", disponible=" + disponible
-				+ ", version=" + version + "]";
+		return getClass().getName() + " {\n\tidWeb: " + idWeb + "\n\tlibelle: "
+				+ libelle + "\n\tcomentaire: " + comentaire
+				+ "\n\tdisponible: " + disponible + "\n\tcontenance: "
+				+ contenance + "\n\tversion: " + version + "\n}";
 	}
 
 	@Override
@@ -133,6 +160,7 @@ public class Embarcation implements Parcelable {
 		dest.writeString(libelle != null ? libelle : "");
 		dest.writeString(comentaire != null ? comentaire : "");
 		dest.writeInt(disponible ? 1 : 0);
+		dest.writeInt(contenance);
 		dest.writeLong(version);
 	}
 

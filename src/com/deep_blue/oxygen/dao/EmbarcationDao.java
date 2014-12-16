@@ -18,6 +18,7 @@ public class EmbarcationDao extends BaseDao {
 	public static final String LIBELLE = "libelle";
 	public static final String COMMENTAIRE = "commentaire";
 	public static final String DISPONIBLE = "disponible";
+	public static final String CONTENANCE = "contenance";
 	public static final String VERSION = "version";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
@@ -25,6 +26,7 @@ public class EmbarcationDao extends BaseDao {
 		    LIBELLE + " TEXT," +
 		    COMMENTAIRE + " TEXT, " +
 		    DISPONIBLE + " INTEGER, " +
+		    CONTENANCE + " INTEGER, " +
 		    VERSION + " INTEGER INTEGER DEFAULT 0" +
 	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
@@ -113,7 +115,8 @@ public class EmbarcationDao extends BaseDao {
 		value.put(ID_WEB, embarcation.getIdWeb());
 		value.put(LIBELLE, embarcation.getLibelle());
 		value.put(COMMENTAIRE, embarcation.getComentaire());		
-		value.put(DISPONIBLE, embarcation.isDisponible() ? 1 : 0);		
+		value.put(DISPONIBLE, embarcation.isDisponible() ? 1 : 0);	
+		value.put(CONTENANCE, embarcation.getContenance());		
 		value.put(VERSION, embarcation.getVersion());
 		
 		mDb.insert(TABLE_NAME, null, value);
@@ -134,6 +137,7 @@ public class EmbarcationDao extends BaseDao {
 		value.put(LIBELLE, embarcation.getLibelle());
 		value.put(COMMENTAIRE, embarcation.getComentaire());		
 		value.put(DISPONIBLE, embarcation.isDisponible() ? 1 : 0);	
+		value.put(CONTENANCE, embarcation.getContenance());		
 		value.put(VERSION, embarcation.getVersion());
 		
 		mDb.update(TABLE_NAME, value, ID_WEB  + " = ?", new String[] {String.valueOf(embarcation.getIdWeb())});
@@ -167,7 +171,8 @@ public class EmbarcationDao extends BaseDao {
 					cursor.getInt(cursor.getColumnIndex(ID_WEB)),
 					cursor.getString(cursor.getColumnIndex(LIBELLE)),
 					cursor.getString(cursor.getColumnIndex(COMMENTAIRE)),					
-					cursor.getInt(cursor.getColumnIndex(DISPONIBLE)) > 0,			
+					cursor.getInt(cursor.getColumnIndex(DISPONIBLE)) > 0,	
+					cursor.getInt(cursor.getColumnIndex(CONTENANCE)),			
 					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 			
