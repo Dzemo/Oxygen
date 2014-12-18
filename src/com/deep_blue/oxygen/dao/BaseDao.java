@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 public abstract class BaseDao {
 
-	protected final static int BASE_VERSION = 15;
+	protected final static int BASE_VERSION = 16;
 
 	protected final static String NOM = "database.db";
 
@@ -27,5 +27,9 @@ public abstract class BaseDao {
 
 	public SQLiteDatabase getDb() {
 		return mDb;
+	}
+	
+	public DatabaseHandler getDatabaseHandler(){
+		return mHandler;
 	}
 }

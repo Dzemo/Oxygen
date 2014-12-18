@@ -13,6 +13,7 @@ public class SiteDao extends BaseDao {
 	public static final String TABLE_NAME = "db_site";
 	
 	public static final String ID = "id";
+	public static final String ID_WEB = "id_web";
 	public static final String NOM = "nom";
 	public static final String COMMENTAIRE = "commentaire";
 	public static final String DESACTIVE = "desactive";
@@ -20,6 +21,7 @@ public class SiteDao extends BaseDao {
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
 			ID + " INTEGER PRIMARY KEY, " +
+			ID_WEB + " INTEGER, " +
 			NOM + " TEXT, " +
 			COMMENTAIRE + " TEXT, " +
 			DESACTIVE + " INTEGER INTEGER DEFAULT 0," +
@@ -100,6 +102,7 @@ public class SiteDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
+		value.put(ID_WEB, site.getIdWeb());
 		value.put(NOM, site.getNom());
 		value.put(COMMENTAIRE, site.getCommentaire());
 		value.put(DESACTIVE, site.getDesactive() ? 1 : 0);
@@ -121,6 +124,7 @@ public class SiteDao extends BaseDao {
 		
 		ContentValues value = new ContentValues();
 		value.put(ID, site.getId());
+		value.put(ID_WEB, site.getIdWeb());
 		value.put(NOM, site.getNom());
 		value.put(COMMENTAIRE, site.getCommentaire());
 		value.put(DESACTIVE, site.getDesactive() ? 1 : 0);
@@ -143,6 +147,7 @@ public class SiteDao extends BaseDao {
 		while(cursor.moveToNext()){
 			Site site = new Site(
 					cursor.getInt(cursor.getColumnIndex(ID)),
+					cursor.getInt(cursor.getColumnIndex(ID_WEB)),
 					cursor.getString(cursor.getColumnIndex(NOM)),
 					cursor.getString(cursor.getColumnIndex(COMMENTAIRE)),
 					cursor.getInt(cursor.getColumnIndex(DESACTIVE)) == 1,

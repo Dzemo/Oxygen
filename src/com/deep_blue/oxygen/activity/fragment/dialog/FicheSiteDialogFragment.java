@@ -100,7 +100,7 @@ public class FicheSiteDialogFragment extends DialogFragment {
 				ficheSecurite.setSite(sitesMap.get(selectedNom));
 			}
 			else if(!selectedNom.isEmpty()){
-				Site site = new Site(-1, selectedNom, "", false);
+				Site site = new Site(-1, null, selectedNom, "", false);
 				ficheSecurite.setSite(site);
 			}
 		
