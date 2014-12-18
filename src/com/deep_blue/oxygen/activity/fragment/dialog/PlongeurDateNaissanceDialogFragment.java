@@ -1,5 +1,6 @@
 package com.deep_blue.oxygen.activity.fragment.dialog;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
+import com.deep_blue.oxygen.util.DateStringUtils;
 
 public class PlongeurDateNaissanceDialogFragment extends DialogFragment implements OnClickListener{
 	private View rootView;
@@ -93,24 +95,29 @@ public class PlongeurDateNaissanceDialogFragment extends DialogFragment implemen
 		return builder.create();
 	}
 
-	public void dismiss(boolean type) {
+	public void dismiss(boolean updateValue) {
 		
-		if (type) {
-			int meters = ((NumberPicker) dialogView
-					.findViewById(R.id.depthPickerMeter)).getValue();
-			int decimal = ((NumberPicker) dialogView
-					.findViewById(R.id.decimalDepthPickerMeter)).getValue();
-			float profondeur = meters + (decimal/100);
-			
-			// On set la profondeur realisee du plongeur avec la nouvelle valeur
-			plongeur.setProfondeurRealisee(profondeur);
-			
+		final Date date;
+		
+		if (updateValue) {
+			// On set la date le plongeur avec la nouvelle valeur
+			DatePicker datePicker = (DatePicker) dialogView
+					.findViewById(R.id.dialoguePlongeurDatePicker);
+			int day = datePicker.getDayOfMonth();
+			int month = datePicker.getMonth();
+			int year = datePicker.getYear()-1900;
+			date = new Date(year, month, day);
+			Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+			String dateNaissance = formatter.format(date);
+			plongeur.setDateNaissance(dateNaissance);
+		
 			((TextView) rootView
-					.findViewById(R.id.textView_plongeur_profondeur_realisee_value))
-					.setText(meters+","+decimal+"m");
+					.findViewById(R.id.textView_plongeur_date_naissance_value))
+					.setText(dateNaissance);
 		}
 		
 		super.dismiss();
+		
 	}
 
 	@Override
