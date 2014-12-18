@@ -12,7 +12,9 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurDateNaissanceDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurDureeRealiseeDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurProfondeurRealiseeDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurTextDialogFragment;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
@@ -71,6 +73,7 @@ public class PlongeurActivity extends FragmentActivity {
 				.setText(plongeur.getTelephoneUrgence());
 		
 		//Ajout des onClick
+		// Click pour changer le nom du plongeur
 		findViewById(R.id.iB_plongeur_nom)
 		.setOnClickListener(new OnClickListener() {
 			@Override
@@ -80,6 +83,7 @@ public class PlongeurActivity extends FragmentActivity {
 				ndf.show(getSupportFragmentManager(), "TAG");
 			}
 		});
+		// Click pour changer le prénom du plongeur
 		findViewById(R.id.iB_plongeur_prenom)
 		.setOnClickListener(new OnClickListener() {
 			@Override
@@ -89,6 +93,7 @@ public class PlongeurActivity extends FragmentActivity {
 				ndf.show(getSupportFragmentManager(), "TAG");
 			}
 		});
+		// Click pour changer le num de telephone du plongeur
 		findViewById(R.id.iB_plongeur_telephone)
 		.setOnClickListener(new OnClickListener() {
 			@Override
@@ -98,6 +103,7 @@ public class PlongeurActivity extends FragmentActivity {
 				ndf.show(getSupportFragmentManager(), "TAG");
 			}
 		});
+		// Click pour changer le numéro de téléphone d'urgence du plongeur
 		findViewById(R.id.iB_plongeur_telephone_urgence)
 		.setOnClickListener(new OnClickListener() {
 			@Override
@@ -107,11 +113,32 @@ public class PlongeurActivity extends FragmentActivity {
 				ndf.show(getSupportFragmentManager(), "TAG");
 			}
 		});
+		// Click pour changer la durée réalisée du plongeur
 		findViewById(R.id.iB_plongeur_duree_realisee)
 		.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				PlongeurDureeRealiseeDialogFragment ndf = new PlongeurDureeRealiseeDialogFragment(
+						rootView, plongeur, palanquee);
+				ndf.show(getSupportFragmentManager(), "TAG");
+			}
+		});
+		// Click pour changer la profondeur réalisée du plongeur
+		findViewById(R.id.iB_plongeur_profondeur_realisee)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PlongeurProfondeurRealiseeDialogFragment ndf = new PlongeurProfondeurRealiseeDialogFragment(
+						rootView, plongeur, palanquee);
+				ndf.show(getSupportFragmentManager(), "TAG");
+			}
+		});
+		// Click pour changer la date de naissance du plongeur
+		findViewById(R.id.iB_plongeur_date_naissance)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PlongeurDateNaissanceDialogFragment ndf = new PlongeurDateNaissanceDialogFragment(
 						rootView, plongeur, palanquee);
 				ndf.show(getSupportFragmentManager(), "TAG");
 			}

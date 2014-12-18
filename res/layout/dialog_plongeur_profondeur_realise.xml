@@ -2,29 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:gravity="center" >
+    android:gravity="center"
+    android:orientation="horizontal" >
 
     <NumberPicker
         android:id="@+id/depthPickerMeter"
         android:layout_width="100dp"
-        android:layout_height="match_parent" />
-    
-    <TextView
-        android:id="@+id/depthPickerVirgule"
-        android:gravity="center"
-        android:layout_width="20dp"
-        android:layout_height="match_parent"
-        android:text="@string/dialog_point"
-        ></TextView>
+        android:layout_height="wrap_content" />
 
-    <NumberPicker
-        android:id="@+id/decimalDepthPickerMeter"
-        android:layout_width="100dp"
-        android:layout_height="match_parent" >
+        <TextView
+	        android:id="@+id/depthPickerVirgule"
+	        android:gravity="center"
+	        android:layout_width="20dp"
+	        android:layout_height="match_parent"
+	        android:text="@string/dialog_point">
+        </TextView>
 
-       
+        <NumberPicker
+            android:id="@+id/decimalDepthPickerMeter"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" >
 
-    </NumberPicker>
+        </NumberPicker>
 
 </LinearLayout>
+
+
+    
+    
+    
+
+    
+
+    
