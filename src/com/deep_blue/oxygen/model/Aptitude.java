@@ -55,7 +55,7 @@ public class Aptitude implements Parcelable {
 	 * dans le cadre d'une plongé encadrée (sous réserve qu'il dispose aussi des aptitudes
 	 * supplémentaire éventuellement nécessaire dans le cadre du plongé au nitrox par exemple)
 	 */
-	private int encardeeMax;
+	private int encadreeMax;
 	
 	/**
 	 * Profondeur en metre maximale à laquel le plongeur/moniteur ayant cette aptitude peut plongé 
@@ -108,7 +108,7 @@ public class Aptitude implements Parcelable {
 		this.libelleCourt = null;
 		this.libelleLong = null;
 		this.techniqueMax = 0;
-		this.encardeeMax = 0;
+		this.encadreeMax = 0;
 		this.autonomeMax = 0;
 		this.nitroxMax = 0;
 		this.ajoutMax = 0;
@@ -124,7 +124,7 @@ public class Aptitude implements Parcelable {
 	 * @param libelleCourt
 	 * @param libelleLong
 	 * @param techniqueMax
-	 * @param encardeeMax
+	 * @param encadreeMax
 	 * @param autonomeMax
 	 * @param nitroxMax
 	 * @param ajoutMax
@@ -142,7 +142,7 @@ public class Aptitude implements Parcelable {
 		this.libelleCourt = libelleCourt;
 		this.libelleLong = libelleLong;
 		this.techniqueMax = techniqueMax;
-		this.encardeeMax = encardeeMax;
+		this.encadreeMax = encardeeMax;
 		this.autonomeMax = autonomeMax;
 		this.nitroxMax = nitroxMax;
 		this.ajoutMax = ajoutMax;
@@ -159,7 +159,7 @@ public class Aptitude implements Parcelable {
 		libelleLong = source.readString();
 		
 		techniqueMax = source.readInt();
-		encardeeMax = source.readInt();
+		encadreeMax = source.readInt();
 		autonomeMax = source.readInt();
 		
 		nitroxMax = source.readInt();
@@ -197,11 +197,11 @@ public class Aptitude implements Parcelable {
 	public void setTechniqueMax(int techniqueMax) {
 		this.techniqueMax = techniqueMax;
 	}
-	public int getEncardeeMax() {
-		return encardeeMax;
+	public int getEncadreeMax() {
+		return encadreeMax;
 	}
-	public void setEncardeeMax(int encardeeMax) {
-		this.encardeeMax = encardeeMax;
+	public void setEncadreeMax(int encardeeMax) {
+		this.encadreeMax = encardeeMax;
 	}
 	public int getAutonomeMax() {
 		return autonomeMax;
@@ -250,7 +250,7 @@ public class Aptitude implements Parcelable {
 	public String toString() {
 		return "Aptitude [idWeb=" + idWeb + ", libelleCourt=" + libelleCourt
 				+ ", libelleLong=" + libelleLong + ", techniqueMax="
-				+ techniqueMax + ", encardeeMax=" + encardeeMax
+				+ techniqueMax + ", encadreeMax=" + encadreeMax
 				+ ", autonomeMax=" + autonomeMax + ", nitroxMax=" + nitroxMax
 				+ ", ajoutMax=" + ajoutMax + ", enseignementAirMax="
 				+ enseignementAirMax + ", enseignementNitroxMax="
@@ -272,7 +272,7 @@ public class Aptitude implements Parcelable {
 		dest.writeString(libelleLong != null ? libelleLong : "");
 		
 		dest.writeInt(techniqueMax);
-		dest.writeInt(encardeeMax);
+		dest.writeInt(encadreeMax);
 		dest.writeInt(autonomeMax);
 		
 		dest.writeInt(nitroxMax);

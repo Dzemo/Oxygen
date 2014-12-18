@@ -32,6 +32,7 @@ import com.deep_blue.oxygen.dao.MoniteurDao;
 import com.deep_blue.oxygen.dao.SiteDao;
 import com.deep_blue.oxygen.dao.UtilisateurDao;
 import com.deep_blue.oxygen.model.EnumEtat;
+import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Historique;
 import com.deep_blue.oxygen.model.ListeFichesSecurite;
 import com.deep_blue.oxygen.model.Utilisateur;
@@ -53,11 +54,6 @@ import com.deep_blue.oxygen.util.PreferenceKey;
 public class SynchThread extends Thread {
 
 	/**
-	 * Tag pour les message de Log
-	 */
-	private static final String TAG = "SynchThread";
-
-	/**
 	 * Nom du parametre get dans la requete http contenant les données à envoyer
 	 */
 	private static final String QUERY_DATA = "data";
@@ -67,6 +63,9 @@ public class SynchThread extends Thread {
 	private Utilisateur utilisateurConnecte;
 	private String url;
 	private SharedPreferences preferences;
+	
+	private List<FicheSecurite> listeFicheSecuriteEnvoyees;
+	private List<Historique> listeHistoriqueEnvoyes;
 
 	/**
 	 * Initialise le thread
@@ -94,6 +93,10 @@ public class SynchThread extends Thread {
 
 	@Override
 	public void start() {
+		UtilisateurDao dbHandler = new UtilisateurDao(pContext);
+		dbHandler.getDatabaseHandler().onUpgrade(dbHandler.open(), 16, 16);
+		dbHandler.close();
+		
 		if (!isNetworkConnected()) {
 			// Si les données ne sont pas activé on ne tente pas la
 			// synchronisation
@@ -143,8 +146,8 @@ public class SynchThread extends Thread {
 	}
 
 	private void onResponseHandler(String response) {
-		Log.i(TAG, "réponse de la requete '" + response + "'");
-
+		Log.v("Synch data", response);
+		
 		if("no-data".equals(response)){
 			Message msg = handler.obtainMessage(SynchThreadHandler.CODE_ERROR);
 			msg.getData().putString(IntentKey.SYNCH_ERROR_TEXT.toString(), pContext.getResources().getString(
@@ -230,13 +233,10 @@ public class SynchThread extends Thread {
 					.getMaxVersion());
 
 			// Fiche et historique
-			ListeFichesSecurite listeFichesSecuriteValidees = ficheSecuriteDao
-					.getByEtat(EnumEtat.VALIDE);
-			jsonRequestContainer
-					.setFichesSecuriteValidees(listeFichesSecuriteValidees);
+			ListeFichesSecurite listeFichesSecuriteValidees = ficheSecuriteDao.getByEtat(EnumEtat.VALIDE);
+			jsonRequestContainer.setFichesSecuriteValidees(listeFichesSecuriteValidees);
 			HistoriqueDao historiqueDao = new HistoriqueDao(pContext);
-			List<Historique> listeHistoriques = historiqueDao
-					.getForListFiche(listeFichesSecuriteValidees);
+			List<Historique> listeHistoriques = historiqueDao.getForListFiche(listeFichesSecuriteValidees);
 			jsonRequestContainer.setHistoriques(listeHistoriques);
 		}
 
@@ -271,8 +271,8 @@ public class SynchThread extends Thread {
 		try {
 			JsonParser jsonParser = jsonFactory.createJsonParser(response);
 
-			ObjectMapper objectMapper = new ObjectMapper();
-
+			ObjectMapper objectMapper = new ObjectMapper();			
+			
 			JsonResponseContainer jsonResponseContainer = objectMapper.readValue(jsonParser, JsonResponseContainer.class);
 			
 			//Récupération des utilisateurs
@@ -288,6 +288,8 @@ public class SynchThread extends Thread {
 				}
 			}
 			
+			Log.v("Synch", "FicheOk: "+(jsonResponseContainer.getFichesOk() != null ? jsonResponseContainer.getFichesOk() : "null"));
+			Log.v("Synch", "HistoriquesOk: "+(jsonResponseContainer.getHistoriquesOk() != null ? jsonResponseContainer.getHistoriquesOk() : "null"));
 			
 		} catch (JsonParseException e) {
 			e.printStackTrace();

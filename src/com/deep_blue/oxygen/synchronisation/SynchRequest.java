@@ -1,9 +1,6 @@
 package com.deep_blue.oxygen.synchronisation;
 
 import java.util.Map;
-import java.util.Map.Entry;
-
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -30,12 +27,6 @@ public class SynchRequest extends StringRequest {
 
 	@Override
 	public Map<String, String> getParams() {
-		
-		for(Entry<String, String> param : params.entrySet()){
-			//TODO retirer ces messages de debug
-			Log.d("RequestParams",param.getKey()+"->"+param.getValue());
-		}
-		
 		return params;
 	}
 

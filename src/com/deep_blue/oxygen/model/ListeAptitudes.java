@@ -1,6 +1,7 @@
 package com.deep_blue.oxygen.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -22,6 +23,10 @@ public class ListeAptitudes extends ArrayList<Aptitude> implements Parcelable {
 
 	public ListeAptitudes() {
 		super();
+	}
+	
+	public ListeAptitudes(Collection<Aptitude> liste){
+		super(liste);
 	}
 
 	/**

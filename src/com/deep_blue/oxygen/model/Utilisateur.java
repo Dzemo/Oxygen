@@ -217,10 +217,10 @@ public class Utilisateur implements Parcelable {
 		this.moniteurAssocie = moniteurAssocie;
 	}
 	
-	public void setMoniteurAssocieId(Integer id){
+	/*public void setMoniteurAssocieId(Integer id){
 		this.moniteurAssocie = new Moniteur();
 		this.moniteurAssocie.setIdWeb(id);
-	}
+	}*/
 
 	/**
 	 * 

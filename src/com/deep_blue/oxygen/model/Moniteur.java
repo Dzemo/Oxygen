@@ -1,12 +1,14 @@
 package com.deep_blue.oxygen.model;
 
+import java.util.Collection;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonAnySetter;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+@JsonSerialize
 public class Moniteur implements Parcelable{
 
 	public static final Parcelable.Creator<Moniteur> CREATOR = new Parcelable.Creator<Moniteur>() {
@@ -111,8 +113,9 @@ public class Moniteur implements Parcelable{
 		return aptitudes;
 	}
 
-	public void setAptitudes(ListeAptitudes aptitudes) {
-		this.aptitudes = aptitudes;
+	public void setAptitudes(Collection<Aptitude> aptitudes) {
+		ListeAptitudes liste = new ListeAptitudes(aptitudes);
+		this.aptitudes = liste;
 	}
 
 	public Boolean isActif() {
@@ -127,8 +130,8 @@ public class Moniteur implements Parcelable{
 		return directeurPlongee;
 	}
 
-	public void setDirecteurPlongee(Boolean directeurPlongee) {
-		this.directeurPlongee = directeurPlongee;
+	public void setDirecteurPlongee(Boolean directeurPlongee) {	
+			this.directeurPlongee = (Boolean) directeurPlongee;		
 	}
 
 	public String getEmail() {
@@ -184,9 +187,4 @@ public class Moniteur implements Parcelable{
 		dest.writeString(telephone != null ? telephone : "");
 		dest.writeLong(version);		
 	}
-
-    @JsonAnySetter
-    public void set(String name, Object value) {
-        aptitudes.add((Aptitude)value);
-    }
 }

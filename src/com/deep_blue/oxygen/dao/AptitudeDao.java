@@ -150,7 +150,7 @@ public class AptitudeDao extends BaseDao {
 		value.put(LIBELLE_LONG, aptitude.getLibelleLong());
 		
 		value.put(TECHNIQUE_MAX, aptitude.getTechniqueMax());
-		value.put(ENCADREE_MAX, aptitude.getEncardeeMax());
+		value.put(ENCADREE_MAX, aptitude.getEncadreeMax());
 		value.put(AUTONOME_MAX, aptitude.getAutonomeMax());
 		
 		value.put(NITROX_MAX, aptitude.getNitroxMax());
@@ -181,7 +181,7 @@ public class AptitudeDao extends BaseDao {
 		value.put(LIBELLE_LONG, aptitude.getLibelleLong());
 		
 		value.put(TECHNIQUE_MAX, aptitude.getTechniqueMax());
-		value.put(ENCADREE_MAX, aptitude.getEncardeeMax());
+		value.put(ENCADREE_MAX, aptitude.getEncadreeMax());
 		value.put(AUTONOME_MAX, aptitude.getAutonomeMax());
 		
 		value.put(NITROX_MAX, aptitude.getNitroxMax());
