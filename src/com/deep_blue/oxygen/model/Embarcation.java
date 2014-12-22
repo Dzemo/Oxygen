@@ -34,7 +34,7 @@ public class Embarcation implements Parcelable {
 	/**
 	 * Commentaire sur l'embarcation, peut être plus long
 	 */
-	private String comentaire;
+	private String commentaire;
 	
 	/**
 	 * Indique si l'embarcation est disponible ou si elle est supprimé/desactivé/vendu/perdu/cassé/en reparation
@@ -57,7 +57,7 @@ public class Embarcation implements Parcelable {
 		super();
 		this.idWeb = null;
 		this.libelle = null;
-		this.comentaire = null;
+		this.commentaire = null;
 		this.disponible = null;
 		this.contenance = null;
 		this.version = null;
@@ -66,17 +66,17 @@ public class Embarcation implements Parcelable {
 	/**
 	 * @param idWeb
 	 * @param libelle
-	 * @param comentaire
+	 * @param commentaire
 	 * @param disponible
 	 * @param contenance
 	 * @param version
 	 */
-	public Embarcation(Integer idWeb, String libelle, String comentaire,
+	public Embarcation(Integer idWeb, String libelle, String commentaire,
 			boolean disponible, Integer contenance, Long version) {
 		super();
 		this.idWeb = idWeb;
 		this.libelle = libelle;
-		this.comentaire = comentaire;
+		this.commentaire = commentaire;
 		this.disponible = disponible;
 		this.contenance = contenance;
 		this.version = version;
@@ -89,7 +89,7 @@ public class Embarcation implements Parcelable {
 	public Embarcation(Parcel source){
 		idWeb = source.readInt();
 		libelle = source.readString();
-		comentaire = source.readString();
+		commentaire = source.readString();
 		disponible = source.readInt() > 0;
 		contenance = source.readInt();
 		version = source.readLong();
@@ -111,12 +111,12 @@ public class Embarcation implements Parcelable {
 		this.libelle = libelle;
 	}
 
-	public String getComentaire() {
-		return comentaire;
+	public String getCommentaire() {
+		return commentaire;
 	}
 
-	public void setComentaire(String comentaire) {
-		this.comentaire = comentaire;
+	public void setCommentaire(String comentaire) {
+		this.commentaire = comentaire;
 	}
 
 	public boolean isDisponible() {
@@ -155,7 +155,7 @@ public class Embarcation implements Parcelable {
 	@Override
 	public String toString() {
 		return getClass().getName() + " {\n\tidWeb: " + idWeb + "\n\tlibelle: "
-				+ libelle + "\n\tcomentaire: " + comentaire
+				+ libelle + "\n\tcomentaire: " + commentaire
 				+ "\n\tdisponible: " + disponible + "\n\tcontenance: "
 				+ contenance + "\n\tversion: " + version + "\n}";
 	}
@@ -169,7 +169,7 @@ public class Embarcation implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(idWeb);
 		dest.writeString(libelle != null ? libelle : "");
-		dest.writeString(comentaire != null ? comentaire : "");
+		dest.writeString(commentaire != null ? commentaire : "");
 		dest.writeInt(disponible ? 1 : 0);
 		dest.writeInt(contenance);
 		dest.writeLong(version);

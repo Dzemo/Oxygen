@@ -19,7 +19,14 @@ import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.util.PreferenceKey;
 
 public class ParametreActivity extends Activity {
-
+	
+	private static final String remote_url_default = "http://oxygen.plonge.mobi";
+	private static final Boolean save_login_default = false;
+	private static final Boolean keep_connection_default = false;
+	private static final Boolean retrieve_all_type_fiche_default = false;
+	private static final Integer retrieve_length_default = 0;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,19 +40,19 @@ public class ParametreActivity extends Activity {
 
 		((EditText) findViewById(R.id.editText_parametre_remote_url))
 				.setText(preferences.getString(
-						PreferenceKey.REMOTE_URL.toString(), "indéfini"));
+						PreferenceKey.REMOTE_URL.toString(), remote_url_default));
 		((CheckBox) findViewById(R.id.checkBox_save_login))
 				.setChecked(preferences.getBoolean(
-						PreferenceKey.SAVE_LOGIN.toString(), false));
+						PreferenceKey.SAVE_LOGIN.toString(), save_login_default));
 		((CheckBox) findViewById(R.id.checkBox_keep_connection))
 				.setChecked(preferences.getBoolean(
-						PreferenceKey.KEEP_CONNECTION.toString(), false));
+						PreferenceKey.KEEP_CONNECTION.toString(), keep_connection_default));
 		((TextView) findViewById(R.id.textView_parametre_last_synch_value))
 				.setText(preferences.getString(
 						PreferenceKey.LAST_SYNCH.toString(), "jamais"));
 
 		if (preferences.getBoolean(
-				PreferenceKey.RETREIVE_TYPE_ALL_FICHE.toString(), true))
+				PreferenceKey.RETREIVE_TYPE_ALL_FICHE.toString(), retrieve_all_type_fiche_default))
 			((RadioGroup) findViewById(R.id.radioGroup_retreive_type))
 					.check(R.id.radio_parametre_retrieve_type_all);
 		else
@@ -53,7 +60,7 @@ public class ParametreActivity extends Activity {
 					.check(R.id.radio_parametre_retrieve_type_only_own);
 
 		int retrieveLength = preferences.getInt(
-				PreferenceKey.RETREIVE_LENGTH.toString(), 0);
+				PreferenceKey.RETREIVE_LENGTH.toString(), retrieve_length_default);
 		final TextView textViewRetrieveLength = (TextView) findViewById(R.id.textView_parametre_retrieve_length_label);
 		if (retrieveLength > 0)
 			textViewRetrieveLength.setText(getResources().getQuantityString(

@@ -20,7 +20,7 @@ public class FicheSecurite  implements Parcelable {
 	};
 
 	
-	private Integer id;
+	private Long id;
 	private Integer idWeb;
 	private Embarcation embarcation;
 	private Moniteur directeurPlonge;
@@ -54,7 +54,7 @@ public class FicheSecurite  implements Parcelable {
 	 * @param version
 	 * @param palanquees
 	 */
-	public FicheSecurite(Integer id, Integer idWeb, Embarcation embarcation,
+	public FicheSecurite(Long id, Integer idWeb, Embarcation embarcation,
 			Moniteur directeurPlonge, Long timestamp, Site site, EnumEtat etat,
 			Long version, ListePalanquees palanquees) {
 		super();
@@ -76,7 +76,7 @@ public class FicheSecurite  implements Parcelable {
 	public FicheSecurite(Parcel source){
 		boolean isPresent;
 		
-		id = source.readInt();
+		id = source.readLong();
 		idWeb = source.readInt();
 		
 		isPresent = source.readByte() == 1;
@@ -108,14 +108,14 @@ public class FicheSecurite  implements Parcelable {
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -265,7 +265,7 @@ public class FicheSecurite  implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
+		dest.writeLong(id);
 		dest.writeInt(idWeb);
 		dest.writeByte((byte)(embarcation != null ? 1 : 0));
 		if(embarcation != null)

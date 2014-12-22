@@ -163,9 +163,10 @@ public class PlongeurDao extends BaseDao {
 		value.put(DUREE_REALISEE, plongeur.getDureeRealisee());
 		value.put(VERSION, plongeur.getVersion());
 		
-		mDb.insert(TABLE_NAME, null, value);
+		Long insertedId = mDb.insert(TABLE_NAME, null, value);
 		mDb.close();
 		
+		plongeur.setId(insertedId);
 		return plongeur;
 	}
 	
@@ -222,10 +223,10 @@ public class PlongeurDao extends BaseDao {
 		
 		while(cursor.moveToNext()){
 			Plongeur plongeur = new Plongeur(
-					cursor.getInt(cursor.getColumnIndex(ID)),
+					cursor.getLong(cursor.getColumnIndex(ID)),
 					cursor.getInt(cursor.getColumnIndex(ID_WEB)),
-					cursor.getInt(cursor.getColumnIndex(ID_PALANQUEE)),
-					cursor.getInt(cursor.getColumnIndex(ID_FICHE_SECURITE)),
+					cursor.getLong(cursor.getColumnIndex(ID_PALANQUEE)),
+					cursor.getLong(cursor.getColumnIndex(ID_FICHE_SECURITE)),
 					cursor.getString(cursor.getColumnIndex(NOM)),
 					cursor.getString(cursor.getColumnIndex(PRENOM)),
 					new ListeAptitudes(cursor.getString(cursor.getColumnIndex(APTITUDES)), allAptitudes),

@@ -24,7 +24,6 @@
         <item quantity="one">Récupère les fiches du prochain jour</item>
         <item quantity="other">Récupère les fiches des %d prochains jours</item>
     </plurals>
-
     <string name="parametre_last_synch_label">Dernière synchronisation :</string>
     <string name="parametre_saved">Paramètres enregistrés</string>
     <!-- GENERAL/MENU FIN -->

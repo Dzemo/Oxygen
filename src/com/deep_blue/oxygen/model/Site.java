@@ -19,7 +19,7 @@ public class Site implements Parcelable {
 		}
 	};
 
-	private Integer id;
+	private Long id;
 	private Integer idWeb;
 	private String nom;
 	private String commentaire;
@@ -45,7 +45,7 @@ public class Site implements Parcelable {
 	 * @param desactive
 	 * @param version
 	 */
-	public Site(Integer id, Integer idWeb, String nom, String commentaire, Boolean desactive, Long version) {
+	public Site(Long id, Integer idWeb, String nom, String commentaire, Boolean desactive, Long version) {
 		super();
 		this.id = id;
 		this.idWeb = idWeb;
@@ -63,7 +63,7 @@ public class Site implements Parcelable {
 	 * @param commentaire
 	 * @param desactive
 	 */
-	public Site(Integer id, Integer idWeb, String nom, String commentaire, Boolean desactive) {
+	public Site(Long id, Integer idWeb, String nom, String commentaire, Boolean desactive) {
 		super();
 		this.id = id;
 		this.idWeb = idWeb;
@@ -76,7 +76,7 @@ public class Site implements Parcelable {
 	
 	public Site(Parcel source){
 		super();
-		this.id = source.readInt();
+		this.id = source.readLong();
 		this.idWeb = source.readInt();
 		this.nom = source.readString();
 		this.commentaire = source.readString();
@@ -87,13 +87,13 @@ public class Site implements Parcelable {
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	/**
@@ -182,7 +182,7 @@ public class Site implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
+		dest.writeLong(id);
 		dest.writeInt(idWeb);
 		dest.writeString(nom);
 		dest.writeString(commentaire);		

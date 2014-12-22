@@ -27,7 +27,7 @@ public class Plongeur implements Parcelable {
 	/**
 	 * Id du plongeur
 	 */
-	private Integer id;
+	private Long id;
 	
 	/**
 	 * Id du plongeur sur le serveur distant
@@ -37,12 +37,12 @@ public class Plongeur implements Parcelable {
 	/**
 	 * Id de la palanquée à laquel appartient ce plongeur
 	 */
-	private Integer idPalanquee;
+	private Long idPalanquee;
 	
 	/**
 	 * Id de la fiche de sécurité à laquel appartient ce plongeur=
 	 */
-	private Integer idFicheSecurite;
+	private Long idFicheSecurite;
 	
 	/**
 	 * Nom du plongeur
@@ -122,7 +122,7 @@ public class Plongeur implements Parcelable {
 	 * @param dureeRealisee
 	 * @param version
 	 */
-	public Plongeur(Integer id, Integer idWeb, Integer idPalanquee, Integer idFicheSecurite,
+	public Plongeur(Long id, Integer idWeb, Long idPalanquee, Long idFicheSecurite,
 			String nom, String prenom, ListeAptitudes aptitudes,
 			String telephone, String telephoneUrgence, String dateNaissance, Float profondeurRealisee,
 			Integer dureeRealisee,
@@ -148,10 +148,10 @@ public class Plongeur implements Parcelable {
 	 * @param source
 	 */
 	public Plongeur(Parcel source){
-		id = source.readInt();
+		id = source.readLong();
 		idWeb = source.readInt();
-		idPalanquee = source.readInt();
-		idFicheSecurite = source.readInt();
+		idPalanquee = source.readLong();
+		idFicheSecurite = source.readLong();
 		nom = source.readString();
 		prenom = source.readString();
 		aptitudes = source.readParcelable(ListeAptitudes.class.getClassLoader());
@@ -163,11 +163,11 @@ public class Plongeur implements Parcelable {
 		version = source.readLong();
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -185,19 +185,19 @@ public class Plongeur implements Parcelable {
 		this.idWeb = idWeb;
 	}
 
-	public Integer getIdPalanquee() {
+	public Long getIdPalanquee() {
 		return idPalanquee;
 	}
 
-	public void setIdPalanquee(Integer idPalanquee) {
+	public void setIdPalanquee(Long idPalanquee) {
 		this.idPalanquee = idPalanquee;
 	}
 
-	public Integer getIdFicheSecurite() {
+	public Long getIdFicheSecurite() {
 		return idFicheSecurite;
 	}
 
-	public void setIdFicheSecurite(Integer idFicheSecurite) {
+	public void setIdFicheSecurite(Long idFicheSecurite) {
 		this.idFicheSecurite = idFicheSecurite;
 	}
 
@@ -302,10 +302,10 @@ public class Plongeur implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
+		dest.writeLong(id);
 		dest.writeInt(idWeb);
-		dest.writeInt(idPalanquee);
-		dest.writeInt(idFicheSecurite);
+		dest.writeLong(idPalanquee);
+		dest.writeLong(idFicheSecurite);
 		dest.writeString(nom != null ? nom : "");
 		dest.writeString(prenom != null ? prenom : "");
 		dest.writeParcelable(aptitudes, flags);

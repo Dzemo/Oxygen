@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		//Ajout des "+PlongeurDao.APTITUDES+"
 		//Debutant
-		db.execSQL("INSERT INTO "+AptitudeDao.TABLE_NAME+" ("+AptitudeDao.ID_WEB+", "+AptitudeDao.LIBELLE_COURT+", "+AptitudeDao.LIBELLE_LONG+", "+AptitudeDao.TECHNIQUE_MAX+", "+AptitudeDao.ENCADREE_MAX+", "+AptitudeDao.AUTONOME_MAX+", "+AptitudeDao.NITROX_MAX+", "+AptitudeDao.AJOUT_MAX+", "+AptitudeDao.ENSEIGNEMENT_AIR_MAX+", "+AptitudeDao.ENSEIGNEMENT_NITROX_MAX+", "+AptitudeDao.ENCADREMENT_MAX+") VALUES (1, 'Débutant', 'Débutant', 6, 0, 0, 0, 0, 0, 0, 0);");
+		/*db.execSQL("INSERT INTO "+AptitudeDao.TABLE_NAME+" ("+AptitudeDao.ID_WEB+", "+AptitudeDao.LIBELLE_COURT+", "+AptitudeDao.LIBELLE_LONG+", "+AptitudeDao.TECHNIQUE_MAX+", "+AptitudeDao.ENCADREE_MAX+", "+AptitudeDao.AUTONOME_MAX+", "+AptitudeDao.NITROX_MAX+", "+AptitudeDao.AJOUT_MAX+", "+AptitudeDao.ENSEIGNEMENT_AIR_MAX+", "+AptitudeDao.ENSEIGNEMENT_NITROX_MAX+", "+AptitudeDao.ENCADREMENT_MAX+") VALUES (1, 'Débutant', 'Débutant', 6, 0, 0, 0, 0, 0, 0, 0);");
 		
 		//PA
 		db.execSQL("INSERT INTO "+AptitudeDao.TABLE_NAME+" ("+AptitudeDao.ID_WEB+", "+AptitudeDao.LIBELLE_COURT+", "+AptitudeDao.LIBELLE_LONG+", "+AptitudeDao.TECHNIQUE_MAX+", "+AptitudeDao.ENCADREE_MAX+", "+AptitudeDao.AUTONOME_MAX+", "+AptitudeDao.NITROX_MAX+", "+AptitudeDao.AJOUT_MAX+", "+AptitudeDao.ENSEIGNEMENT_AIR_MAX+", "+AptitudeDao.ENSEIGNEMENT_NITROX_MAX+", "+AptitudeDao.ENCADREMENT_MAX+") VALUES (2, 'PA-12', 'Plongé autonome 12m', 12, 20, 12, 0, 0, 0, 0, 0);");
@@ -59,9 +59,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL("INSERT INTO "+AptitudeDao.TABLE_NAME+" ("+AptitudeDao.ID_WEB+", "+AptitudeDao.LIBELLE_COURT+", "+AptitudeDao.LIBELLE_LONG+", "+AptitudeDao.TECHNIQUE_MAX+", "+AptitudeDao.ENCADREE_MAX+", "+AptitudeDao.AUTONOME_MAX+", "+AptitudeDao.NITROX_MAX+", "+AptitudeDao.AJOUT_MAX+", "+AptitudeDao.ENSEIGNEMENT_AIR_MAX+", "+AptitudeDao.ENSEIGNEMENT_NITROX_MAX+", "+AptitudeDao.ENCADREMENT_MAX+") VALUES (20, 'P-3', 'Plongé niveau 3', 60, 60, 60, 60, 60, 60, 60, 60);");
 		db.execSQL("INSERT INTO "+AptitudeDao.TABLE_NAME+" ("+AptitudeDao.ID_WEB+", "+AptitudeDao.LIBELLE_COURT+", "+AptitudeDao.LIBELLE_LONG+", "+AptitudeDao.TECHNIQUE_MAX+", "+AptitudeDao.ENCADREE_MAX+", "+AptitudeDao.AUTONOME_MAX+", "+AptitudeDao.NITROX_MAX+", "+AptitudeDao.AJOUT_MAX+", "+AptitudeDao.ENSEIGNEMENT_AIR_MAX+", "+AptitudeDao.ENSEIGNEMENT_NITROX_MAX+", "+AptitudeDao.ENCADREMENT_MAX+") VALUES (21, 'P-4', 'Plongé niveau 4', 60, 60, 60, 0, 40, 0, 0, 40);");
 	
-		/** DEBUT AJOUT DONNES TEST */
-		//TODO retirer les donnes de tests
-		
 		//Ajout des embarcations de tests
 		db.execSQL("INSERT INTO "+EmbarcationDao.TABLE_NAME +" ("+EmbarcationDao.ID_WEB +", "+EmbarcationDao.LIBELLE +", "+EmbarcationDao.COMMENTAIRE +", "+EmbarcationDao.DISPONIBLE +", "+EmbarcationDao.CONTENANCE +") VALUES (1, 'EMB-1', 'Embarcation-1, disponible', 1, 10);");
 		db.execSQL("INSERT INTO "+EmbarcationDao.TABLE_NAME +" ("+EmbarcationDao.ID_WEB +", "+EmbarcationDao.LIBELLE +", "+EmbarcationDao.COMMENTAIRE +", "+EmbarcationDao.DISPONIBLE +", "+EmbarcationDao.CONTENANCE +") VALUES (2, 'EMB-2', 'Embarcation-2, indisponible', 0, 10);");
@@ -74,9 +71,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//Ajout des fiches de sécurités
 		db.execSQL("INSERT INTO "+FicheSecuriteDao.TABLE_NAME+" ("+FicheSecuriteDao.ID_LOCAL+", "+FicheSecuriteDao.ID_EMBARCATION_WEB+", "+FicheSecuriteDao.ID_DIRECTEUR_PLONGE_WEB+", "+FicheSecuriteDao.TIMESTAMP+", "+FicheSecuriteDao.ID_SITE+", "+FicheSecuriteDao.ETAT+") VALUES (1, 1, 3, 1418228748, 1, 'SYNCHRONISE');");
 		db.execSQL("INSERT INTO "+FicheSecuriteDao.TABLE_NAME+" ("+FicheSecuriteDao.ID_LOCAL+", "+FicheSecuriteDao.ID_EMBARCATION_WEB+", "+FicheSecuriteDao.ID_DIRECTEUR_PLONGE_WEB+", "+FicheSecuriteDao.TIMESTAMP+", "+FicheSecuriteDao.ID_SITE+", "+FicheSecuriteDao.ETAT+") VALUES (2, 1, 4, 1394209548, 2, 'SYNCHRONISE');");
-		db.execSQL("INSERT INTO "+FicheSecuriteDao.TABLE_NAME+" ("+FicheSecuriteDao.ID_LOCAL+", "+FicheSecuriteDao.ID_EMBARCATION_WEB+", "+FicheSecuriteDao.ID_DIRECTEUR_PLONGE_WEB+", "+FicheSecuriteDao.TIMESTAMP+", "+FicheSecuriteDao.ID_SITE+", "+FicheSecuriteDao.ETAT+") VALUES (3, 1, 4, 1314249548, 2, 'VALIDE');");
+		//db.execSQL("INSERT INTO "+FicheSecuriteDao.TABLE_NAME+" ("+FicheSecuriteDao.ID_LOCAL+", "+FicheSecuriteDao.ID_EMBARCATION_WEB+", "+FicheSecuriteDao.ID_DIRECTEUR_PLONGE_WEB+", "+FicheSecuriteDao.TIMESTAMP+", "+FicheSecuriteDao.ID_SITE+", "+FicheSecuriteDao.ETAT+") VALUES (3, 1, 4, 1314249548, 2, 'VALIDE');");
 		
-		//PAS D'AJOUT D'HISTORIQUES !!
+		//Ajout des historiques
 		db.execSQL("INSERT INTO "+HistoriqueDao.TABLE_NAME+" ("+HistoriqueDao.ID_HISTORIQUE+", "+HistoriqueDao.LOGIN_UTILISATEUR+", "+HistoriqueDao.TIMESTAMP+", "+HistoriqueDao.COMMENTAIRE+", "+HistoriqueDao.ID_FICHE_SECURITE+") VALUES (1, 'admin', 1314249548, 'Récupération de la fiche', 3);");
 		db.execSQL("INSERT INTO "+HistoriqueDao.TABLE_NAME+" ("+HistoriqueDao.ID_HISTORIQUE+", "+HistoriqueDao.LOGIN_UTILISATEUR+", "+HistoriqueDao.TIMESTAMP+", "+HistoriqueDao.COMMENTAIRE+", "+HistoriqueDao.ID_FICHE_SECURITE+") VALUES (2, 'admin', 1314249248, 'Validation de la fiche', 3);");
 		

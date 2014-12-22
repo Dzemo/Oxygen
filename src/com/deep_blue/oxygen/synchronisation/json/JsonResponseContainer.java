@@ -17,8 +17,8 @@ public class JsonResponseContainer {
 	private List<Embarcation> embarcations;
 	private List<Site> sites;
 	private List<Moniteur> moniteurs;
-	private Boolean fichesOk;
-	private Boolean historiquesOk;
+	private List<Integer> fichesOk;
+	private List<Integer> historiquesOk;
 	
 	public JsonResponseContainer() {
 		super();
@@ -28,8 +28,8 @@ public class JsonResponseContainer {
 		this.embarcations = null;
 		this.sites = null;
 		this.moniteurs = null;
-		this.fichesOk = false;
-		this.historiquesOk = false;
+		this.fichesOk = null;
+		this.historiquesOk = null;
 	}
 
 	/**
@@ -119,28 +119,28 @@ public class JsonResponseContainer {
 	/**
 	 * @return the fichesOk
 	 */
-	public Boolean getFichesOk() {
+	public List<Integer> getFichesOk() {
 		return fichesOk;
 	}
 
 	/**
 	 * @param fichesOk the fichesOk to set
 	 */
-	public void setFichesOk(Boolean fichesOk) {
+	public void setFichesOk(List<Integer> fichesOk) {
 		this.fichesOk = fichesOk;
 	}
 
 	/**
 	 * @return the historiquesOk
 	 */
-	public Boolean getHistoriquesOk() {
+	public List<Integer> getHistoriquesOk() {
 		return historiquesOk;
 	}
 
 	/**
 	 * @param historiquesOk the historiquesOk to set
 	 */
-	public void setHistoriquesOk(Boolean historiquesOk) {
+	public void setHistoriquesOk(List<Integer> historiquesOk) {
 		this.historiquesOk = historiquesOk;
 	}
 

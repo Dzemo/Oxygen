@@ -92,14 +92,26 @@ public class HistoriqueDao extends BaseDao {
 	}
 	
 	/**
-	 * Delete all historique
+	 * Supprime toute les historiques dont l'id est dans la liste fourni
+	 * @param idsHistoriques
 	 */
-	public void deleteAll(){
-		SQLiteDatabase mDb = open();
-		
-		mDb.delete(TABLE_NAME, "", new String[] {});
-		
-		mDb.close();
+	public void deleteByIds(List<Integer> idsHistoriques){
+		if(idsHistoriques.size() > 0){
+			String whereClause = "";
+			String[] whereArgs =  new String[idsHistoriques.size()];
+			
+			int i = 0;
+			for(Integer idHistorique : idsHistoriques){
+				whereArgs[i] = idHistorique.toString();
+				if(!whereClause.isEmpty()) whereClause += " OR ";
+				whereClause += ID_HISTORIQUE + " = ?";
+				i++;
+			}		
+			
+			SQLiteDatabase mDb = open();
+			mDb.delete(TABLE_NAME, whereClause, whereArgs);
+			mDb.close();
+		}
 	}
 	
 	/**

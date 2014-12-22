@@ -12,29 +12,38 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.activity.ListeFichesSecuriteActivity;
 import com.deep_blue.oxygen.dao.AptitudeDao;
 import com.deep_blue.oxygen.dao.EmbarcationDao;
 import com.deep_blue.oxygen.dao.FicheSecuriteDao;
 import com.deep_blue.oxygen.dao.HistoriqueDao;
 import com.deep_blue.oxygen.dao.MoniteurDao;
+import com.deep_blue.oxygen.dao.PalanqueeDao;
+import com.deep_blue.oxygen.dao.PlongeurDao;
 import com.deep_blue.oxygen.dao.SiteDao;
 import com.deep_blue.oxygen.dao.UtilisateurDao;
+import com.deep_blue.oxygen.model.Aptitude;
+import com.deep_blue.oxygen.model.Embarcation;
 import com.deep_blue.oxygen.model.EnumEtat;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Historique;
 import com.deep_blue.oxygen.model.ListeFichesSecurite;
+import com.deep_blue.oxygen.model.Moniteur;
+import com.deep_blue.oxygen.model.Palanquee;
+import com.deep_blue.oxygen.model.Plongeur;
+import com.deep_blue.oxygen.model.Site;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.synchronisation.json.JsonRequestContainer;
 import com.deep_blue.oxygen.synchronisation.json.JsonResponseContainer;
@@ -63,14 +72,11 @@ public class SynchThread extends Thread {
 	private Utilisateur utilisateurConnecte;
 	private String url;
 	private SharedPreferences preferences;
-	
-	private List<FicheSecurite> listeFicheSecuriteEnvoyees;
-	private List<Historique> listeHistoriqueEnvoyes;
 
 	/**
 	 * Initialise le thread
 	 */
-	public SynchThread(Context pContext) {
+	public SynchThread(Activity pContext) {
 		super();
 
 		this.pContext = pContext;
@@ -86,19 +92,16 @@ public class SynchThread extends Thread {
 		url += "api.php";
 	}
 
-	public SynchThread(Context pContext, Utilisateur utilisateur) {
+	public SynchThread(Activity pContext, Utilisateur utilisateur) {
 		this(pContext);
 		this.utilisateurConnecte = utilisateur;
 	}
 
 	@Override
 	public void start() {
-		UtilisateurDao dbHandler = new UtilisateurDao(pContext);
-		dbHandler.getDatabaseHandler().onUpgrade(dbHandler.open(), 16, 16);
-		dbHandler.close();
 		
 		if (!isNetworkConnected()) {
-			// Si les données ne sont pas activé on ne tente pas la
+			// Si les données ne sont pas activées on ne tente pas la
 			// synchronisation
 			Message msg = handler.obtainMessage(SynchThreadHandler.CODE_ERROR);
 			msg.getData().putString(
@@ -145,8 +148,11 @@ public class SynchThread extends Thread {
 		}
 	}
 
+	/**
+	 * Handler sur une réponse 'normal' du serveur, cad pas de problème internet et server accessible
+	 * @param response
+	 */
 	private void onResponseHandler(String response) {
-		Log.v("Synch data", response);
 		
 		if("no-data".equals(response)){
 			Message msg = handler.obtainMessage(SynchThreadHandler.CODE_ERROR);
@@ -167,6 +173,10 @@ public class SynchThread extends Thread {
 		}
 	}
 
+	/**
+	 * Handler sur une erreur lors de la connection au serveur
+	 * @param error
+	 */
 	private void onErrorResponseHandler(VolleyError error) {
 		String textMessageToaster = "";
 
@@ -179,6 +189,7 @@ public class SynchThread extends Thread {
 					R.string.synch_error_host_unknown);
 		} else {
 			textMessageToaster = error.getMessage();
+			error.printStackTrace();
 		}
 
 		Message msg = handler.obtainMessage(SynchThreadHandler.CODE_ERROR);
@@ -288,8 +299,115 @@ public class SynchThread extends Thread {
 				}
 			}
 			
-			Log.v("Synch", "FicheOk: "+(jsonResponseContainer.getFichesOk() != null ? jsonResponseContainer.getFichesOk() : "null"));
-			Log.v("Synch", "HistoriquesOk: "+(jsonResponseContainer.getHistoriquesOk() != null ? jsonResponseContainer.getHistoriquesOk() : "null"));
+			//Récupération des aptitudes
+			if(jsonResponseContainer.getAptitudes() != null){
+				AptitudeDao aptitudeDao = new AptitudeDao(pContext);
+				for(Aptitude aptitude : jsonResponseContainer.getAptitudes()){
+					if(aptitudeDao.getByIdWeb(aptitude.getIdWeb()) != null){
+						aptitudeDao.update(aptitude);
+					} else{
+						aptitudeDao.insert(aptitude);
+					}
+				}
+			}
+			
+			//Récupération des embarcations
+			if(jsonResponseContainer.getEmbarcations() != null){
+				EmbarcationDao embarcationDao = new EmbarcationDao(pContext);
+				for(Embarcation embarcation : jsonResponseContainer.getEmbarcations()){
+					if(embarcationDao.getByIdWeb(embarcation.getIdWeb()) != null){
+						embarcationDao.update(embarcation);
+					} else{
+						embarcationDao.insert(embarcation);
+					}
+				}
+			}
+			
+			//Récupération des moniteurs
+			if(jsonResponseContainer.getMoniteurs() != null){
+				MoniteurDao moniteurDao = new MoniteurDao(pContext);
+				for(Moniteur moniteur : jsonResponseContainer.getMoniteurs()){
+					if(moniteurDao.getByIdWeb(moniteur.getIdWeb()) != null){
+						moniteurDao.update(moniteur);
+					} else{
+						moniteurDao.insert(moniteur);
+					}
+				}
+			}
+			
+			//Récupération des sites
+			if(jsonResponseContainer.getSites() != null){
+				SiteDao siteDao = new SiteDao(pContext);
+				for(Site site : jsonResponseContainer.getSites()){
+					Site siteExistant = siteDao.getByIdWeb(site.getIdWeb());
+					if(siteExistant != null){
+						site.setId(siteExistant.getId());
+						siteDao.update(site);
+					} else{
+						siteDao.insert(site);
+					}
+				}
+			}
+			
+			//Récupération des nouvelles fiches
+			if(jsonResponseContainer.getFichesSecurite() != null){
+				FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(pContext);
+				PalanqueeDao palanqueeDao = new PalanqueeDao(pContext);
+				PlongeurDao plongeurDao = new PlongeurDao(pContext);
+				SiteDao siteDao = new SiteDao(pContext);
+				for(FicheSecurite ficheSecurite : jsonResponseContainer.getFichesSecurite()){
+
+					FicheSecurite ficheSecuriteExistant = ficheSecuriteDao.getByIdWeb(ficheSecurite.getIdWeb());
+					if(ficheSecuriteExistant != null){
+						//On ne récupère pas les fiches qui ont déjà été synchronisé
+					} else{
+						
+						//Récupération du site
+						if(ficheSecurite.getSite() != null){
+							Site site = siteDao.getByIdWeb(ficheSecurite.getSite().getIdWeb());
+							if(site == null){
+								site = siteDao.insert(ficheSecurite.getSite());
+							}
+							ficheSecurite.setSite(site);
+						}
+						
+						//Enregistrement de la fiche
+						FicheSecurite insertedFiche = ficheSecuriteDao.insert(ficheSecurite);
+						
+						//Mise à jours de l'id fiche local pour les palanquées  (car il ne sont pas envyé par le serveur)
+						for(Palanquee palanquee : ficheSecurite.getPalanquees()){
+							palanquee.setIdFicheSecurite(insertedFiche.getId());
+							
+							//Enregistrement de la palanquee
+							Palanquee insertedPalanquee = palanqueeDao.insert(palanquee);
+							
+							//Mise à jours de l'id fiche et palanquee local pour les plongeurs (car il ne sont pas envyé par le serveur)
+							for(Plongeur plongeur : palanquee.getPlongeurs()){
+								plongeur.setIdFicheSecurite(insertedFiche.getId());
+								plongeur.setIdPalanquee(insertedPalanquee.getId());
+								plongeurDao.insert(plongeur);
+							}
+						}
+					}
+				}
+			}
+			
+			//Suppression des fiches archivés
+			if(jsonResponseContainer.getFichesOk() != null){
+				FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(pContext);
+				ficheSecuriteDao.deleteByIds(jsonResponseContainer.getFichesOk());
+			}
+			
+			//Suppression des historiques
+			if(jsonResponseContainer.getHistoriquesOk() != null){
+				HistoriqueDao historiqueDao = new HistoriqueDao(pContext);
+				historiqueDao.deleteByIds(jsonResponseContainer.getHistoriquesOk());
+			}
+			
+			//Rechargement de la liste des fiches si instance de ListeFichesSecuriteActivity
+			if(pContext instanceof ListeFichesSecuriteActivity){
+				((ListeFichesSecuriteActivity)pContext).loadListeFiche();
+			}
 			
 		} catch (JsonParseException e) {
 			e.printStackTrace();

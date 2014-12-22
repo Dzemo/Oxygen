@@ -72,10 +72,10 @@ public class AptitudeDao extends BaseDao {
 	
 	/**
 	 * Return an Aptitude or null
-	 * @param aptitudeId
+	 * @param aptitudeId idWeb de l'aptitude
 	 * @return
 	 */
-	public Aptitude getById(Integer aptitudeId){
+	public Aptitude getByIdWeb(Integer aptitudeId){
 		SQLiteDatabase mDb = open();
 		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_WEB+" = ?", new String[]{String.valueOf(aptitudeId)});
 		

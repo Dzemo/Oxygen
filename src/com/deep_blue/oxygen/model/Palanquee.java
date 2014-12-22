@@ -25,9 +25,9 @@ public class Palanquee implements Parcelable {
 	};
 
 
-	private Integer id;
+	private Long id;
 	private Integer idWeb;
-	private Integer idFicheSecurite;
+	private Long idFicheSecurite;
 	private Moniteur moniteur;
 	private Integer numero;
 	private EnumTypePlonge typePlonge;
@@ -73,7 +73,7 @@ public class Palanquee implements Parcelable {
 	 * @param version
 	 * @param plongeurs
 	 */
-	public Palanquee(Integer id, Integer idWeb, Integer idFicheSecurite, Moniteur moniteur,
+	public Palanquee(Long id, Integer idWeb, Long idFicheSecurite, Moniteur moniteur,
 			Integer numero, EnumTypePlonge typePlonge, EnumTypeGaz typeGaz,
 			Float profondeurPrevue, Float profondeurRealisee,
 			Integer dureePrevue, Integer dureeRealisee, String heure, Long version,
@@ -96,9 +96,9 @@ public class Palanquee implements Parcelable {
 	}
 	
 	public Palanquee(Parcel source){
-		id = source.readInt();
+		id = source.readLong();
 		idWeb = source.readInt();
-		idFicheSecurite = source.readInt();
+		idFicheSecurite = source.readLong();
 		moniteur = source.readParcelable(Moniteur.class.getClassLoader());
 		numero = source.readInt();
 		typePlonge = EnumTypePlonge.valueOf(source.readString());
@@ -112,11 +112,11 @@ public class Palanquee implements Parcelable {
 		plongeurs = source.readParcelable(ListePlongeurs.class.getClassLoader());
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -134,11 +134,11 @@ public class Palanquee implements Parcelable {
 		this.idWeb = idWeb;
 	}
 
-	public Integer getIdFicheSecurite() {
+	public Long getIdFicheSecurite() {
 		return idFicheSecurite;
 	}
 
-	public void setIdFicheSecurite(Integer idFicheSecurite) {
+	public void setIdFicheSecurite(Long idFicheSecurite) {
 		this.idFicheSecurite = idFicheSecurite;
 	}
 
@@ -268,9 +268,9 @@ public class Palanquee implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
+		dest.writeLong(id);
 		dest.writeInt(idWeb);
-		dest.writeInt(idFicheSecurite);
+		dest.writeLong(idFicheSecurite);
 		dest.writeParcelable(moniteur, flags);
 		dest.writeInt(numero);
 		dest.writeString(typePlonge.toString());

@@ -59,7 +59,7 @@ public class EmbarcationDao extends BaseDao {
 	 * @param embarcationIdWeb
 	 * @return
 	 */
-	public Embarcation getById(int embarcationIdWeb){
+	public Embarcation getByIdWeb(int embarcationIdWeb){
 		SQLiteDatabase mDb = open();
 		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_WEB+" = ?", new String[]{String.valueOf(embarcationIdWeb)});
 		
@@ -116,7 +116,7 @@ public class EmbarcationDao extends BaseDao {
 		ContentValues value = new ContentValues();
 		value.put(ID_WEB, embarcation.getIdWeb());
 		value.put(LIBELLE, embarcation.getLibelle());
-		value.put(COMMENTAIRE, embarcation.getComentaire());		
+		value.put(COMMENTAIRE, embarcation.getCommentaire());		
 		value.put(DISPONIBLE, embarcation.isDisponible() ? 1 : 0);	
 		value.put(CONTENANCE, embarcation.getContenance());		
 		value.put(VERSION, embarcation.getVersion());
@@ -137,7 +137,7 @@ public class EmbarcationDao extends BaseDao {
 		
 		ContentValues value = new ContentValues();
 		value.put(LIBELLE, embarcation.getLibelle());
-		value.put(COMMENTAIRE, embarcation.getComentaire());		
+		value.put(COMMENTAIRE, embarcation.getCommentaire());		
 		value.put(DISPONIBLE, embarcation.isDisponible() ? 1 : 0);	
 		value.put(CONTENANCE, embarcation.getContenance());		
 		value.put(VERSION, embarcation.getVersion());

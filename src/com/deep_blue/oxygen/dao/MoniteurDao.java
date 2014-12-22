@@ -71,7 +71,7 @@ public static final String TABLE_NAME = "db_moniteur";
 	 * @param idMoniteur
 	 * @return
 	 */
-	public Moniteur getById(int idMoniteur){
+	public Moniteur getByIdWeb(int idMoniteur){
 		SQLiteDatabase mDb = open();
 		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_WEB+" = ?", new String[]{String.valueOf(idMoniteur)});
 		

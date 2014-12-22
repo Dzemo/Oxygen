@@ -35,7 +35,59 @@ public class ListeFichesSecuriteActivity extends Activity {
 		utilisateur = (Utilisateur) intent
 				.getParcelableExtra(IntentKey.UTILISATEUR_COURANT.toString());
 
+		loadListeFiche();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.liste_fiches_securite, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		switch (item.getItemId()) {
+
+		case R.id.itemParam:
+			Intent intent = new Intent(ListeFichesSecuriteActivity.this,
+					ParametreActivity.class);
+			startActivity(intent);
+			return true;
+
+		case R.id.itemSync:
+			Thread synchThread = new SynchThread(this, utilisateur);
+			synchThread.start();
+			//TODO recharger la liste des fiches après la synchronisation
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	/**
+	 * Charge la liste des fiches dans la vue depuis la base de données
+	 */
+	public void loadListeFiche(){
 		TableLayout tableLayout = (TableLayout) findViewById(R.id.tableLayout_listeFiches);
+		
+		//Effacage de la liste des fiches
+		tableLayout.removeAllViews();
+		
+		//Ajout des titres
+		TableRow rowTitrePerso = (TableRow) getLayoutInflater().inflate(
+				R.layout.activity_list_row_title_perso_layout, tableLayout,
+				false);
+		tableLayout.addView(rowTitrePerso, 0);
+		TableRow rowTitreAutre = (TableRow) getLayoutInflater().inflate(
+				R.layout.activity_list_row_title_autre_layout, tableLayout,
+				false);
+		tableLayout.addView(rowTitreAutre, 1);
+		
+		//Chargement de la liste des fiches		
 		FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
 		ListeFichesSecurite listeFiche = ficheSecuriteDao.getAll();
 		int i = 0;
@@ -50,7 +102,7 @@ public class ListeFichesSecuriteActivity extends Activity {
 						.getMoniteurAssocie().getIdWeb()) {
 
 					TableRow row = (TableRow) getLayoutInflater().inflate(
-							R.layout.activity_list_row_layout, tableLayout,
+							R.layout.activity_list_row_fiche_layout, tableLayout,
 							false);
 
 					ImageView ivIcon = (ImageView) row
@@ -108,7 +160,7 @@ public class ListeFichesSecuriteActivity extends Activity {
 					|| ficheSecurite.getDirecteurPlonge().getIdWeb() != utilisateur
 							.getMoniteurAssocie().getIdWeb()) {
 				TableRow row = (TableRow) getLayoutInflater().inflate(
-						R.layout.activity_list_row_layout, tableLayout, false);
+						R.layout.activity_list_row_fiche_layout, tableLayout, false);
 
 				ImageView ivIcon = (ImageView) row.findViewById(R.id.iB_fiche);
 				if (ficheSecurite.getEtat().equals(EnumEtat.SYNCHRONISE)) {
@@ -157,6 +209,9 @@ public class ListeFichesSecuriteActivity extends Activity {
 
 		// Sinon on cache les titres de row
 		if (utilisateur.getMoniteurAssocie() != null) {
+			findViewById(R.id.liste_fiche_perso_title).setVisibility(View.VISIBLE);
+			findViewById(R.id.liste_fiche_autre_title).setVisibility(View.VISIBLE);
+			
 			((TextView) findViewById(R.id.textView_liste_fiche_perso_title))
 					.setText(String.format(
 							getResources().getString(
@@ -170,35 +225,6 @@ public class ListeFichesSecuriteActivity extends Activity {
 		} else {
 			findViewById(R.id.liste_fiche_perso_title).setVisibility(View.GONE);
 			findViewById(R.id.liste_fiche_autre_title).setVisibility(View.GONE);
-		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.liste_fiches_securite, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		switch (item.getItemId()) {
-
-		case R.id.itemParam:
-			Intent intent = new Intent(ListeFichesSecuriteActivity.this,
-					ParametreActivity.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.itemSync:
-			Thread synchThread = new SynchThread(this, utilisateur);
-			synchThread.start();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
 		}
 	}
 }

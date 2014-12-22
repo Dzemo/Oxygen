@@ -16,6 +16,7 @@ import com.deep_blue.oxygen.dao.UtilisateurDao;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.synchronisation.SynchThread;
 import com.deep_blue.oxygen.util.IntentKey;
+import com.deep_blue.oxygen.util.MD5Utils;
 import com.deep_blue.oxygen.util.PreferenceKey;
 
 public class LoginActivity extends Activity {
@@ -95,7 +96,7 @@ public class LoginActivity extends Activity {
 				.getText().toString();
 
 		UtilisateurDao utilisateurDao = new UtilisateurDao(LoginActivity.this);
-		Utilisateur utilisateur = utilisateurDao.authentifier(login, password);
+		Utilisateur utilisateur = utilisateurDao.authentifier(login, MD5Utils.md5(password));
 
 		if (utilisateur != null) {
 			// Enregistrement du login et de la connection si spécifié dans les

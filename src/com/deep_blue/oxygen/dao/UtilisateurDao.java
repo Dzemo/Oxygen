@@ -204,7 +204,7 @@ public class UtilisateurDao extends BaseDao{
 					);
 
 			if(!cursor.isNull(cursor.getColumnIndex(ID_WEB_MONITEUR_ASSOCIE))){
-				utilisateur.setMoniteurAssocie(moniteurDao.getById(cursor.getInt(cursor.getColumnIndex(ID_WEB_MONITEUR_ASSOCIE))));
+				utilisateur.setMoniteurAssocie(moniteurDao.getByIdWeb(cursor.getInt(cursor.getColumnIndex(ID_WEB_MONITEUR_ASSOCIE))));
 			}
 			
 			resultList.add(utilisateur);			

@@ -79,6 +79,27 @@ public class SiteDao extends BaseDao {
 	}
 	
 	/**
+	 * Return le site d'id web spécifié
+	 * @param idWebSite
+	 * @return
+	 */
+	public Site getByIdWeb(int idWebSite){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_WEB+" = ?", new String[]{String.valueOf(idWebSite)});
+		
+		SparseArray<Site> resultList  = cursorToSiteList(cursor);
+		
+		mDb.close();
+		
+		if(resultList.size() == 1){
+			return resultList.get(idWebSite);
+		}
+		else{
+			return null;
+		}
+	}
+	
+	/**
 	 * Return toutes le site activé indexé par leurs ids
 	 * @return
 	 */
@@ -130,9 +151,10 @@ public class SiteDao extends BaseDao {
 		value.put(DESACTIVE, site.getDesactive() ? 1 : 0);
 		value.put(VERSION, site.getVersion());
 		
-		mDb.insert(TABLE_NAME, null, value);
+		Long insertedId = mDb.insert(TABLE_NAME, null, value);
 		mDb.close();
 		
+		site.setId(insertedId);
 		return site;
 	}
 	
@@ -146,7 +168,7 @@ public class SiteDao extends BaseDao {
 		
 		while(cursor.moveToNext()){
 			Site site = new Site(
-					cursor.getInt(cursor.getColumnIndex(ID)),
+					cursor.getLong(cursor.getColumnIndex(ID)),
 					cursor.getInt(cursor.getColumnIndex(ID_WEB)),
 					cursor.getString(cursor.getColumnIndex(NOM)),
 					cursor.getString(cursor.getColumnIndex(COMMENTAIRE)),
@@ -154,7 +176,7 @@ public class SiteDao extends BaseDao {
 					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 			
-			resultList.put(site.getId(), site);			
+			resultList.put(site.getId().intValue(), site);			
 		}
 		cursor.close();
 		

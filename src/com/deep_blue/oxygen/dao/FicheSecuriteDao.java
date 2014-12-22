@@ -1,5 +1,7 @@
 package com.deep_blue.oxygen.dao;
 
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -83,6 +85,27 @@ public class FicheSecuriteDao extends BaseDao {
 	}
 	
 	/**
+	 * Return la fiche de sécurite d'id web spécifié
+	 * @param idWebFicheSecurite
+	 * @return
+	 */
+	public FicheSecurite getByIdWeb(int idWebFicheSecurite){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_WEB+" = ?", new String[]{String.valueOf(idWebFicheSecurite)});
+		
+		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
+		
+		mDb.close();
+		
+		if(resultList.size() == 1){
+			return resultList.get(0);
+		}
+		else{
+			return null;
+		}
+	}
+	
+	/**
 	 * Return tout les fiches de sécurité appartenant à l'état spécifié
 	 * @param etat
 	 * @return
@@ -145,7 +168,6 @@ public class FicheSecuriteDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
-		value.put(ID_LOCAL, ficheSecurite.getId());
 		value.put(ID_WEB, ficheSecurite.getIdWeb());
 		value.put(ID_EMBARCATION_WEB, ficheSecurite.getEmbarcation() != null ? ficheSecurite.getEmbarcation().getIdWeb() : null);
 		value.put(ID_DIRECTEUR_PLONGE_WEB, ficheSecurite.getDirecteurPlonge() != null ? ficheSecurite.getDirecteurPlonge().getIdWeb() : null);
@@ -154,10 +176,35 @@ public class FicheSecuriteDao extends BaseDao {
 		value.put(ETAT, ficheSecurite.getEtat().toString());
 		value.put(VERSION, ficheSecurite.getVersion());
 		
-		mDb.insert(TABLE_NAME, null, value);
+		long insertedId = mDb.insert(TABLE_NAME, null, value);
 		mDb.close();
 		
+		ficheSecurite.setId(insertedId);
 		return ficheSecurite;
+	}
+	
+	/**
+	 * Supprime toute les fiches archivées dont l'id est dans la liste fourni
+	 * @param idsFiche
+	 */
+	public void deleteByIds(List<Integer> idsFiche){
+		if(idsFiche.size() > 0){
+			String whereClause = "";
+			String[] whereArgs =  new String[idsFiche.size()];
+			
+			int i = 0;
+			for(Integer idFiche : idsFiche){
+				whereArgs[i] = idFiche.toString();
+				if(!whereClause.isEmpty()) whereClause += " OR ";
+				whereClause += ID_LOCAL + " = ?";
+				i++;
+			}		
+			whereClause = ETAT + " = '" + EnumEtat.VALIDE.toString()+"' AND ( " + whereClause + " )";
+			
+			SQLiteDatabase mDb = open();
+			mDb.delete(TABLE_NAME, whereClause, whereArgs);
+			mDb.close();
+		}
 	}
 	
 	/**
@@ -175,10 +222,10 @@ public class FicheSecuriteDao extends BaseDao {
 		
 		while(cursor.moveToNext()){
 			FicheSecurite ficheSecurite = new FicheSecurite(
-					cursor.getInt(cursor.getColumnIndex(ID_LOCAL)),
+					cursor.getLong(cursor.getColumnIndex(ID_LOCAL)),
 					cursor.getInt(cursor.getColumnIndex(ID_WEB)),
-					embarcationDao.getById(cursor.getInt(cursor.getColumnIndex(ID_EMBARCATION_WEB))),
-					moniteurDao.getById(cursor.getInt(cursor.getColumnIndex(ID_DIRECTEUR_PLONGE_WEB))),
+					embarcationDao.getByIdWeb(cursor.getInt(cursor.getColumnIndex(ID_EMBARCATION_WEB))),
+					moniteurDao.getByIdWeb(cursor.getInt(cursor.getColumnIndex(ID_DIRECTEUR_PLONGE_WEB))),
 					cursor.getLong(cursor.getColumnIndex(TIMESTAMP)),
 					siteDao.getById((cursor.getInt(cursor.getColumnIndex(ID_SITE)))),
 					EnumEtat.valueOf(cursor.getString(cursor.getColumnIndex(ETAT))),
