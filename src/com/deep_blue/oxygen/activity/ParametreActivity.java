@@ -3,6 +3,7 @@ package com.deep_blue.oxygen.activity;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -20,13 +21,6 @@ import com.deep_blue.oxygen.util.PreferenceKey;
 
 public class ParametreActivity extends Activity {
 	
-	private static final String remote_url_default = "http://oxygen.plonge.mobi";
-	private static final Boolean save_login_default = false;
-	private static final Boolean keep_connection_default = false;
-	private static final Boolean retrieve_all_type_fiche_default = false;
-	private static final Integer retrieve_length_default = 0;
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,30 +29,40 @@ public class ParametreActivity extends Activity {
 		ActionBar actionBar = this.getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		Resources resources = getResources();
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
 
 		((EditText) findViewById(R.id.editText_parametre_remote_url))
 				.setText(preferences.getString(
-						PreferenceKey.REMOTE_URL.toString(), remote_url_default));
+						PreferenceKey.REMOTE_URL.toString(), resources.getString(R.string.remote_url_default)));
+
 		((CheckBox) findViewById(R.id.checkBox_save_login))
 				.setChecked(preferences.getBoolean(
-						PreferenceKey.SAVE_LOGIN.toString(), save_login_default));
+						PreferenceKey.SAVE_LOGIN.toString(), Boolean.valueOf(resources.getString(R.string.save_login_default))));
+		
 		((CheckBox) findViewById(R.id.checkBox_keep_connection))
 				.setChecked(preferences.getBoolean(
-						PreferenceKey.KEEP_CONNECTION.toString(), keep_connection_default));
+						PreferenceKey.KEEP_CONNECTION.toString(),  Boolean.valueOf(resources.getString(R.string.keep_connection_default))));
+		
 		((TextView) findViewById(R.id.textView_parametre_last_synch_value))
 				.setText(preferences.getString(
 						PreferenceKey.LAST_SYNCH.toString(), "jamais"));
 
 		if (preferences.getBoolean(
-				PreferenceKey.RETREIVE_TYPE_ALL_FICHE.toString(), retrieve_all_type_fiche_default))
+				PreferenceKey.RETREIVE_TYPE_ALL_FICHE.toString(),  Boolean.valueOf(resources.getString(R.string.retrieve_all_type_fiche_default))))
 			((RadioGroup) findViewById(R.id.radioGroup_retreive_type))
 					.check(R.id.radio_parametre_retrieve_type_all);
 		else
 			((RadioGroup) findViewById(R.id.radioGroup_retreive_type))
 					.check(R.id.radio_parametre_retrieve_type_only_own);
 
+		int retrieve_length_default = 0;
+		try{
+			retrieve_length_default = Integer.valueOf(resources.getString(R.string.retrieve_length_default));
+		}catch(NumberFormatException e){
+			//On ne fait rien sur la retrieve_length_default est mal configurée
+		}
 		int retrieveLength = preferences.getInt(
 				PreferenceKey.RETREIVE_LENGTH.toString(), retrieve_length_default);
 		final TextView textViewRetrieveLength = (TextView) findViewById(R.id.textView_parametre_retrieve_length_label);

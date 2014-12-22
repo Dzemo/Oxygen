@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- CONFIG DEBUT -->
+    
+    <!-- Addresse URL par défaut du serveur de synchronisation, est équivalente 
+    	 à l'addresse utilisé par les utilisateurs pour accéder à l'interface web -->
+    <string name="remote_url_default">http://oxygen.plonge.mobi</string>
+    
+    <!-- Si le login de l'utilisateur est enregistré sur l'écran de connexion, boolean (true/false) -->
+    <string name="save_login_default">false</string>
+    
+    <!-- Si l'utilisateur reste connecté à l'application, boolean (true/false) -->
+    <string name="keep_connection_default">false</string>
+    
+    <!-- Si, lors de la synchronisation, toute les fiches sont récupérés ou uniquement celle dont le directeur 
+    	 de plongé est associés à l'utilisateur actuelle, boolean (true/false) -->
+    <string name="retrieve_all_type_fiche_default">false</string>
+    
+    <!-- Nombre de jours de fiche récupérs, à 0 récupère uniquement les fiches du jours actuel, max 31 -->
+    <string name="retrieve_length_default">0</string>
+    
+    <!-- CONFIG FIN -->
+    
     <!-- GENERAL/MENU DEBUT -->
     <string name="app_name">Oxygen</string>
     <string name="action_settings">Settings</string>
