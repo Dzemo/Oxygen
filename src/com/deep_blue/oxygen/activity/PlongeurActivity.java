@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurAptitudeDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurDateNaissanceDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurDureeRealiseeDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurProfondeurRealiseeDialogFragment;
@@ -143,6 +144,16 @@ public class PlongeurActivity extends FragmentActivity {
 				ndf.show(getSupportFragmentManager(), "TAG");
 			}
 		});
+		// Click pour changer les aptitudes du plongeur
+				findViewById(R.id.iB_plongeur_aptitudes)
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						PlongeurAptitudeDialogFragment ndf = new PlongeurAptitudeDialogFragment(
+								rootView, plongeur, palanquee);
+						ndf.show(getSupportFragmentManager(), "TAG");
+					}
+				});
 	}
 
 	@Override
