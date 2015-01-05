@@ -77,7 +77,10 @@ public class ListeAptitudes extends ArrayList<Aptitude> implements Parcelable {
 		for (Aptitude aptitude : this) {
 			if (!result.equals(""))
 				result += ", ";
-			result += aptitude.getLibelleCourt();
+			if (aptitude != null)
+				result += aptitude.getLibelleCourt();
+			else
+				result += "null";
 		}
 
 		return result + "";
