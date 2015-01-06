@@ -283,4 +283,22 @@ public class Palanquee implements Parcelable {
 		dest.writeLong(version);
 		dest.writeParcelable(plongeurs, flags);
 	}
+	
+	/**
+	 * Ajoute ou met à jours le plongeur passé en paramètre dans la liste des plongeurs de la palanquée
+	 * @param plongeur
+	 */
+	public void ajouterOuMajPlongeur(Plongeur plongeur){
+		boolean plongeurMaj = false;
+		for(Plongeur plongeurInList : plongeurs){
+			if(plongeurInList.getId() == plongeur.getId()){
+				plongeurInList = plongeur;
+				plongeurMaj = true;
+			}
+		}
+		
+		if(!plongeurMaj){
+			plongeurs.add(plongeur);
+		}
+	}
 }

@@ -29,7 +29,7 @@
     <string name="menu_synch">Sychroniser</string>
     <string name="menu_delete">Supprimer</string>
     <string name="menu_save">Enregistrer</string>
-    <string name="menu_add_palanquee">Ajouter une palanquée</string>
+    <string name="menu_valider_fiche">Valider la fiche</string>
     <string name="menu_add_fiche">Créer une fiche</string>
     <string name="menu_param">Parametres</string>
     <string name="menu_logout">Deconnexion</string>
@@ -75,13 +75,14 @@
 
 
     <!-- FICHE INFO DEBUT -->
+    <string name="title_activity_fiche_securite_info">Fiche</string>
     <string name="fiche_infos_title_palanquees">Palanquées :</string>
-    <string name="title_activity_fiche_securite">Fiche de Sécurité</string>
     <string name="fiche_infos_date_labelle">Date :</string>
     <string name="fiche_infos_heure_labelle">Heure :</string>
     <string name="fiche_infos_site_labelle">Site :</string>
     <string name="fiche_infos_directeur_plonge_labelle">Directeur :</string>
     <string name="fiche_infos_embarcation_labelle">Embarcation :</string>
+    <string name="palanquee_title">Palanquée</string>
 
     <!-- FICHE DIALOG INFO DEBUT -->
     <string name="fiche_info_dialogie_date_title">Date de plongée</string>
@@ -94,6 +95,7 @@
 
 
     <!-- PALANQUEE INFO DEBUT -->
+    <string name="title_activity_palanquee">Palanquee</string>
     <string name="palanquee_heure_labelle">Heure :</string>
     <string name="palanquee_info_moniteur_labelle">Moniteur :</string>
     <string name="palanquee_info_gaz_labelle">Type de gaz :</string>
@@ -119,6 +121,7 @@
 
 
     <!-- PLONGEUR DEBUT -->
+    <string name="title_activity_plongeur">Plongeur</string>
     <string name="plongeur_nom_labelle">Nom :</string>
     <string name="plongeur_prenom_labelle">Prenom :</string>
     <string name="plongeur_aptitudes_labelle">Aptitudes :</string>

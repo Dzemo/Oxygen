@@ -30,23 +30,34 @@
             android:name=".activity.ParametreActivity"
             android:label="@string/parametre_title" >
         </activity>
+        
         <activity
             android:name=".activity.ListeFichesSecuriteActivity"
             android:label="@string/title_activity_list" >
         </activity>
+        
         <activity
-            android:name=".activity.FicheSecuriteActivity"
-            android:label="@string/title_activity_fiche_securite" >
+            android:name=".activity.FicheSecuriteInfoActivity"
+            android:label="@string/title_activity_fiche_securite_info" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.deep_blue.oxygen.activity.ListeFichesSecuriteActivity" />
         </activity>
-        <activity
-            android:name=".activity.PlongeurActivity"
-            android:label="@string/title_activity_fiche_securite" >
+        
+         <activity
+            android:name=".activity.PalanqueeActivity"
+            android:label="@string/title_activity_palanquee" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.deep_blue.oxygen.activity.FicheSecuriteActivity" />
+                android:value="com.deep_blue.oxygen.activity.FicheSecuriteInfoActivity" />
+        </activity>
+        
+        <activity
+            android:name=".activity.PlongeurActivity"
+            android:label="@string/title_activity_plongeur" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.deep_blue.oxygen.activity.PalanqueeActivity" />
         </activity>
     </application>
 

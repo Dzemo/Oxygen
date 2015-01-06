@@ -282,4 +282,17 @@ public class FicheSecurite  implements Parcelable {
 		dest.writeByte((byte)(palanquees != null ? 1 : 0));
 		dest.writeParcelable(palanquees, flags);
 	}
+	
+	/**
+	 * Renvoi la palanquee d'id si elle existe dans la fiche ou null
+	 * @param palanqueeId
+	 * @return
+	 */
+	public Palanquee getPalanqueeId(Long palanqueeId){
+		for(Palanquee palanquee : palanquees){
+			if(palanquee.getId() == palanqueeId)
+				return palanquee;
+		}
+		return null;
+	}
 }

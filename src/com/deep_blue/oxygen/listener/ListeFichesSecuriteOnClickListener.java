@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.deep_blue.oxygen.activity.FicheSecuriteActivity;
+import com.deep_blue.oxygen.activity.FicheSecuriteInfoActivity;
 import com.deep_blue.oxygen.activity.ListeFichesSecuriteActivity;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Utilisateur;
@@ -25,7 +25,7 @@ public class ListeFichesSecuriteOnClickListener implements OnClickListener{
 	
 	@Override
 	public void onClick(View v) {
-		Intent intent = new Intent(listeFicheSecuriteActivity, FicheSecuriteActivity.class);		
+		Intent intent = new Intent(listeFicheSecuriteActivity, FicheSecuriteInfoActivity.class);		
 		intent.putExtra(IntentKey.FICHE_SECURITE_COURANTE.toString(), clickedFiche);
 		intent.putExtra(IntentKey.UTILISATEUR_COURANT.toString(), currentUtilisateur);
 		

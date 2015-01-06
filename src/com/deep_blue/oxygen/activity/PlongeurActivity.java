@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurAptitudeDialogFragment;
@@ -19,14 +20,12 @@ import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurProfondeurRealiseeD
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurTextDialogFragment;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
-import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.util.DateStringUtils;
 import com.deep_blue.oxygen.util.EnumPlongeurText;
 import com.deep_blue.oxygen.util.IntentKey;
 
 public class PlongeurActivity extends FragmentActivity {
 
-	private Utilisateur utilisateur;
 	private Plongeur plongeur;
 	private View rootView;
 	private Palanquee palanquee;
@@ -42,8 +41,6 @@ public class PlongeurActivity extends FragmentActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();
-		utilisateur = (Utilisateur) intent
-				.getParcelableExtra(IntentKey.UTILISATEUR_COURANT.toString());
 		plongeur = (Plongeur) intent
 				.getParcelableExtra(IntentKey.PLONGEUR_COURANT.toString());
 		palanquee = (Palanquee) intent
@@ -173,8 +170,11 @@ public class PlongeurActivity extends FragmentActivity {
 			setResult(RESULT_OK, result);
 			finish();
 			return true;
+		case R.id.itemDelete:
+			Toast toast = Toast.makeText(this, "Bouton de suppression du plongeur (non implémenté)", Toast.LENGTH_SHORT);
+			toast.show();
+			return true;
 		default:
-
 			return super.onOptionsItemSelected(item);
 		}
 	}

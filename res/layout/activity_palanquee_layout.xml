@@ -4,14 +4,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_weight="1"
+    android:background="@color/background_gen"
     android:scrollbars="none" >
 
     <TableLayout
         android:id="@+id/activity_fiche_securite_fragment_palanquee"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:scrollbars="vertical" >
+        android:gravity="center" >
 
         <TableRow
             android:id="@+id/palanquee_heure"

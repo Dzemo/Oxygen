@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.dao.FicheSecuriteDao;
@@ -51,13 +52,15 @@ public class ListeFichesSecuriteActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
-
+		case R.id.itemAdd:
+			Toast toast = Toast.makeText(this, "Bouton de d'ajout d'une nouvelle fiche de securite (non implémenté)", Toast.LENGTH_SHORT);
+			toast.show();
+			return true;
 		case R.id.itemParam:
 			Intent intent = new Intent(ListeFichesSecuriteActivity.this,
 					ParametreActivity.class);
 			startActivity(intent);
 			return true;
-
 		case R.id.itemSync:
 			Thread synchThread = new SynchThread(this, utilisateur);
 			synchThread.start();
