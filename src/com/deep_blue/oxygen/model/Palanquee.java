@@ -42,20 +42,20 @@ public class Palanquee implements Parcelable {
 	
 	public Palanquee() {
 		super();
-		this.id = null;
-		this.idWeb = null;
-		this.idFicheSecurite = null;
+		this.id = -1L;
+		this.idWeb = -1;
+		this.idFicheSecurite = -1L;
 		this.moniteur = null;
-		this.numero = null;
-		this.typePlonge = null;
-		this.typeGaz = null;
-		this.profondeurPrevue = null;
-		this.profondeurRealiseeMoniteur = null;
-		this.dureePrevue = null;
-		this.dureeRealiseeMoniteur = null;
-		this.heure = null;
-		this.version = null;
-		this.plongeurs = null;
+		this.numero = 0;
+		this.typePlonge = EnumTypePlonge.NULL;
+		this.typeGaz = EnumTypeGaz.NULL;
+		this.profondeurPrevue = 0F;
+		this.profondeurRealiseeMoniteur = 0F;
+		this.dureePrevue = 0;
+		this.dureeRealiseeMoniteur = 0;
+		this.heure = "";
+		this.version = 0L;
+		this.plongeurs = new ListePlongeurs();
 	}
 	
 	/**
@@ -163,7 +163,7 @@ public class Palanquee implements Parcelable {
 	}
 
 	public void setTypePlonge(EnumTypePlonge typePlonge) {
-		this.typePlonge = typePlonge;
+		this.typePlonge = typePlonge != null ? typePlonge : EnumTypePlonge.NULL;
 	}
 
 	public EnumTypeGaz getTypeGaz() {
@@ -171,7 +171,7 @@ public class Palanquee implements Parcelable {
 	}
 
 	public void setTypeGaz(EnumTypeGaz typeGaz) {
-		this.typeGaz = typeGaz;
+		this.typeGaz = typeGaz != null ? typeGaz : EnumTypeGaz.NULL;
 	}
 
 	public Float getProfondeurPrevue() {
@@ -282,23 +282,5 @@ public class Palanquee implements Parcelable {
 		dest.writeString(heure);
 		dest.writeLong(version);
 		dest.writeParcelable(plongeurs, flags);
-	}
-	
-	/**
-	 * Ajoute ou met à jours le plongeur passé en paramètre dans la liste des plongeurs de la palanquée
-	 * @param plongeur
-	 */
-	public void ajouterOuMajPlongeur(Plongeur plongeur){
-		boolean plongeurMaj = false;
-		for(Plongeur plongeurInList : plongeurs){
-			if(plongeurInList.getId() == plongeur.getId()){
-				plongeurInList = plongeur;
-				plongeurMaj = true;
-			}
-		}
-		
-		if(!plongeurMaj){
-			plongeurs.add(plongeur);
-		}
 	}
 }

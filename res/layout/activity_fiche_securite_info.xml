@@ -153,6 +153,13 @@
                 android:text="@string/palanquee_title"
                 android:textAppearance="@style/PlongeurTitle" />
         </TableRow>
+        
+        <TableLayout
+            android:id="@+id/activity_fiche_securite_info_palanquees"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+		 >
+        </TableLayout>
     </TableLayout>
 
 </ScrollView>

@@ -83,19 +83,24 @@
     <string name="fiche_infos_directeur_plonge_labelle">Directeur :</string>
     <string name="fiche_infos_embarcation_labelle">Embarcation :</string>
     <string name="palanquee_title">Palanquée</string>
-
+    <string name="fiche_info_suppression_confirm">Fiche de sécurité supprimée</string>
+    <string name="fiche_info_cloture_confirm">Fiche de sécurité cloture</string>
+    <string name="fiche_securite_enregistrement_ok">Fiche de sécurité enregistrée</string>
+    
     <!-- FICHE DIALOG INFO DEBUT -->
-    <string name="fiche_info_dialogie_date_title">Date de plongée</string>
-    <string name="fiche_info_dialogie_site_title">Site de plongée</string>
-    <string name="fiche_info_dialogie_directeur_plonge_title">Directeur de plongée</string>
-    <string name="fiche_info_dialogie_embarcation_title">Embarcation</string>
+    <string name="fiche_info_dialog_date_title">Date de plongée</string>
+    <string name="fiche_info_dialog_site_title">Site de plongée</string>
+    <string name="fiche_info_dialog_directeur_plonge_title">Directeur de plongée</string>
+    <string name="fiche_info_dialog_embarcation_title">Embarcation</string>
+    <string name="fiche_info_dialog_suppression">Voulez-vous vraiment supprimer cette fiche de sécurité ? (elle sera supprimé uniquement sur cette appareil)</string>
+    <string name="fiche_info_dialog_cloture">Voulez-vous vraiment cloturer cette fiche ? (il ne sera plus possible de la modifier par la suite, et elle sera archivée sur le serveur distant lors de la prochaine synchronisation)</string>
     <!-- FICHE DIALOG INFO DEBUT -->
 
     <!-- FICHE INFO FIN -->
 
 
     <!-- PALANQUEE INFO DEBUT -->
-    <string name="title_activity_palanquee">Palanquee</string>
+    <string name="title_activity_palanquee">Palanquée</string>
     <string name="palanquee_heure_labelle">Heure :</string>
     <string name="palanquee_info_moniteur_labelle">Moniteur :</string>
     <string name="palanquee_info_gaz_labelle">Type de gaz :</string>
@@ -105,6 +110,7 @@
     <string name="palanquee_info_duree_prevue_labelle">Durée prévue :</string>
     <string name="palanquee_info_duree_realisee_moniteur_labelle">Durée réalisée (moni):</string>
     <string name="palanquee_plongeur_title">Liste des plongeurs</string>
+   	<string name="palanquee_dialog_suppression_confirm">Palanquee %s supprimé</string>
 
     <!-- PALANQUEE DIALOG INFO DEBUT -->
     <string name="palanquee_dialog_profondeur_realisee_moniteur_title">Profondeur réalisée par le moniteur</string>
@@ -115,6 +121,7 @@
     <string name="palanquee_dialog_type_gaz_title">Type de gaz</string>
     <string name="palanquee_dialog_type_plongee_title">Type de plongée</string>
     <string name="palanquee_dialog_moniteur_title">Moniteur</string>
+   	<string name="palanquee_dialog_suppression">Voulez-vous vraiment supprimer la palanquée %s ?</string>
     <!-- PALANQUEE DIALOG INFO DEBUT -->
 
     <!-- PALANQUEE INFO FIN -->
@@ -130,6 +137,7 @@
     <string name="plongeur_duree_realisee_labelle">Durée réalisée :</string>
     <string name="plongeur_telephone_labelle">Téléphone : </string>
     <string name="plongeur_telephone_urgence_labelle">Téléphone (urgence) :</string>
+   	<string name="plongeur_dialog_suppression_confirm">Plongeur %s supprimé</string>
 
     <!-- PLONGEUR DIALOG DEBUT -->
     <string name="plongeur_dialog_nom_title">Nom du plongeur</string>
@@ -140,6 +148,7 @@
     <string name="plongeur_dialog_date_naissance_title">Date de naissance</string>
     <string name="plongeur_dialog_telephone_title">Téléphone personnel du plongeur</string>
     <string name="plongeur_dialog_telephone_urgence_title">Téléphone de la personne à contacter en cas d\'urgence</string>
+   	<string name="plongeur_dialog_suppression">Voulez-vous vraiment supprimer le plongeur %s ?</string>
     <!-- PLONGEUR DIALOG FIN -->
     <!-- PLONGEUR FIN -->
 
@@ -151,7 +160,10 @@
     <string name="dialog_secondes"> s </string>
     <string name="dialog_now">Maintenant</string>
     <string name="dialog_ok">Valider</string>
+    <string name="dialog_confirm">Confirmer</string>
     <string name="dialog_annuler">Annuler</string>
+    <string name="dialog_moi">Moi</string>
+    <string name="dialog_aucun">Aucun</string>
     <!-- DIALOG GENERAL FIN -->
 
 

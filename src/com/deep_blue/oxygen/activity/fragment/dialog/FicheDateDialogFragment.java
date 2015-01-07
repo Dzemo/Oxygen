@@ -56,7 +56,7 @@ public class FicheDateDialogFragment extends DialogFragment {
 
 		// builder
 		builder.setView(dialogView)
-				.setTitle(R.string.fiche_info_dialogie_date_title)
+				.setTitle(R.string.fiche_info_dialog_date_title)
 				.setPositiveButton(R.string.dialog_ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {

@@ -10,10 +10,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
@@ -23,7 +21,7 @@ import com.deep_blue.oxygen.model.ListeAptitudes;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
 
-public class PlongeurAptitudeDialogFragment extends DialogFragment implements OnClickListener{
+public class PlongeurAptitudeDialogFragment extends DialogFragment{
 	private View rootView;
 	private View dialogView;
 	private Plongeur plongeur;
@@ -32,28 +30,35 @@ public class PlongeurAptitudeDialogFragment extends DialogFragment implements On
 	private boolean[] checkedItems;
 	
 	private HashMap<Integer,Aptitude> selectedItems= new HashMap<Integer,Aptitude>();
+	
 	// Constructeur
 	public PlongeurAptitudeDialogFragment(View rootView, Plongeur plongeur, Palanquee palanquee) {
 		super();
 		this.rootView = rootView;
 		this.plongeur = plongeur;
+		
 		// Nous avons besoin d'un Aptitude DAO pour aller chercher la liste des Aptitudes qu'il existe
 		AptitudeDao aptitudeDao = new AptitudeDao(rootView.getContext());
 		allAptitudes = aptitudeDao.getAll();
 		
 		// Items va contenir les aptitudes selectionné
 		items = new ArrayList<String>();
+		
 		// checkedItems est un booléen qui exprime si la checkbox est coché ou pas, donc, si le plongeur a, ou pas, l'aptitude correspondante
 		checkedItems = new boolean[allAptitudes.size()];		
 		int key = 0;
+		
 		// On parcourt toutes les aptitudes de la base de donnée
 		for (int i = 0; i < allAptitudes.size(); i++) {
 			key = allAptitudes.keyAt(i);
 			Aptitude aptitude = allAptitudes.get(key);
+			
 			// On ajoute à la liste le libellé de chacune des aptitudes
 			items.add(aptitude.getLibelleCourt());
+			
 			// On initialise les items checké à faux
 			checkedItems[i] = false;
+			
 			// Puis si il devrait y en avoir qui soit à vrai (et qui soit donc déjà coché quand le dialog pop
 			if (plongeur.getAptitudes() != null){
 				for (int j = 0; j < plongeur.getAptitudes().size(); j++) {
@@ -86,7 +91,6 @@ public class PlongeurAptitudeDialogFragment extends DialogFragment implements On
                       if (isChecked) {
 						// If the user checked the item, add it to the selected items
                           selectedItems.put(indexSelected+1, allAptitudes.get(indexSelected+1));
-                          Log.e("inif",allAptitudes.get(indexSelected+1).toString());
                       } else {
                           // Else, if the item is already in the array, remove it 
                           selectedItems.remove(indexSelected+1);
@@ -118,7 +122,7 @@ public class PlongeurAptitudeDialogFragment extends DialogFragment implements On
 		if (type) {					
 			// On set les aptitudes avec celles qui sont dans l'arraylist
 			plongeur.setAptitudes(new ListeAptitudes(selectedItems.values()));
-			Log.e("indis",selectedItems.values().toString());
+			
 			for (int i = 0; i < selectedItems.size(); i++) {
 			((TextView) rootView
 					.findViewById(R.id.textView_plongeur_aptitudes_value))
@@ -128,11 +132,4 @@ public class PlongeurAptitudeDialogFragment extends DialogFragment implements On
 		
 		super.dismiss();
 	}
-
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

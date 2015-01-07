@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.deep_blue.oxygen.model.EnumEtat;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.ListeFichesSecurite;
+import com.deep_blue.oxygen.model.Palanquee;
 
 public class FicheSecuriteDao extends BaseDao {
 
@@ -137,49 +138,116 @@ public class FicheSecuriteDao extends BaseDao {
 	}
 	
 	/**
-	 * Met à jour une fiche desécurité dans la base de donnée
+	 * Met à jour une fiche desécurité dans la base de donnée et met à jours également toute les palanquée/plongeurs
 	 * @param palanquee
 	 * @return
 	 */
 	public FicheSecurite update(FicheSecurite ficheSecurite){
-		SQLiteDatabase mDb = open();
 		
+		//Enregistrement du site si il n'est pas déjà enregistré
+		if(ficheSecurite.getSite() != null && ficheSecurite.getSite().getId() == null || ficheSecurite.getSite().getId() < 0){
+			SiteDao siteDao = new SiteDao(pContext);
+			siteDao.insert(ficheSecurite.getSite());
+		}
+		
+		//Mise à jours de la version
+		ficheSecurite.updateVersion();
+
+		//Maj de la fiche
+		SQLiteDatabase mDb = open();
 		ContentValues value = new ContentValues();
 		value.put(ID_WEB, ficheSecurite.getIdWeb());
 		value.put(ID_EMBARCATION_WEB, ficheSecurite.getEmbarcation() != null ? ficheSecurite.getEmbarcation().getIdWeb() : null);
 		value.put(ID_DIRECTEUR_PLONGE_WEB, ficheSecurite.getDirecteurPlonge() != null ? ficheSecurite.getDirecteurPlonge().getIdWeb() : null);
 		value.put(TIMESTAMP, ficheSecurite.getTimestamp());
 		value.put(ID_SITE, ficheSecurite.getSite() != null ? ficheSecurite.getSite().getId() : null);
-		value.put(ETAT, ficheSecurite.getEtat().toString());
+		value.put(ETAT, ficheSecurite.getEtat() != null ? ficheSecurite.getEtat().toString() : null);
 		value.put(VERSION, ficheSecurite.getVersion());
 		
 		mDb.update(TABLE_NAME, value, ID_LOCAL+" = ?", new String[]{ficheSecurite.getId().toString()});
 		mDb.close();
 		
-		return ficheSecurite;
+		//Maj de toute les palanquées
+		PalanqueeDao palanqueeDao = new PalanqueeDao(pContext);
+		return palanqueeDao.updatePalanqueeFromFiche(ficheSecurite);
 	}
 	
 	/**
-	 * Ajoute une nouvelle fiche de sécurité dans la base de donnée
+	 * Met à jour l'état d'une fiche de sécurité
 	 * @param palanquee
 	 * @return
 	 */
-	public FicheSecurite insert(FicheSecurite ficheSecurite){
-		SQLiteDatabase mDb = open();
+	public FicheSecurite updateEtat(FicheSecurite ficheSecurite, EnumEtat etat){
 		
+		//Modification de l'état
+		ficheSecurite.setEtat(etat);
+		
+		//Mise à jours de la version
+		ficheSecurite.updateVersion();
+
+		//Maj de la fiche
+		SQLiteDatabase mDb = open();
+		ContentValues value = new ContentValues();
+		value.put(ETAT, ficheSecurite.getEtat() != null ? ficheSecurite.getEtat().toString() : null);
+		value.put(VERSION, ficheSecurite.getVersion());
+		
+		mDb.update(TABLE_NAME, value, ID_LOCAL+" = ?", new String[]{ficheSecurite.getId().toString()});
+		mDb.close();
+
+		//Update des palanquees
+		PalanqueeDao palanqueeDao = new PalanqueeDao(pContext);
+		return palanqueeDao.updatePalanqueeFromFiche(ficheSecurite);
+	}
+	
+	/**
+	 * Ajoute une nouvelle fiche de sécurité dans la base de donnée et ajoute également toute les palanquée/plongeurs
+	 * @param ficheSecurite
+	 * @return
+	 */
+	public FicheSecurite insert(FicheSecurite ficheSecurite){
+		if(ficheSecurite == null){
+			return null;
+		}
+		
+		//Enregistrement du site si il n'est pas déjà enregistré
+		if(ficheSecurite.getSite() != null && (ficheSecurite.getSite().getId() == null || ficheSecurite.getSite().getId() < 0)){
+			SiteDao siteDao = new SiteDao(pContext);
+			siteDao.insert(ficheSecurite.getSite());
+		}
+		
+		//Mise à jours de la version
+		ficheSecurite.updateVersion();
+
+		//Ajout de la fiche en base
+		SQLiteDatabase mDb = open();		
 		ContentValues value = new ContentValues();
 		value.put(ID_WEB, ficheSecurite.getIdWeb());
 		value.put(ID_EMBARCATION_WEB, ficheSecurite.getEmbarcation() != null ? ficheSecurite.getEmbarcation().getIdWeb() : null);
 		value.put(ID_DIRECTEUR_PLONGE_WEB, ficheSecurite.getDirecteurPlonge() != null ? ficheSecurite.getDirecteurPlonge().getIdWeb() : null);
 		value.put(TIMESTAMP, ficheSecurite.getTimestamp());
 		value.put(ID_SITE, ficheSecurite.getSite() != null ? ficheSecurite.getSite().getId() : null);
-		value.put(ETAT, ficheSecurite.getEtat().toString());
+		value.put(ETAT, ficheSecurite.getEtat() != null ? ficheSecurite.getEtat().toString() : null);
 		value.put(VERSION, ficheSecurite.getVersion());
 		
 		long insertedId = mDb.insert(TABLE_NAME, null, value);
 		mDb.close();
 		
+		//Maj de l'id de la fiche
 		ficheSecurite.setId(insertedId);
+		
+		//Ajout des palanques
+		PalanqueeDao palanqueeDao = new PalanqueeDao(pContext);
+		for(int i = 0; i < ficheSecurite.getPalanquees().size(); i++){
+			Palanquee palanquee = ficheSecurite.getPalanquees().get(i);
+			
+			palanquee.setIdFicheSecurite(ficheSecurite.getId());
+			
+			palanqueeDao.insert(palanquee);
+			
+			ficheSecurite.getPalanquees().remove(i);
+			ficheSecurite.getPalanquees().add(i, palanquee);
+		}
+		
 		return ficheSecurite;
 	}
 	
@@ -206,6 +274,21 @@ public class FicheSecuriteDao extends BaseDao {
 			mDb.close();
 		}
 	}
+
+	/**
+	 * Supprime la fiche passé en paramêtre et ses éventuelles historiques
+	 * @param id
+	 */
+	public void delete(Long id) {
+		if(id != null){
+			HistoriqueDao historiqueDao = new HistoriqueDao(pContext);
+			historiqueDao.deleteByIdFiche(id);
+			
+			SQLiteDatabase mDb = open();
+			mDb.delete(TABLE_NAME, ID_LOCAL +" = ?", new String[]{id.toString()});
+			mDb.close();
+		}
+	}
 	
 	/**
 	 * Transforme un curseur issue d'une requete sur la table des fiches de sécurité en une ListeFichesSecurite
@@ -228,10 +311,12 @@ public class FicheSecuriteDao extends BaseDao {
 					moniteurDao.getByIdWeb(cursor.getInt(cursor.getColumnIndex(ID_DIRECTEUR_PLONGE_WEB))),
 					cursor.getLong(cursor.getColumnIndex(TIMESTAMP)),
 					siteDao.getById((cursor.getInt(cursor.getColumnIndex(ID_SITE)))),
-					EnumEtat.valueOf(cursor.getString(cursor.getColumnIndex(ETAT))),
+					null,
 					cursor.getLong(cursor.getColumnIndex(VERSION)),
 					palanqueeDao.getByIdFicheSecurite(cursor.getInt(cursor.getColumnIndex(ID_LOCAL)))
 					);
+			
+			
 			
 			resultList.add(ficheSecurite);
 			

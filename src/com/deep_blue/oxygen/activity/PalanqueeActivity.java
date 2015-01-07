@@ -3,8 +3,8 @@ package com.deep_blue.oxygen.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,28 +23,27 @@ import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurPrevueDi
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurRealiseeMoniteurDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeTypeGazDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeTypePlongeDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.ConfirmDialogFragment;
 import com.deep_blue.oxygen.listener.PlongeurOnClickListener;
+import com.deep_blue.oxygen.model.EnumTypeGaz;
 import com.deep_blue.oxygen.model.EnumTypePlonge;
+import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Moniteur;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
 import com.deep_blue.oxygen.util.DateStringUtils;
 import com.deep_blue.oxygen.util.IntentKey;
 
-@SuppressLint("InflateParams") public class PalanqueeActivity extends FragmentActivity {
+@SuppressLint("InflateParams") 
+public class PalanqueeActivity extends FragmentActivity implements ConfirmDialogFragment.ConfirmDialogListener{
 
 	
-	
+	private FicheSecurite ficheSecurite;
 	private Palanquee palanquee;
 	private View rootView;
 
 	public PalanqueeActivity(){
 		super();
-	}
-	
-	public PalanqueeActivity(Palanquee palanquee) {
-		super();
-		this.palanquee = palanquee;
 	}
 
 	@Override
@@ -54,29 +53,34 @@ import com.deep_blue.oxygen.util.IntentKey;
 		//Affichage du bouton de retour à coté du logo
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		
 		//Récupération de la palanquee et de l'utilisateur
 		Intent intent = getIntent();
 		palanquee = intent.getParcelableExtra(IntentKey.PALANQUEE_COURANTE.toString());
+		ficheSecurite = intent.getParcelableExtra(IntentKey.FICHE_SECURITE_COURANTE.toString());
 		
 		//Inlfation du layout
 		rootView = getLayoutInflater().inflate(R.layout.activity_palanquee_layout, null);
 		setContentView(rootView);
 		
 		final Palanquee palanqueeFinal = palanquee;
+		
+		//Numéro de la palanquée dans le titre
+		setTitle(getTitle()+" "+palanquee.getNumero());
 
 		// Initialisation de la vue avec la palanquée séléctionné
 
 		// Info général de la palanquée
 		((TextView) rootView
 				.findViewById(R.id.textView_palanquee_info_gaz_value))
-				.setText(palanqueeFinal.getTypeGaz() != null ? palanqueeFinal.getTypeGaz().toString() : "");
+				.setText(palanqueeFinal.getTypeGaz() != EnumTypeGaz.NULL ? palanqueeFinal.getTypeGaz().toString() : "");
 		((TextView) rootView
 				.findViewById(R.id.textView_palanquee_info_plongee_value))
-				.setText(palanqueeFinal.getTypePlonge() != null ? palanqueeFinal.getTypePlonge().toString() : "");
+				.setText(palanqueeFinal.getTypePlonge() != EnumTypePlonge.NULL ? palanqueeFinal.getTypePlonge().toString() : "");
 		((TextView) rootView
 				.findViewById(R.id.textView_palanquee_info_profondeur_prevue_value))
-				.setText(palanqueeFinal.getProfondeurPrevue().toString()
-						+ " mètres");
+				.setText(palanqueeFinal.getProfondeurPrevue() != 0F ? palanqueeFinal.getProfondeurPrevue().toString()
+						+ " mètres" : "");
 		if (palanqueeFinal.getProfondeurRealiseeMoniteur() != null  && palanqueeFinal.getProfondeurRealiseeMoniteur() > 0)
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_profondeur_realisee_moniteur_value))
@@ -190,29 +194,102 @@ import com.deep_blue.oxygen.util.IntentKey;
 		
 
 		
-		// Ajout du clique d'ajout de palanquee
+		// Ajout du clique d'ajout de plongeur
 		rootView.findViewById(R.id.iB_palanquee_ajout_plongeur)
 		.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast toastDelete = Toast.makeText(rootView.getContext(), "Bouton d'ajout d'un nouveau plongeur (non implémenté)", Toast.LENGTH_SHORT);
-				toastDelete.show();
+				Plongeur plongeur = new Plongeur();
+				plongeur.setId(palanquee.getPlongeurs().getNextNegativeId());
+				plongeur.setIdPalanquee(palanquee.getId());
+				plongeur.setIdFicheSecurite(palanquee.getIdFicheSecurite());
+				palanquee.getPlongeurs().add(plongeur);
+				afficherPlongeurs();
 			}
 		});
 
+		//Affichage des plongeurs
+		afficherPlongeurs();
+		
+		rootView.requestLayout();
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		palanquee = (Palanquee) data.getExtras().get(IntentKey.RESULT_PALANQUEE.toString());
+		
+		String text = (String) data.getExtras().get(IntentKey.RESULT_TEXT.toString());
+		if(text != null){
+			Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+			toast.show();
+		}
+		
+		afficherPlongeurs();
+	}	
+		
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.palanquee, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		// Respond to the action bar's Up/Home button
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		case R.id.itemDelete:
+			ConfirmDialogFragment confirmDialogFragment = new ConfirmDialogFragment(
+					String.format(getResources().getString(R.string.palanquee_dialog_suppression), palanquee.getNumero().toString()), ConfirmDialogFragment.SUPPRESSION_PALANQUEE);
+			confirmDialogFragment.show(getSupportFragmentManager(), "ConfirmDialogFragment");
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	public void onBackPressed(){
+		Intent result = new Intent();
+		ficheSecurite.getPalanquees().ajouterOuMajPalanquee(palanquee);
+		result.putExtra(IntentKey.RESULT_FICHE_SECURITE.toString(), ficheSecurite);
+		setResult(RESULT_OK, result);
+		finish();
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, int confirmType) {
+		if(confirmType == ConfirmDialogFragment.SUPPRESSION_PALANQUEE){
+			Intent result = new Intent();
+			ficheSecurite.getPalanquees().remove(palanquee);
+			result.putExtra(IntentKey.RESULT_TEXT.toString(), String.format(getResources().getString(R.string.palanquee_dialog_suppression_confirm), palanquee.getNumero()));
+			result.putExtra(IntentKey.RESULT_FICHE_SECURITE.toString(), ficheSecurite);
+			setResult(RESULT_OK, result);
+			finish();
+		}
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog, int confirmType) {
+		//L'utilisateur à choisi de ne pas supprimer cette palanquee, on ne fait rien alors
+	}
+	
+	/**
+	 * Affiche les plongeurs de la palanquée dans la vue
+	 */
+	private void afficherPlongeurs(){
 		// Ajout des plongeurs
 		TableLayout tableLayout = (TableLayout) rootView
-				.findViewById(R.id.activity_fiche_securite_fragment_palanquee);
-
+				.findViewById(R.id.activity_fiche_securite_fragment_palanquee_list_plongeurs);
 		
-		// Suppression des précédents plongeurs
-		if(tableLayout.getChildCount() - 9 > 0)
-			tableLayout.removeViews(4, tableLayout.getChildCount()-5);
+		tableLayout.removeAllViews();
 		
-		int index = 4;
-		int parite_background = palanqueeFinal.getMoniteur() != null ? 1 : 0;
+		int index = 0;
+		int parite_background = palanquee.getMoniteur() != null ? 1 : 0;
 
-		for (Plongeur plongeur : palanqueeFinal.getPlongeurs()) {
+		for (Plongeur plongeur : palanquee.getPlongeurs()) {
 
 			TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.activity_palanquee_plongeur_layout, tableLayout, false);
 			
@@ -230,45 +307,11 @@ import com.deep_blue.oxygen.util.IntentKey;
 
 			// Clik listener sur la row
 			row.findViewById(R.id.iB_palanquee_plongeur).setOnClickListener(new PlongeurOnClickListener(
-					plongeur, null, palanqueeFinal, this));
-			
+					plongeur, null, palanquee, this));
 			
 			// Ajout de la row dans la table
 			tableLayout.addView(row, index, row.getLayoutParams());
 			index++;
 		}
-		rootView.requestLayout();
 	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Plongeur plongeur = (Plongeur) data.getExtras().get(IntentKey.RESULT_PLONGEUR.toString());
-		Log.w("Fragment", plongeur.toString());
-	}
-
-	
-		
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.palanquee, menu);
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		// Respond to the action bar's Up/Home button
-		case android.R.id.home:
-			finish();
-			return true;
-		case R.id.itemDelete:
-			Toast toast = Toast.makeText(this, "Bouton de suppression de la palanquee (non implémenté)", Toast.LENGTH_SHORT);
-			toast.show();
-			return true;
-		default:
-
-		return super.onOptionsItemSelected(item);
-	}
-}
-
 }

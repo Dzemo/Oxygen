@@ -11,6 +11,7 @@ import android.util.SparseArray;
 import com.deep_blue.oxygen.model.Aptitude;
 import com.deep_blue.oxygen.model.ListeAptitudes;
 import com.deep_blue.oxygen.model.ListePlongeurs;
+import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
 
 public class PlongeurDao extends BaseDao {
@@ -146,6 +147,10 @@ public class PlongeurDao extends BaseDao {
 	 * @return
 	 */
 	public Plongeur insert(Plongeur plongeur){
+		
+		//Mise à jours de la version
+		plongeur.updateVersion();
+		
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
@@ -176,6 +181,10 @@ public class PlongeurDao extends BaseDao {
 	 * @return
 	 */
 	public Plongeur update(Plongeur plongeur){
+
+		//Mise à jours de la version
+		plongeur.updateVersion();
+		
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
@@ -196,6 +205,47 @@ public class PlongeurDao extends BaseDao {
 		mDb.close();
 		
 		return plongeur;
+	}
+	
+	/**
+	 * Met à jours les plongeurs de la palanqué passé en parametre :
+	 * Supprime les plongeurs qui appartenait a la palanqué mais qui ne sont plus dans le tableau de plongeur de la palanqués et met à jours ou insert les autres
+	 * Pour la mise à jours des plongeurs, priviligier FicheSecuriteDao::update()
+	 * @param palanquee
+	 * @return
+	 */
+	public Palanquee updatePlongeursFromPalanquee(Palanquee palanquee){
+		if(palanquee == null){
+			return null;
+		}
+		
+		//Suppression des palanquées qui ont été supprimées de la fiche
+		String whereClause = ID_PALANQUEE+" = ?";
+		String[] whereArgs = new String[palanquee.getPlongeurs().size()+1];
+		whereArgs[0] = palanquee.getId().toString();
+		int i = 1;
+		for(Plongeur plongeur : palanquee.getPlongeurs()){
+			whereClause += " AND "+ID+" != ?";
+			whereArgs[i] = plongeur.getId().toString();
+		}	
+		SQLiteDatabase mDb = open();
+		mDb.delete(TABLE_NAME, whereClause, whereArgs);
+		mDb.close();		
+		
+		//Mise à jours des palanquées
+		for(int j = 0; j < palanquee.getPlongeurs().size(); j++){
+			Plongeur plongeur = palanquee.getPlongeurs().get(j);
+						
+			if(plongeur.getId() == null || plongeur.getId() < 0)
+				plongeur = insert(plongeur);
+			else
+				plongeur = update(plongeur);
+			
+			palanquee.getPlongeurs().remove(j);
+			palanquee.getPlongeurs().add(j, plongeur);
+		}
+		
+		return palanquee;
 	}
 	
 	/**

@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -105,9 +106,13 @@ public class PlongeurTextDialogFragment extends DialogFragment {
 								dismiss(false);
 							}
 						});
+		
+		AlertDialog dialog = builder.create();
 
-		// Create the AlertDialog object and return it
-		return builder.create();
+		dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+		dialog.show();
+
+		return dialog;
 	}
 
 	public void dismiss(boolean updateValue) {

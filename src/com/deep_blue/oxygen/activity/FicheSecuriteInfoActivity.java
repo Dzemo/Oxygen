@@ -3,6 +3,7 @@ package com.deep_blue.oxygen.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,18 +15,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.activity.fragment.dialog.ConfirmDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheDateDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheDirecteurDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheEmbarcationDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheSiteDialogFragment;
+import com.deep_blue.oxygen.dao.FicheSecuriteDao;
 import com.deep_blue.oxygen.listener.PalanqueeOnClickListener;
+import com.deep_blue.oxygen.model.EnumTypePlonge;
 import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.util.DateStringUtils;
 import com.deep_blue.oxygen.util.IntentKey;
 
-public class FicheSecuriteInfoActivity extends FragmentActivity {
+public class FicheSecuriteInfoActivity extends FragmentActivity implements ConfirmDialogFragment.ConfirmDialogListener{
 
 	private FicheSecurite ficheSecurite = null;
 	private View rootView;
@@ -122,39 +126,28 @@ public class FicheSecuriteInfoActivity extends FragmentActivity {
 		.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast toastDelete = Toast.makeText(rootView.getContext(), "Bouton d'ajout d'une nouvelle palanquee (non implémenté)", Toast.LENGTH_SHORT);
-				toastDelete.show();
+				Palanquee palanquee = new Palanquee();
+				palanquee.setId(ficheSecurite.getPalanquees().getNextNegativeId());
+				palanquee.setNumero(ficheSecurite.getPalanquees().getNextNumero());
+				ficheSecurite.getPalanquees().add(palanquee);
+				afficherPalanquees();
 			}
 		});
 
+		afficherPalanquees();
+	}	
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		ficheSecurite = (FicheSecurite) data.getExtras().get(IntentKey.RESULT_FICHE_SECURITE.toString());
 		
-		//Affichage des palanquée
-		TableLayout tableLayout = (TableLayout) rootView.findViewById(R.id.activity_fiche_securite_info);
-		int index = 5;
-		for (Palanquee palanquee : ficheSecurite.getPalanquees()) {
-			
-			TableRow row = (TableRow) getLayoutInflater().inflate(
-					R.layout.activity_fiche_securite_row_palanquee_layout, tableLayout, false);
-
-			TextView tvDescription = (TextView) row
-					.findViewById(R.id.textView_palanquee_label);
-			tvDescription.setText("Palanquee "+palanquee.getNumero()+" ("+palanquee.getTypePlonge().toString()+" - "+palanquee.getProfondeurPrevue()+"m)");
-
-			// Coloration selon la parité de la row
-			if (index % 2 == 0)
-				row.setBackgroundResource(R.drawable.list_item_background_2);
-			else
-				row.setBackgroundResource(R.drawable.list_item_background_1);
-
-			// Clik listener sur l'image de modification de la palanquee
-			row.findViewById(R.id.iB_palanquee).setOnClickListener(new PalanqueeOnClickListener(
-					palanquee, utilisateur, this));
-			
-			// Ajout de la row dans la table
-			tableLayout.addView(row, index);
-			
-			index++;
+		String text = (String) data.getExtras().get(IntentKey.RESULT_TEXT.toString());
+		if(text != null){
+			Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+			toast.show();
 		}
+		
+		afficherPalanquees();
 	}	
 	
 	@Override
@@ -168,22 +161,102 @@ public class FicheSecuriteInfoActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		// Respond to the action bar's Up/Home button
 		case android.R.id.home:
-			finish();
+			onBackPressed();
 			return true;
 		case R.id.itemValide:
-			Toast toastValide = Toast.makeText(this, "Bouton de validation de la fiche (non implémenté)", Toast.LENGTH_SHORT);
-			toastValide.show();
+			ConfirmDialogFragment confirmDialogFragmentValide = new ConfirmDialogFragment(getResources().getString(R.string.fiche_info_dialog_cloture), ConfirmDialogFragment.CLOTURE_FICHE_SECURITE);
+			confirmDialogFragmentValide.show(getSupportFragmentManager(), "ConfirmDialogFragment");
 			return true;
 		case R.id.itemSave:
-			Toast toastSave = Toast.makeText(this, "Bouton de sauvegarde de la fiche (non implémenté)", Toast.LENGTH_SHORT);
+			//TODO vérification de la fiche
+			
+			//Enregistrement de la fiche
+			FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
+			if(ficheSecurite.getId() == null || ficheSecurite.getId() < 0){
+				ficheSecuriteDao.insert(ficheSecurite);
+			}
+			else{
+				ficheSecuriteDao.update(ficheSecurite);
+			}
+			Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_securite_enregistrement_ok), Toast.LENGTH_SHORT);
 			toastSave.show();
 			return true;
 		case R.id.itemDelete:
-			Toast toastDelete = Toast.makeText(this, "Bouton de suppression de la fiche (non implémenté)", Toast.LENGTH_SHORT);
-			toastDelete.show();
+			ConfirmDialogFragment confirmDialogFragmentDelete = new ConfirmDialogFragment(getResources().getString(R.string.fiche_info_dialog_suppression), ConfirmDialogFragment.SUPPRESSION_FICHE_SECURITE);
+			confirmDialogFragmentDelete.show(getSupportFragmentManager(), "ConfirmDialogFragment");
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	public void onBackPressed(){
+		Toast toastSave = Toast.makeText(this, "Vérification de modification des données", Toast.LENGTH_SHORT);
+		toastSave.show();
+		setResult(RESULT_OK, new Intent());
+		finish();
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, int confirmType) {
+		if(confirmType == ConfirmDialogFragment.SUPPRESSION_FICHE_SECURITE){
+			//Suppression de la fiche de sécurité si elle était enregistrée
+			if(ficheSecurite.getId() != null || ficheSecurite.getId() < 0){
+				FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
+				ficheSecuriteDao.delete(ficheSecurite.getId());
+			}
+			Intent result = new Intent();
+			result.putExtra(IntentKey.RESULT_TEXT.toString(), getResources().getString(R.string.fiche_info_suppression_confirm));
+			setResult(RESULT_OK, result);
+			finish();
+		} else if(confirmType == ConfirmDialogFragment.CLOTURE_FICHE_SECURITE){
+			Intent result = new Intent();
+			//TODO appel dao
+			result.putExtra(IntentKey.RESULT_TEXT.toString(), getResources().getString(R.string.fiche_info_cloture_confirm));
+			setResult(RESULT_OK, result);
+			finish();
+		}
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog, int confirmType) {
+		//L'utilisateur à choisi de ne pas supprimer cette palanquee, on ne fait rien alors
+	}
+	
+	private void afficherPalanquees(){
+		TableLayout tableLayout = (TableLayout) rootView.findViewById(R.id.activity_fiche_securite_info_palanquees);
+		
+		//On efface les anciennes palanquée
+		tableLayout.removeAllViews();
+
+		//Affichage des palanquée
+		int index = 0;
+		for (Palanquee palanquee : ficheSecurite.getPalanquees()) {
+			
+			TableRow row = (TableRow) getLayoutInflater().inflate(
+					R.layout.activity_fiche_securite_row_palanquee_layout, tableLayout, false);
+
+			TextView tvDescription = (TextView) row
+					.findViewById(R.id.textView_palanquee_label);
+			tvDescription.setText("Palanquee "+palanquee.getNumero()+
+					" ("+(palanquee.getTypePlonge() != EnumTypePlonge.NULL ? palanquee.getTypePlonge().toString() : "")+
+					" - "+(palanquee.getProfondeurPrevue() != 0F ? palanquee.getProfondeurPrevue()+"m" : "")+")");
+
+			// Coloration selon la parité de la row
+			if (index % 2 == 0)
+				row.setBackgroundResource(R.drawable.list_item_background_2);
+			else
+				row.setBackgroundResource(R.drawable.list_item_background_1);
+
+			// Clik listener sur l'image de modification de la palanquee
+			row.findViewById(R.id.iB_palanquee).setOnClickListener(new PalanqueeOnClickListener(
+					palanquee, utilisateur, ficheSecurite, this));
+			
+			// Ajout de la row dans la table
+			tableLayout.addView(row, index);
+			
+			index++;
 		}
 	}
 }

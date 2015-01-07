@@ -5,10 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.deep_blue.oxygen.model.ListePalanquees;
-import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.EnumTypeGaz;
 import com.deep_blue.oxygen.model.EnumTypePlonge;
+import com.deep_blue.oxygen.model.FicheSecurite;
+import com.deep_blue.oxygen.model.ListePalanquees;
+import com.deep_blue.oxygen.model.Palanquee;
+import com.deep_blue.oxygen.model.Plongeur;
 
 public class PalanqueeDao extends BaseDao {
 	
@@ -128,6 +130,10 @@ public class PalanqueeDao extends BaseDao {
 	 * @return
 	 */
 	public Palanquee update(Palanquee palanquee){
+
+		//Mise à jours de la version
+		palanquee.updateVersion();
+		
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
@@ -135,8 +141,8 @@ public class PalanqueeDao extends BaseDao {
 		value.put(ID_FICHE_SECURITE, palanquee.getIdFicheSecurite());
 		value.put(ID_MONITEUR_WEB, palanquee.getMoniteur() != null ? palanquee.getMoniteur().getIdWeb() : null);
 		value.put(NUMERO, palanquee.getNumero());
-		value.put(TYPE_PLONGE, palanquee.getTypePlonge().toString());
-		value.put(TYPE_GAZ, palanquee.getTypeGaz().toString());
+		value.put(TYPE_PLONGE, palanquee.getTypePlonge() != null ? palanquee.getTypePlonge().toString() : null);
+		value.put(TYPE_GAZ, palanquee.getTypeGaz() != null ?  palanquee.getTypeGaz().toString() : null);
 		value.put(PROFONDEUR_PREVUE, palanquee.getProfondeurPrevue());
 		value.put(PROFONDEUR_REALISE_MONITEUR, palanquee.getProfondeurRealiseeMoniteur());
 		value.put(DUREE_PREVUE, palanquee.getDureePrevue());
@@ -147,7 +153,9 @@ public class PalanqueeDao extends BaseDao {
 		mDb.update(TABLE_NAME, value, ID+" = ?", new String[]{palanquee.getId().toString()});
 		mDb.close();
 		
-		return palanquee;
+		//Maj de toute les plongeurs
+		PlongeurDao plongeurDao = new PlongeurDao(pContext);
+		return plongeurDao.updatePlongeursFromPalanquee(palanquee);
 	}
 	
 	/**
@@ -156,6 +164,11 @@ public class PalanqueeDao extends BaseDao {
 	 * @return
 	 */
 	public Palanquee insert(Palanquee palanquee){
+
+		//Mise à jours de la version
+		palanquee.updateVersion();
+		
+		//Ajout de la palanquée
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
@@ -164,8 +177,8 @@ public class PalanqueeDao extends BaseDao {
 		value.put(ID_FICHE_SECURITE, palanquee.getIdFicheSecurite());
 		value.put(ID_MONITEUR_WEB, palanquee.getMoniteur() != null ? palanquee.getMoniteur().getIdWeb() : null);
 		value.put(NUMERO, palanquee.getNumero());
-		value.put(TYPE_PLONGE, palanquee.getTypePlonge().toString());
-		value.put(TYPE_GAZ, palanquee.getTypeGaz().toString());
+		value.put(TYPE_PLONGE, palanquee.getTypePlonge() != null ? palanquee.getTypePlonge().toString() : null);
+		value.put(TYPE_GAZ, palanquee.getTypeGaz() != null ?  palanquee.getTypeGaz().toString() : null);
 		value.put(PROFONDEUR_PREVUE, palanquee.getProfondeurPrevue());
 		value.put(PROFONDEUR_REALISE_MONITEUR, palanquee.getProfondeurRealiseeMoniteur());
 		value.put(DUREE_PREVUE, palanquee.getDureePrevue());
@@ -177,7 +190,58 @@ public class PalanqueeDao extends BaseDao {
 		mDb.close();
 		
 		palanquee.setId(insertedId);
+		
+		//Ajout des plongeurs
+		PlongeurDao plongeurDao = new PlongeurDao(pContext);
+		for(int i = 0; i < palanquee.getPlongeurs().size(); i++){
+			Plongeur plongeur = palanquee.getPlongeurs().get(i);
+			
+			plongeur.setIdPalanquee(palanquee.getId());
+			plongeur.setIdFicheSecurite(palanquee.getIdFicheSecurite());
+			
+			plongeur = plongeurDao.insert(plongeur);
+			
+			palanquee.getPlongeurs().remove(i);
+			palanquee.getPlongeurs().add(i, plongeur);
+		}
+		
 		return palanquee;
+	}
+	
+	public FicheSecurite updatePalanqueeFromFiche(FicheSecurite ficheSecurite){
+		if(ficheSecurite == null){
+			return null;
+		}
+		
+		//Suppression des palanquées qui ont été supprimées de la fiche
+		String whereClause = ID_FICHE_SECURITE+" = ?";
+		String[] whereArgs = new String[ficheSecurite.getPalanquees().size()+1];
+		whereArgs[0] = ficheSecurite.getId().toString();
+		int i = 1;
+		for(Palanquee palanquee : ficheSecurite.getPalanquees()){
+			whereClause += " AND "+ID+" != ?";
+			whereArgs[i] = palanquee.getId().toString();
+		}	
+		SQLiteDatabase mDb = open();
+		mDb.delete(TABLE_NAME, whereClause, whereArgs);
+		mDb.close();		
+		
+		//Mise à jours des palanquées
+		for(int j = 0; j < ficheSecurite.getPalanquees().size(); j++){
+			Palanquee palanquee = ficheSecurite.getPalanquees().get(j);
+			
+			palanquee.setIdFicheSecurite(ficheSecurite.getId());
+			
+			if(palanquee.getId() == null || palanquee.getId() < 0)
+				palanquee = insert(palanquee);
+			else
+				palanquee = update(palanquee);
+			
+			ficheSecurite.getPalanquees().remove(j);
+			ficheSecurite.getPalanquees().add(j, palanquee);
+		}
+		
+		return ficheSecurite;
 	}
 	
 	/**

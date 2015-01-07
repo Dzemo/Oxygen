@@ -57,7 +57,7 @@ public class FicheDirecteurDialogFragment extends DialogFragment implements
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		final CharSequence[] charSequenceItems = items.toArray(new CharSequence[items.size()]);
-		builder.setTitle(R.string.fiche_info_dialogie_directeur_plonge_title)
+		builder.setTitle(R.string.fiche_info_dialog_directeur_plonge_title)
 				.setSingleChoiceItems(charSequenceItems,
 						selectedIndex, this)
 				.setPositiveButton(R.string.dialog_ok,

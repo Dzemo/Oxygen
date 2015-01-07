@@ -17,23 +17,23 @@ public class PlongeurOnClickListener implements OnClickListener{
 	private Utilisateur currentUtilisateur;
 	private Palanquee currentPalanquee;
 	
-	private FragmentActivity ficheSecuriteTabsPalanqueeFragment;
+	private FragmentActivity palanqueeActivity;
 	
-	public PlongeurOnClickListener(Plongeur clickedPlongeur, Utilisateur utilisateur, Palanquee palanquee, FragmentActivity ficheSecuriteTabsPalanqueeFragment){
+	public PlongeurOnClickListener(Plongeur clickedPlongeur, Utilisateur utilisateur, Palanquee palanquee, FragmentActivity palanqueeActivity){
 		this.clickedPlongeur = clickedPlongeur;
-		this.ficheSecuriteTabsPalanqueeFragment = ficheSecuriteTabsPalanqueeFragment;
+		this.palanqueeActivity = palanqueeActivity;
 		this.currentUtilisateur = utilisateur;
 		this.currentPalanquee = palanquee;
 	}
 	
 	@Override
 	public void onClick(View v) {
-		Intent intent = new Intent(ficheSecuriteTabsPalanqueeFragment, PlongeurActivity.class);		
+		Intent intent = new Intent(palanqueeActivity, PlongeurActivity.class);		
 		intent.putExtra(IntentKey.PLONGEUR_COURANT.toString(), clickedPlongeur);
 		intent.putExtra(IntentKey.UTILISATEUR_COURANT.toString(), currentUtilisateur);
 		intent.putExtra(IntentKey.PALANQUEE_COURANTE.toString(), currentPalanquee);
 		
-		ficheSecuriteTabsPalanqueeFragment.startActivityForResult(intent, 0);
+		palanqueeActivity.startActivityForResult(intent, 0);
 	}
 
 }

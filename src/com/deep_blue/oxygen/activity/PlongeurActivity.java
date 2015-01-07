@@ -4,13 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurAptitudeDialogFragment;
@@ -18,13 +18,14 @@ import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurDateNaissanceDialog
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurDureeRealiseeDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurProfondeurRealiseeDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurTextDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.ConfirmDialogFragment;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
 import com.deep_blue.oxygen.util.DateStringUtils;
 import com.deep_blue.oxygen.util.EnumPlongeurText;
 import com.deep_blue.oxygen.util.IntentKey;
 
-public class PlongeurActivity extends FragmentActivity {
+public class PlongeurActivity extends FragmentActivity implements ConfirmDialogFragment.ConfirmDialogListener{
 
 	private Plongeur plongeur;
 	private View rootView;
@@ -137,7 +138,7 @@ public class PlongeurActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				PlongeurDateNaissanceDialogFragment ndf = new PlongeurDateNaissanceDialogFragment(
-						rootView, plongeur, palanquee);
+						rootView, plongeur);
 				ndf.show(getSupportFragmentManager(), "TAG");
 			}
 		});
@@ -164,15 +165,13 @@ public class PlongeurActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		// Respond to the action bar's Up/Home button
 		case android.R.id.home:
-			Intent result = new Intent();
-			result.putExtra(IntentKey.RESULT_PLONGEUR.toString(), plongeur);
-			result.putExtra(IntentKey.RESULT_PALANQUEE.toString(), palanquee);
-			setResult(RESULT_OK, result);
-			finish();
+			onBackPressed();
 			return true;
 		case R.id.itemDelete:
-			Toast toast = Toast.makeText(this, "Bouton de suppression du plongeur (non implémenté)", Toast.LENGTH_SHORT);
-			toast.show();
+			ConfirmDialogFragment confirmDialogFragment = new ConfirmDialogFragment(
+					String.format(getResources().getString(R.string.plongeur_dialog_suppression), plongeur.getPrenom()+" "+plongeur.getNom()),
+					ConfirmDialogFragment.SUPPRESSION_PLONGEUR);
+			confirmDialogFragment.show(getSupportFragmentManager(), "ConfirmDialogFragment");
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -182,10 +181,26 @@ public class PlongeurActivity extends FragmentActivity {
 	@Override
 	public void onBackPressed(){
 		Intent result = new Intent();
-		result.putExtra(IntentKey.RESULT_PLONGEUR.toString(), plongeur);
+		palanquee.getPlongeurs().ajouterOuMajPlongeur(plongeur);
 		result.putExtra(IntentKey.RESULT_PALANQUEE.toString(), palanquee);
 		setResult(RESULT_OK, result);
 		finish();
-		return;
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, int confirmType) {
+		if(confirmType == ConfirmDialogFragment.SUPPRESSION_PLONGEUR){
+			Intent result = new Intent();
+			palanquee.getPlongeurs().remove(plongeur);
+			result.putExtra(IntentKey.RESULT_TEXT.toString(), String.format(getResources().getString(R.string.plongeur_dialog_suppression_confirm), plongeur.getPrenom()+" "+plongeur.getNom()));
+			result.putExtra(IntentKey.RESULT_PALANQUEE.toString(), palanquee);
+			setResult(RESULT_OK, result);
+			finish();
+		}
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog, int confirmType) {
+		//L'utilisateur à annulé la suppresion, on ne fait rien
 	}
 }

@@ -29,7 +29,6 @@ public class ListeFichesSecuriteOnClickListener implements OnClickListener{
 		intent.putExtra(IntentKey.FICHE_SECURITE_COURANTE.toString(), clickedFiche);
 		intent.putExtra(IntentKey.UTILISATEUR_COURANT.toString(), currentUtilisateur);
 		
-		listeFicheSecuriteActivity.startActivity(intent);
+		listeFicheSecuriteActivity.startActivityForResult(intent, 0);
 	}
-
 }

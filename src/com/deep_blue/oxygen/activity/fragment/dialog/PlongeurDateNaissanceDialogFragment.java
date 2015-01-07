@@ -3,57 +3,49 @@ package com.deep_blue.oxygen.activity.fragment.dialog;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.net.ParseException;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.DatePicker;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
-import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
-import com.deep_blue.oxygen.util.DateStringUtils;
 
-public class PlongeurDateNaissanceDialogFragment extends DialogFragment implements OnClickListener{
+public class PlongeurDateNaissanceDialogFragment extends DialogFragment {
 	private View rootView;
 	private View dialogView;
-	private Date date;
 	private String dateString;
 	private Plongeur plongeur;
-	private Palanquee palanquee;
 	private Date convertedDate;
 
 	// Constructeur
-	public PlongeurDateNaissanceDialogFragment(View rootView, Plongeur plongeur, Palanquee palanquee) {
+	public PlongeurDateNaissanceDialogFragment(View rootView, Plongeur plongeur) {
 		super();
 		this.rootView = rootView;
 		this.plongeur = plongeur;
-		this.palanquee = palanquee;
 		
-		if (plongeur.getProfondeurRealisee() != 0){
+		if (!plongeur.getDateNaissance().isEmpty()){
 			dateString = plongeur.getDateNaissance();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		    convertedDate = new Date();
+		    this.convertedDate = new Date();
 		        
 		    try {
-				convertedDate = dateFormat.parse(dateString);
+				this.convertedDate = dateFormat.parse(dateString);
 			} catch (java.text.ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
 		else
-			date = new Date();
+			convertedDate = new Date();
 	}
 
 	@SuppressLint("InflateParams") @Override
@@ -67,9 +59,9 @@ public class PlongeurDateNaissanceDialogFragment extends DialogFragment implemen
 				.inflate(R.layout.dialog_plongeur_date_naissance, null);
 
 		// Edition du Datepicker (si besoin)
-		int year = date.getYear() + 1900;
-		int month = date.getMonth();
-		int day = date.getDate();
+		int year = convertedDate.getYear() + 1900;
+		int month = convertedDate.getMonth();
+		int day = convertedDate.getDate();
 		
 		((DatePicker) dialogView.findViewById(R.id.dialoguePlongeurDatePicker)).updateDate(
 				year,day,month);
@@ -117,12 +109,6 @@ public class PlongeurDateNaissanceDialogFragment extends DialogFragment implemen
 		}
 		
 		super.dismiss();
-		
-	}
-
-	@Override
-	public void onClick(View v) {
-		
 		
 	}
 }
