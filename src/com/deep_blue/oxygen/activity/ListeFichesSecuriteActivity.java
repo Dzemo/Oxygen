@@ -19,6 +19,7 @@ import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.ListeFichesSecurite;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.synchronisation.SynchThread;
+import com.deep_blue.oxygen.tests.TestValidationFiche;
 import com.deep_blue.oxygen.util.DateStringUtils;
 import com.deep_blue.oxygen.util.IntentKey;
 
@@ -36,6 +37,9 @@ public class ListeFichesSecuriteActivity extends Activity {
 				.getParcelableExtra(IntentKey.UTILISATEUR_COURANT.toString());
 
 		loadListeFiche();
+		
+		TestValidationFiche testvalidation = new TestValidationFiche(this);
+		testvalidation.testValidationEnregistrementFiche();
 	}
 
 	@Override
