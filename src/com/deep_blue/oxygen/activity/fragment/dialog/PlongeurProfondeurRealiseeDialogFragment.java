@@ -1,7 +1,5 @@
 package com.deep_blue.oxygen.activity.fragment.dialog;
 
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -18,7 +15,7 @@ import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
 
-public class PlongeurProfondeurRealiseeDialogFragment extends DialogFragment implements OnClickListener{
+public class PlongeurProfondeurRealiseeDialogFragment extends DialogFragment {
 	private View rootView;
 	private View dialogView;
 	private Float profondeurParDefaut;
@@ -104,11 +101,4 @@ public class PlongeurProfondeurRealiseeDialogFragment extends DialogFragment imp
 		
 		super.dismiss();
 	}
-
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

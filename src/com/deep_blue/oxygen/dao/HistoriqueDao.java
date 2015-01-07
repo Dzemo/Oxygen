@@ -18,7 +18,7 @@ public class HistoriqueDao extends BaseDao {
 	public static final String ID_HISTORIQUE = "id_historique";
 	public static final String LOGIN_UTILISATEUR = "login_utilisateur";
 	public static final String TIMESTAMP = "timestamp";
-	public static final String ID_FICHE_SECURITE = "id_fiche_securite";
+	public static final String ID_LOCAL_FICHE_SECURITE = "id_fiche_securite";
 	public static final String COMMENTAIRE = "commentaire";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
@@ -26,7 +26,7 @@ public class HistoriqueDao extends BaseDao {
 		    LOGIN_UTILISATEUR + " TEXT," +
 		    TIMESTAMP + " INTEGER, " +
 		    COMMENTAIRE + " TEXT, " +
-		    ID_FICHE_SECURITE + " INTEGER " +
+		    ID_LOCAL_FICHE_SECURITE + " INTEGER " +
 	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	
@@ -57,7 +57,7 @@ public class HistoriqueDao extends BaseDao {
 		String queryParametre = "";
 		for(FicheSecurite fiche : listeFiches){
 			if(!queryParametre.isEmpty()) queryParametre += " AND";
-			queryParametre += " " + ID_FICHE_SECURITE + " = " + fiche.getId();
+			queryParametre += " " + ID_LOCAL_FICHE_SECURITE + " = " + fiche.getId();
 		}
 		
 		SQLiteDatabase mDb = open();
@@ -82,7 +82,7 @@ public class HistoriqueDao extends BaseDao {
 		value.put(HistoriqueDao.ID_HISTORIQUE, historique.getIdHistorique());
 		value.put(HistoriqueDao.LOGIN_UTILISATEUR, historique.getLoginUtilisateur());
 		value.put(HistoriqueDao.TIMESTAMP, historique.getTimestamp());
-		value.put(HistoriqueDao.ID_FICHE_SECURITE, historique.getIdFicheSecurite());
+		value.put(HistoriqueDao.ID_LOCAL_FICHE_SECURITE, historique.getIdFicheSecurite());
 		value.put(HistoriqueDao.COMMENTAIRE, historique.getCommentaire());
 		
 		mDb.insert(UtilisateurDao.TABLE_NAME, null, value);
@@ -115,6 +115,19 @@ public class HistoriqueDao extends BaseDao {
 	}
 	
 	/**
+	 * Supprime tout les historiques associés à la fiche dont l'id est passé en parametre
+	 * @param id
+	 */
+	public void deleteByIdFiche(Long id) {
+		if (id != null) {
+			SQLiteDatabase mDb = open();
+			mDb.delete(TABLE_NAME, ID_LOCAL_FICHE_SECURITE + " = ?",
+					new String[] { id.toString() });
+			mDb.close();
+		}
+	}
+	
+	/**
 	 * Transforme a cursor result of a query on the Historique table into an array of Historique
 	 * @param cursor
 	 * @return
@@ -127,7 +140,7 @@ public class HistoriqueDao extends BaseDao {
 					cursor.getInt(cursor.getColumnIndex(ID_HISTORIQUE)),
 					cursor.getString(cursor.getColumnIndex(LOGIN_UTILISATEUR)),
 					cursor.getLong(cursor.getColumnIndex(TIMESTAMP)),
-					cursor.getInt(cursor.getColumnIndex(ID_FICHE_SECURITE)),
+					cursor.getInt(cursor.getColumnIndex(ID_LOCAL_FICHE_SECURITE)),
 					cursor.getString(cursor.getColumnIndex(COMMENTAIRE))
 					);
 			

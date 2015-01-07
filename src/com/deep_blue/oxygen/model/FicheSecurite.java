@@ -32,15 +32,15 @@ public class FicheSecurite  implements Parcelable {
 	
 	public FicheSecurite() {
 		super();
-		this.id = null;
-		this.idWeb = null;
+		this.id = -1L;
+		this.idWeb = -1;
 		this.embarcation = null;
 		this.directeurPlonge = null;
 		this.timestamp = null;
 		this.site = null;
-		this.etat = null;
-		this.version = null;
-		this.palanquees = null;
+		this.etat = EnumEtat.SYNCHRONISE;
+		this.version = -1L;
+		this.palanquees = new ListePalanquees();
 	}
 	
 	/**
@@ -85,7 +85,11 @@ public class FicheSecurite  implements Parcelable {
 		else
 			embarcation = null;
 		
-		timestamp = source.readLong();
+		long sourceTimestamp = source.readLong();
+		if(sourceTimestamp > 0)
+			timestamp = sourceTimestamp;
+		else
+			timestamp = null;
 		isPresent = source.readByte() == 1;
 		if(isPresent)
 			site = source.readParcelable(Site.class.getClassLoader());
@@ -96,7 +100,9 @@ public class FicheSecurite  implements Parcelable {
 			directeurPlonge = source.readParcelable(Moniteur.class.getClassLoader());
 		else
 			directeurPlonge = null;
-		etat = EnumEtat.valueOf(source.readString());
+		String etatSource = source.readString();
+		if(etatSource != null)
+			etat = EnumEtat.valueOf(etatSource);
 		version = source.readLong();		
 		isPresent = source.readByte() == 1;
 		if(isPresent)
@@ -270,7 +276,7 @@ public class FicheSecurite  implements Parcelable {
 		dest.writeByte((byte)(embarcation != null ? 1 : 0));
 		if(embarcation != null)
 			dest.writeParcelable(embarcation, flags);
-		dest.writeLong(timestamp);
+		dest.writeLong(timestamp != null ? timestamp : -1L);
 		dest.writeByte((byte)(site != null ? 1 : 0));
 		if(site != null)
 		dest.writeParcelable(site,flags);
@@ -281,5 +287,18 @@ public class FicheSecurite  implements Parcelable {
 		dest.writeLong(version);
 		dest.writeByte((byte)(palanquees != null ? 1 : 0));
 		dest.writeParcelable(palanquees, flags);
+	}
+	
+	/**
+	 * Renvoi la palanquee d'id si elle existe dans la fiche ou null
+	 * @param palanqueeId
+	 * @return
+	 */
+	public Palanquee getPalanqueeId(Long palanqueeId){
+		for(Palanquee palanquee : palanquees){
+			if(palanquee.getId() == palanqueeId)
+				return palanquee;
+		}
+		return null;
 	}
 }

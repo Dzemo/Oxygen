@@ -101,7 +101,7 @@ public class PalanqueeHeureDialogFragment extends DialogFragment implements OnCl
 			int secondes = ((NumberPicker) dialogView
 					.findViewById(R.id.heurePickerSeconde)).getValue();
 			
-			palanquee.setHeure(heures+":"+minutes+":"+secondes);
+			palanquee.setHeure(heures+":"+(minutes < 10 ? "0"+minutes : minutes)+":"+secondes);
 			
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_heure))

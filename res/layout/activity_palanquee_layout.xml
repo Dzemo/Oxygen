@@ -4,14 +4,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_weight="1"
+    android:background="@color/background_gen"
     android:scrollbars="none" >
 
     <TableLayout
         android:id="@+id/activity_fiche_securite_fragment_palanquee"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:scrollbars="vertical" >
+        android:gravity="center" >
 
         <TableRow
             android:id="@+id/palanquee_heure"
@@ -56,14 +56,13 @@
                 android:contentDescription="@string/general_modifier"
                 android:src="@android:drawable/ic_menu_edit" />
 
-            
             <TextView
                 android:id="@+id/textView_palanquee_info_moniteur_labelle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/textview_margin"
                 android:text="@string/palanquee_info_moniteur_labelle" />
-            
+
             <TextView
                 android:id="@+id/textView_palanquee_moniteur"
                 android:layout_width="match_parent"
@@ -100,8 +99,8 @@
                 android:layout_margin="@dimen/textview_margin"
                 android:text="" />
         </TableRow>
-        
-      <TableRow
+
+        <TableRow
             android:id="@+id/palanquee_plongeur_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -122,10 +121,16 @@
                 android:layout_margin="@dimen/textview_margin"
                 android:layout_span="2"
                 android:gravity="center"
-                android:textAppearance="@style/PlongeurTitle"
-                
-                android:text="@string/palanquee_plongeur_title" />          
+                android:text="@string/palanquee_plongeur_title"
+                android:textAppearance="@style/PlongeurTitle" />
         </TableRow>
+
+        <TableLayout
+            android:id="@+id/activity_fiche_securite_fragment_palanquee_list_plongeurs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+		 >
+        </TableLayout>
 
         <TableRow
             android:id="@+id/palanquee_info_duree_prevue"

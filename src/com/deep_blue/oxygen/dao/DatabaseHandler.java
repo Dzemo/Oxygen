@@ -74,8 +74,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//db.execSQL("INSERT INTO "+FicheSecuriteDao.TABLE_NAME+" ("+FicheSecuriteDao.ID_LOCAL+", "+FicheSecuriteDao.ID_EMBARCATION_WEB+", "+FicheSecuriteDao.ID_DIRECTEUR_PLONGE_WEB+", "+FicheSecuriteDao.TIMESTAMP+", "+FicheSecuriteDao.ID_SITE+", "+FicheSecuriteDao.ETAT+") VALUES (3, 1, 4, 1314249548, 2, 'VALIDE');");
 		
 		//Ajout des historiques
-		db.execSQL("INSERT INTO "+HistoriqueDao.TABLE_NAME+" ("+HistoriqueDao.ID_HISTORIQUE+", "+HistoriqueDao.LOGIN_UTILISATEUR+", "+HistoriqueDao.TIMESTAMP+", "+HistoriqueDao.COMMENTAIRE+", "+HistoriqueDao.ID_FICHE_SECURITE+") VALUES (1, 'admin', 1314249548, 'Récupération de la fiche', 3);");
-		db.execSQL("INSERT INTO "+HistoriqueDao.TABLE_NAME+" ("+HistoriqueDao.ID_HISTORIQUE+", "+HistoriqueDao.LOGIN_UTILISATEUR+", "+HistoriqueDao.TIMESTAMP+", "+HistoriqueDao.COMMENTAIRE+", "+HistoriqueDao.ID_FICHE_SECURITE+") VALUES (2, 'admin', 1314249248, 'Validation de la fiche', 3);");
+		db.execSQL("INSERT INTO "+HistoriqueDao.TABLE_NAME+" ("+HistoriqueDao.ID_HISTORIQUE+", "+HistoriqueDao.LOGIN_UTILISATEUR+", "+HistoriqueDao.TIMESTAMP+", "+HistoriqueDao.COMMENTAIRE+", "+HistoriqueDao.ID_LOCAL_FICHE_SECURITE+") VALUES (1, 'admin', 1314249548, 'Récupération de la fiche', 3);");
+		db.execSQL("INSERT INTO "+HistoriqueDao.TABLE_NAME+" ("+HistoriqueDao.ID_HISTORIQUE+", "+HistoriqueDao.LOGIN_UTILISATEUR+", "+HistoriqueDao.TIMESTAMP+", "+HistoriqueDao.COMMENTAIRE+", "+HistoriqueDao.ID_LOCAL_FICHE_SECURITE+") VALUES (2, 'admin', 1314249248, 'Validation de la fiche', 3);");
 		
 		//Ajout des palanques
 		db.execSQL("INSERT INTO "+PalanqueeDao.TABLE_NAME+" ("+PalanqueeDao.ID+", "+PalanqueeDao.ID_FICHE_SECURITE+", "+PalanqueeDao.ID_MONITEUR_WEB+", "+PalanqueeDao.NUMERO+", "+PalanqueeDao.TYPE_PLONGE+", "+PalanqueeDao.TYPE_GAZ+", "+PalanqueeDao.PROFONDEUR_PREVUE+", "+PalanqueeDao.PROFONDEUR_REALISE_MONITEUR+", "+PalanqueeDao.DUREE_PREVUE+", "+PalanqueeDao.DUREE_REALISE_MONITEUR+", "+PalanqueeDao.HEURE+") VALUES (1, 1, 1, 1, 'TECHNIQUE', 'AIR', 12, NULL, 900, NULL, '10:00:00');");

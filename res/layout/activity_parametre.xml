@@ -5,11 +5,12 @@
     android:layout_height="fill_parent"
     android:layout_weight="1"
     android:scrollbars="none"
+    android:background="@color/background_gen"
     tools:context="com.deep_blue.oxygen.activity.ParametreActivity" >
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/background_gen"
         android:gravity="center" >
 
