@@ -143,9 +143,11 @@ public class FicheSecuriteDao extends BaseDao {
 	 * @return
 	 */
 	public FicheSecurite update(FicheSecurite ficheSecurite){
+		/*if(ficheSecurite == null)
+			return null;*/
 		
 		//Enregistrement du site si il n'est pas déjà enregistré
-		if(ficheSecurite.getSite() != null && ficheSecurite.getSite().getId() == null || ficheSecurite.getSite().getId() < 0){
+		if(ficheSecurite.getSite() != null && (ficheSecurite.getSite().getId() == null || ficheSecurite.getSite().getId() < 0)){
 			SiteDao siteDao = new SiteDao(pContext);
 			siteDao.insert(ficheSecurite.getSite());
 		}
@@ -194,9 +196,7 @@ public class FicheSecuriteDao extends BaseDao {
 		mDb.update(TABLE_NAME, value, ID_LOCAL+" = ?", new String[]{ficheSecurite.getId().toString()});
 		mDb.close();
 
-		//Update des palanquees
-		PalanqueeDao palanqueeDao = new PalanqueeDao(pContext);
-		return palanqueeDao.updatePalanqueeFromFiche(ficheSecurite);
+		return ficheSecurite;
 	}
 	
 	/**

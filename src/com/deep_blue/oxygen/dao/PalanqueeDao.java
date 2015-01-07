@@ -172,7 +172,6 @@ public class PalanqueeDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
-		value.put(ID, palanquee.getId());
 		value.put(ID_WEB, palanquee.getIdWeb());
 		value.put(ID_FICHE_SECURITE, palanquee.getIdFicheSecurite());
 		value.put(ID_MONITEUR_WEB, palanquee.getMoniteur() != null ? palanquee.getMoniteur().getIdWeb() : null);

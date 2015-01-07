@@ -39,10 +39,12 @@ public class ListeAptitudes extends ArrayList<Aptitude> implements Parcelable {
 	 */
 	public ListeAptitudes(String aptitudesString,
 			SparseArray<Aptitude> allAptitudes) {
-		String aptitudesStringArray[] = aptitudesString
-				.split(Aptitude.SEPARATOR);
-		for (String aptitudeString : aptitudesStringArray) {
-			this.add(allAptitudes.get(Integer.valueOf(aptitudeString)));
+		if (aptitudesString.length() > 0) {
+			String aptitudesStringArray[] = aptitudesString
+					.split(Aptitude.SEPARATOR);
+			for (String aptitudeString : aptitudesStringArray) {
+				this.add(allAptitudes.get(Integer.valueOf(aptitudeString)));
+			}
 		}
 	}
 
