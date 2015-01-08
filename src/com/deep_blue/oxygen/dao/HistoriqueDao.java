@@ -140,7 +140,7 @@ public class HistoriqueDao extends BaseDao {
 					cursor.getInt(cursor.getColumnIndex(ID_HISTORIQUE)),
 					cursor.getString(cursor.getColumnIndex(LOGIN_UTILISATEUR)),
 					cursor.getLong(cursor.getColumnIndex(TIMESTAMP)),
-					cursor.getInt(cursor.getColumnIndex(ID_LOCAL_FICHE_SECURITE)),
+					cursor.getLong(cursor.getColumnIndex(ID_LOCAL_FICHE_SECURITE)),
 					cursor.getString(cursor.getColumnIndex(COMMENTAIRE))
 					);
 			

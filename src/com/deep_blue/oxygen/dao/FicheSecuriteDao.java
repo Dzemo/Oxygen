@@ -311,12 +311,10 @@ public class FicheSecuriteDao extends BaseDao {
 					moniteurDao.getByIdWeb(cursor.getInt(cursor.getColumnIndex(ID_DIRECTEUR_PLONGE_WEB))),
 					cursor.getLong(cursor.getColumnIndex(TIMESTAMP)),
 					siteDao.getById((cursor.getInt(cursor.getColumnIndex(ID_SITE)))),
-					null,
+					EnumEtat.valueOf(cursor.getString(cursor.getColumnIndex(ETAT))),
 					cursor.getLong(cursor.getColumnIndex(VERSION)),
 					palanqueeDao.getByIdFicheSecurite(cursor.getInt(cursor.getColumnIndex(ID_LOCAL)))
 					);
-			
-			
 			
 			resultList.add(ficheSecurite);
 			

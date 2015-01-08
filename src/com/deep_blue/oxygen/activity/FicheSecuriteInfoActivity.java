@@ -21,9 +21,12 @@ import com.deep_blue.oxygen.activity.fragment.dialog.FicheDirecteurDialogFragmen
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheEmbarcationDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheSiteDialogFragment;
 import com.deep_blue.oxygen.dao.FicheSecuriteDao;
+import com.deep_blue.oxygen.dao.HistoriqueDao;
 import com.deep_blue.oxygen.listener.PalanqueeOnClickListener;
+import com.deep_blue.oxygen.model.EnumEtat;
 import com.deep_blue.oxygen.model.EnumTypePlonge;
 import com.deep_blue.oxygen.model.FicheSecurite;
+import com.deep_blue.oxygen.model.Historique;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.util.DateStringUtils;
@@ -34,10 +37,12 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 	private FicheSecurite ficheSecurite = null;
 	private View rootView;
 	private Utilisateur utilisateur = null;
-
+	private FicheSecuriteDao ficheSecuriteDao;
+	
 	@SuppressLint("InflateParams") @Override
 	public void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
+		this.ficheSecuriteDao = new FicheSecuriteDao(this);
 		
 		//Affichage du bouton de retour à coté du logo
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -50,7 +55,6 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 		//Inlfation du layout
 		rootView = getLayoutInflater().inflate(R.layout.activity_fiche_securite_info, null);
 		setContentView(rootView);
-		
 		
 		if (ficheSecurite != null) {
 			// Initialisation de la vue avec la fiche de sécurité séléctionné
@@ -171,15 +175,31 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 			//TODO vérification de la fiche
 			
 			//Enregistrement de la fiche
-			FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
+			String commentaire;
 			if(ficheSecurite.getId() == null || ficheSecurite.getId() < 0){
-				ficheSecuriteDao.insert(ficheSecurite);
+				ficheSecurite = ficheSecuriteDao.insert(ficheSecurite);
+				commentaire = "Création de la fiche";
 			}
 			else{
-				ficheSecuriteDao.update(ficheSecurite);
+				commentaire = "Mise à jours de la fiche";
+				ficheSecurite = ficheSecuriteDao.update(ficheSecurite);
 			}
-			Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_securite_enregistrement_ok), Toast.LENGTH_SHORT);
-			toastSave.show();
+			
+			if(ficheSecurite == null){
+				//Affichage d'un message à l'utilisateur lors d'une erreur lors de l'enregistrement car la fiche retourner est null
+				Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_securite_enregistrement_probleme), Toast.LENGTH_SHORT);
+				toastSave.show();
+			}
+			else{
+				//Enregistrement d'un historique
+				Historique historique = new Historique(utilisateur.getLogin(),  DateStringUtils.getCurrentTimestamps(), ficheSecurite.getId(), commentaire);
+				HistoriqueDao historiqueDao = new HistoriqueDao(this);
+				historiqueDao.insert(historique);
+				
+				//Affichage d'un message à l'utilisateur pour confirmer l'enregistrement
+				Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_securite_enregistrement_ok), Toast.LENGTH_SHORT);
+				toastSave.show();
+			}
 			return true;
 		case R.id.itemDelete:
 			ConfirmDialogFragment confirmDialogFragmentDelete = new ConfirmDialogFragment(getResources().getString(R.string.fiche_info_dialog_suppression), ConfirmDialogFragment.SUPPRESSION_FICHE_SECURITE);
@@ -203,7 +223,6 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 		if(confirmType == ConfirmDialogFragment.SUPPRESSION_FICHE_SECURITE){
 			//Suppression de la fiche de sécurité si elle était enregistrée
 			if(ficheSecurite.getId() != null || ficheSecurite.getId() < 0){
-				FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
 				ficheSecuriteDao.delete(ficheSecurite.getId());
 			}
 			Intent result = new Intent();
@@ -211,11 +230,35 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 			setResult(RESULT_OK, result);
 			finish();
 		} else if(confirmType == ConfirmDialogFragment.CLOTURE_FICHE_SECURITE){
-			Intent result = new Intent();
-			//TODO appel dao
-			result.putExtra(IntentKey.RESULT_TEXT.toString(), getResources().getString(R.string.fiche_info_cloture_confirm));
-			setResult(RESULT_OK, result);
-			finish();
+			//TODO Vérification de cloture de la fiche
+			
+			//Appel dao pour cloturer la fiche
+			if(ficheSecurite.getId() == null || ficheSecurite.getId() < 0){
+				ficheSecurite = ficheSecuriteDao.insert(ficheSecurite);
+				ficheSecurite = ficheSecuriteDao.updateEtat(ficheSecurite, EnumEtat.VALIDE);
+			}
+			else{
+				ficheSecurite = ficheSecuriteDao.updateEtat(ficheSecurite, EnumEtat.VALIDE);
+			}
+			
+			if(ficheSecurite == null){
+				//Affichage d'un message à l'utilisateur lors d'une erreur lors de la cloture car la fiche retourner est null
+				Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_info_cloture_problem), Toast.LENGTH_SHORT);
+				toastSave.show();
+			}
+			else{		
+
+				//Enregistrement d'un historique
+				Historique historique = new Historique(utilisateur.getLogin(),  DateStringUtils.getCurrentTimestamps(), ficheSecurite.getId(), "Cloture de la fiche de sécurité");
+				HistoriqueDao historiqueDao = new HistoriqueDao(this);
+				historiqueDao.insert(historique);
+				
+				//Renvoi de l'utilisateur à l'activité parente (liste des fiches)
+				Intent result = new Intent();
+				result.putExtra(IntentKey.RESULT_TEXT.toString(), getResources().getString(R.string.fiche_info_cloture_confirm));
+				setResult(RESULT_OK, result);
+				finish();
+			}
 		}
 	}
 

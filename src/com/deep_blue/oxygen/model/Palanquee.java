@@ -1,9 +1,9 @@
 package com.deep_blue.oxygen.model;
 
-import java.util.Date;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.deep_blue.oxygen.util.DateStringUtils;
 
 /**
  * Palanquee d'une fiche de securite
@@ -232,7 +232,7 @@ public class Palanquee implements Parcelable {
 	 * Met à jours la version
 	 */
 	public void updateVersion(){
-		this.version = (new Date()).getTime() / 1000;
+		this.version =  DateStringUtils.getCurrentTimestamps();
 	}
 	
 	public ListePlongeurs getPlongeurs() {

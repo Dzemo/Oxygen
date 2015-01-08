@@ -66,4 +66,11 @@ public class DateStringUtils {
 		return result;
 	}
 
+	/**
+	 * Renvoi le timestamps courant avec une précision à la seconde, comme en PHP
+	 * @return
+	 */
+	public static Long getCurrentTimestamps(){
+		return (new Date()).getTime() / 1000;
+	}
 }

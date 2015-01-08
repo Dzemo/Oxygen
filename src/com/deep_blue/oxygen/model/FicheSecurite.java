@@ -2,6 +2,8 @@ package com.deep_blue.oxygen.model;
 
 import java.util.Date;
 
+import com.deep_blue.oxygen.util.DateStringUtils;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -235,7 +237,7 @@ public class FicheSecurite  implements Parcelable {
 	 * Met à jours la version
 	 */
 	public void updateVersion(){
-		this.version = (new Date()).getTime() / 1000;
+		this.version = DateStringUtils.getCurrentTimestamps();
 	}
 
 	/**

@@ -5,13 +5,38 @@ public class Historique {
 	private Integer idHistorique;
 	private String loginUtilisateur;
 	private Long timestamp;
-	private Integer idFicheSecurite;
+	private Long idFicheSecurite;
 	private String commentaire;
 	
+	/**
+	 * Pour la récupération d'un historique en base
+	 * @param idHistorique
+	 * @param loginUtilisateur
+	 * @param timestamp
+	 * @param idFicheSecurite
+	 * @param commentaire
+	 */
 	public Historique(Integer idHistorique, String loginUtilisateur, Long timestamp,
-			Integer idFicheSecurite, String commentaire) {
+			Long idFicheSecurite, String commentaire) {
 		super();
 		this.idHistorique = idHistorique;
+		this.loginUtilisateur = loginUtilisateur;
+		this.timestamp = timestamp;
+		this.idFicheSecurite = idFicheSecurite;
+		this.commentaire = commentaire;
+	}
+	
+	/**
+	 * Pour la création d'un historique
+	 * @param loginUtilisateur
+	 * @param timestamp
+	 * @param idFicheSecurite
+	 * @param commentaire
+	 */
+	public Historique(String loginUtilisateur, Long timestamp,
+			Long idFicheSecurite, String commentaire) {
+		super();
+		this.idHistorique = -1;
 		this.loginUtilisateur = loginUtilisateur;
 		this.timestamp = timestamp;
 		this.idFicheSecurite = idFicheSecurite;
@@ -36,10 +61,10 @@ public class Historique {
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
-	public Integer getIdFicheSecurite() {
+	public Long getIdFicheSecurite() {
 		return idFicheSecurite;
 	}
-	public void setIdFicheSecurite(Integer idFicheSecurite) {
+	public void setIdFicheSecurite(Long idFicheSecurite) {
 		this.idFicheSecurite = idFicheSecurite;
 	}
 	public String getCommentaire() {

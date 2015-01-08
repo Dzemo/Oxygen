@@ -1,9 +1,9 @@
 package com.deep_blue.oxygen.model;
 
-import java.util.Date;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.deep_blue.oxygen.util.DateStringUtils;
 
 /**
  * Classe représentant un plongeur d'une palanquée
@@ -277,7 +277,7 @@ public class Plongeur implements Parcelable {
 	 * Met à jours la version
 	 */
 	public void updateVersion(){
-		this.version = (new Date()).getTime() / 1000;
+		this.version =  DateStringUtils.getCurrentTimestamps();
 	}
 
 	/* (non-Javadoc)
