@@ -13,8 +13,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.activity.PalanqueeActivity;
 import com.deep_blue.oxygen.dao.MoniteurDao;
-import com.deep_blue.oxygen.model.EnumTypePlonge;
 import com.deep_blue.oxygen.model.Moniteur;
 import com.deep_blue.oxygen.model.Palanquee;
 
@@ -79,16 +79,15 @@ public class PalanqueeMoniteurDialogFragment extends DialogFragment implements
 
 	public void dismiss(boolean type) {
 
-		if (type) {
+		if (type && selectedIndex != -1) {
 
-			if (selectedIndex == -1 || palanquee.getTypePlonge() == EnumTypePlonge.AUTONOME)
-				palanquee.setMoniteur(null);
-			else
-				palanquee.setMoniteur(moniteurs.get(selectedIndex));
+			palanquee.setMoniteur(moniteurs.get(selectedIndex));
 
-			((TextView) rootView
-					.findViewById(R.id.textView_palanquee_moniteur))
-					.setText(palanquee.getMoniteur() != null ? palanquee.getMoniteur().getPrenom() + " " + palanquee.getMoniteur().getNom() : "");
+			if(palanquee.getMoniteur() != null){
+				((TextView) rootView
+						.findViewById(R.id.textView_palanquee_moniteur))
+						.setText(palanquee.getMoniteur() != null ? palanquee.getMoniteur().getPrenom() + " " + palanquee.getMoniteur().getNom() : "");
+			}
 		}
 
 		super.dismiss();

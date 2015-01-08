@@ -180,17 +180,12 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 			}
 		});
 
-		// Moniteur si présent
-		if (palanqueeFinal.getTypePlonge() != EnumTypePlonge.AUTONOME) {
-			Moniteur moniteur = palanqueeFinal.getMoniteur();
-			
-			((TextView) rootView
-					.findViewById(R.id.textView_palanquee_moniteur))
-					.setText(moniteur != null ? moniteur.getPrenom() + " " + moniteur.getNom() : "");
-		} else {
-			rootView.findViewById(R.id.palanquee_moniteur).setVisibility(
-					View.GONE);
-		}
+		//Moniteur si présent
+		Moniteur moniteur = palanqueeFinal.getMoniteur();
+		if (moniteur != null) {
+			((TextView) rootView.findViewById(R.id.textView_palanquee_moniteur)).setText(moniteur != null ? moniteur.getPrenom() + " " + moniteur.getNom() : "");
+		} 
+		updateMoniteurVisibilite();
 		
 
 		
@@ -274,6 +269,17 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 	@Override
 	public void onDialogNegativeClick(DialogFragment dialog, int confirmType) {
 		//L'utilisateur à choisi de ne pas supprimer cette palanquee, on ne fait rien alors
+	}
+	
+	/**
+	 * Met à jours la visibilité du moniteur dans la palanquée en fonction du type de plongé
+	 */
+	public void updateMoniteurVisibilite(){
+		if(palanquee.getTypePlonge() == EnumTypePlonge.AUTONOME){
+			findViewById(R.id.palanquee_moniteur).setVisibility(View.GONE);
+		} else {
+			findViewById(R.id.palanquee_moniteur).setVisibility(View.VISIBLE);
+		}
 	}
 	
 	/**

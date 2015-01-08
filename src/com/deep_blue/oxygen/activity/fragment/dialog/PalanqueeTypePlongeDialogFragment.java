@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.activity.PalanqueeActivity;
 import com.deep_blue.oxygen.model.EnumTypePlonge;
 import com.deep_blue.oxygen.model.Palanquee;
 
@@ -91,9 +92,10 @@ public class PalanqueeTypePlongeDialogFragment extends DialogFragment implements
 				palanquee.setTypePlonge(EnumTypePlonge.BAPTEME);
 				break;
 			default:
-				palanquee.setTypePlonge(null);
+				palanquee.setTypePlonge(EnumTypePlonge.NULL);
 				break;
 			}
+			((PalanqueeActivity) getActivity()).updateMoniteurVisibilite();
 
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_plongee_value))
