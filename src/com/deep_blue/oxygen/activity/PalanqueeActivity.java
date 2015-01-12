@@ -1,10 +1,13 @@
 package com.deep_blue.oxygen.activity;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,11 +15,12 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.TableRow.LayoutParams;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.activity.fragment.dialog.ConfirmDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeDureePrevueDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeDureeRealiseeMoniteurDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeHeureDialogFragment;
@@ -25,7 +29,8 @@ import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurPrevueDi
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeProfondeurRealiseeMoniteurDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeTypeGazDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeTypePlongeDialogFragment;
-import com.deep_blue.oxygen.activity.fragment.dialog.ConfirmDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurPickerDialogFragment;
+import com.deep_blue.oxygen.dao.PlongeurDao;
 import com.deep_blue.oxygen.listener.PlongeurOnClickListener;
 import com.deep_blue.oxygen.model.EnumEtat;
 import com.deep_blue.oxygen.model.EnumTypeGaz;
@@ -38,13 +43,14 @@ import com.deep_blue.oxygen.util.DateStringUtils;
 import com.deep_blue.oxygen.util.IntentKey;
 
 @SuppressLint("InflateParams") 
-public class PalanqueeActivity extends FragmentActivity implements ConfirmDialogFragment.ConfirmDialogListener{
+public class PalanqueeActivity extends FragmentActivity implements ConfirmDialogFragment.ConfirmDialogListener, PlongeurPickerDialogFragment.PlongeurPickerDialogListener {
 
 	
 	private FicheSecurite ficheSecurite;
 	private Palanquee palanquee;
 	private View rootView;
-
+	private List<Plongeur> listePlongeursSuggeres = null;
+	
 	public PalanqueeActivity(){
 		super();
 	}
@@ -306,14 +312,49 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 		.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Plongeur plongeur = new Plongeur();
-				plongeur.setId(palanquee.getPlongeurs().getNextNegativeId());
-				plongeur.setIdPalanquee(palanquee.getId());
-				plongeur.setIdFicheSecurite(palanquee.getIdFicheSecurite());
-				palanquee.getPlongeurs().add(plongeur);
-				afficherPlongeurs();
+				
+				if(listePlongeursSuggeres == null){
+					int nombre = 15;
+					try{
+						nombre = Integer.valueOf(R.string.nombre_plongeur_suggerer);
+					} catch(NumberFormatException e){}
+					
+					PlongeurDao plongeurDao = new PlongeurDao(getApplicationContext());
+					listePlongeursSuggeres = plongeurDao.getLastX(nombre);
+				}
+				
+				
+				PlongeurPickerDialogFragment plongeurPickerDialogFragment = new PlongeurPickerDialogFragment(listePlongeursSuggeres);
+				plongeurPickerDialogFragment.show(getSupportFragmentManager(), "TAG");
 			}
 		});
+	}
+	
+	@Override
+	public void onPlongeurSelection(Plongeur plongeurSelectionne) {
+		if(plongeurSelectionne == null){
+			//Ajout d'un nouveau plongeur
+			Plongeur plongeur = new Plongeur();
+			plongeur.setId(palanquee.getPlongeurs().getNextNegativeId());
+			plongeur.setIdPalanquee(palanquee.getId());
+			plongeur.setIdFicheSecurite(palanquee.getIdFicheSecurite());
+			palanquee.getPlongeurs().add(plongeur);
+		} else{
+			//Initialisation du nouveau plongeur avec les infos du plongeur selectionner
+			Plongeur plongeur = new Plongeur();
+			plongeur.setId(palanquee.getPlongeurs().getNextNegativeId());
+			plongeur.setIdPalanquee(palanquee.getId());
+			plongeur.setIdFicheSecurite(palanquee.getIdFicheSecurite());
+			plongeur.setNom(plongeurSelectionne.getNom());
+			plongeur.setPrenom(plongeurSelectionne.getPrenom());
+			plongeur.setDateNaissance(plongeurSelectionne.getDateNaissance());
+			plongeur.setTelephone(plongeurSelectionne.getTelephone());
+			plongeur.setTelephoneUrgence(plongeurSelectionne.getTelephoneUrgence());
+			plongeur.setAptitudes(plongeurSelectionne.getAptitudes());
+			palanquee.getPlongeurs().add(plongeur);
+		}
+		
+		afficherPlongeurs();
 	}
 	
 	/**

@@ -30,7 +30,10 @@
 
     <!-- Durée par défaut (en minute) -->
     <string name="plonger_duree_default">20</string>
-
+    
+    <!-- Nombre de plongeur suggérés parmis les derniers plongeur dans la creation d'une fiche -->
+	<string name="nombre_plongeur_suggerer">15</string>
+	
     <!-- CONFIG FIN -->
 
 
@@ -149,6 +152,7 @@
     <string name="palanquee_dialog_type_plongee_title">Type de plongée</string>
     <string name="palanquee_dialog_moniteur_title">Moniteur</string>
     <string name="palanquee_dialog_suppression">Voulez-vous vraiment supprimer la palanquée %s ?</string>
+    <string name="palanquee_dialog_ajout_plongeur_titre">Ajouter un plongeur</string>
     <!-- PALANQUEE DIALOG INFO DEBUT -->
 
 

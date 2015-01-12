@@ -1,6 +1,9 @@
 package com.deep_blue.oxygen.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -71,6 +74,38 @@ public class PlongeurDao extends BaseDao {
 		else{
 			return Long.valueOf(0);
 		}
+	}
+	
+	/**
+	 * Retourne les nombres dernier plongeur, utilisé pour les suggestion
+	 * 
+	 * @param nombre Nombre de plongeur retourné
+	 * @return
+	 */
+	public List<Plongeur> getLastX(int nombre){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME+" ORDER BY "+ VERSION+" DESC LIMIT ?", new String[]{String.valueOf(nombre*4)});
+		
+		List<Plongeur> resultList  = cursorToPlongeurList(cursor);
+		
+		mDb.close();
+		
+		//Suppression des doublons et des plongeurs non set
+		Map<String, Plongeur> plongeursMap = new HashMap<String, Plongeur>();
+		String cle;
+		for(Plongeur plongeur : resultList){
+			if(plongeur.getNom() != null && !plongeur.getNom().isEmpty() &&
+					plongeur.getPrenom() != null && !plongeur.getPrenom().isEmpty() &&
+					plongeur.getDateNaissance() != null && !plongeur.getDateNaissance().isEmpty()){
+				//On ne prend pas les plongeurs dont le nom/prenom/date de naissance ne sont pas renseigné
+				cle = plongeur.getNom()+"-"+plongeur.getPrenom()+"-"+plongeur.getDateNaissance();
+				if(!plongeursMap.containsKey(cle)){
+					plongeursMap.put(cle, plongeur);
+				}
+			}
+		}
+
+		return new ArrayList<Plongeur>(plongeursMap.values());
 	}
 	
 	/**

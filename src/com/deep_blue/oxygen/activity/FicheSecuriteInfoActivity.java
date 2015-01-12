@@ -224,7 +224,7 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 		
 		if(verifierRegleGestion){
 			//vérification de la fiche
-			List<String> erreurs = ValidationFiche.validationEnregistrementFiche(ficheSecurite);
+			List<String> erreurs = ValidationFiche.validationClotureFiche(ficheSecurite);
 			
 			if(erreurs.size() > 0){
 				//Si des erreurs sont présente, on affiche un dialog d'alert
