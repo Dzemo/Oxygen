@@ -3,6 +3,8 @@ package com.deep_blue.oxygen.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.deep_blue.oxygen.model.Aptitude;
 import com.deep_blue.oxygen.model.EnumTypeGaz;
 import com.deep_blue.oxygen.model.EnumTypePlonge;
@@ -16,6 +18,41 @@ import com.deep_blue.oxygen.model.Plongeur;
  *
  */
 public class ValidationFiche {
+	
+	
+	/**
+	 * Permet de vérifier s'il y a des erreurs vis à vis de la validation des fiches
+	 * @param palanquee
+	 * @return List<String> d'erreurs
+	 */
+	public static List<String> validationClotureFiche(FicheSecurite fichesecurite){
+		// Déclaration des variables
+		List<String> erreurs = new ArrayList<String>();
+		ArrayList<Palanquee> palanqueesFiche = fichesecurite.getPalanquees();
+		
+		/**
+		 * Vérification des saisies
+		 */
+		
+		// Vérif saisie de la date
+		if(fichesecurite.getTimestamp() == null || fichesecurite.getTimestamp() <= 0){
+			erreurs.add("Pas de date saisie (format JJ/MM/AAAA attendu)");
+		}
+	
+		// Verif saisie Directeur de plongée
+		if(fichesecurite.getDirecteurPlonge() == null || fichesecurite.getDirecteurPlonge().getIdWeb() <= 0){
+			erreurs.add("Pas de directeur de plongée saisie");
+		}
+	
+		// Verif palanquées
+		for(Palanquee palanquee  : palanqueesFiche){
+			erreurs.addAll(validationPalanquee(palanquee,true));
+		}
+		
+		
+		
+		return erreurs;
+	}
 	
 	/**
 	 * Permet de vérifier s'il y a des erreurs vis à vis de la validation des fiches
@@ -44,7 +81,7 @@ public class ValidationFiche {
 	
 		// Verif palanquées
 		for(Palanquee palanquee  : palanqueesFiche){
-			erreurs.addAll(validationPalanquee(palanquee));
+			erreurs.addAll(validationPalanquee(palanquee,false));
 		}
 		
 		
@@ -57,7 +94,7 @@ public class ValidationFiche {
 	 * @param palanquee
 	 * @return List<String> d'erreurs
 	 */
-	public static List<String> validationPalanquee(Palanquee palanquee){
+	public static List<String> validationPalanquee(Palanquee palanquee, boolean cloture){
 		
 		// Déclaration des variables
 		List<String> erreurs = new ArrayList<String>();
@@ -67,24 +104,38 @@ public class ValidationFiche {
 		 */
 		
 		// Verif saisie Type Gaz
-		if(palanquee.getTypeGaz() == null){
-			erreurs.add("Pas de gaz saisi");
+		if(palanquee.getTypeGaz() == null || palanquee.getTypeGaz() == EnumTypeGaz.NULL){
+			erreurs.add("Pas de gaz saisi sur la palanquée "+palanquee.getNumero());
 		}
 		
 		// Verif saisie Type de plongée
-		if(palanquee.getTypePlonge() == null){
-			erreurs.add("Pas de type de plongée saisie");
+		if(palanquee.getTypePlonge() == null || palanquee.getTypePlonge() == EnumTypePlonge.NULL){
+			erreurs.add("Pas de type de plongée saisie sur la palanquée "+palanquee.getNumero());
 		}
 		
 		// Verif saisie Profondeur
 		if(palanquee.getProfondeurPrevue() == null || palanquee.getProfondeurPrevue() <= 0){
-			erreurs.add("Pas de type de plongée saisie");
+			erreurs.add("Erreur de profondeur (null ou négative) saisie sur la palanquée "+palanquee.getNumero());
+		}
+		
+		if(cloture){
+			// Vérif durée réalisée
+			for(Plongeur plongeurs : palanquee.getPlongeurs()){
+				if(plongeurs.getDureeRealisee() == null || plongeurs.getDureeRealisee() <= 0){
+					erreurs.add("Erreur de durée réalisée (null ou négative) saisie pour le plongeur "+plongeurs.getNom()+" "+plongeurs.getPrenom()+" ");
+				}
+				if(plongeurs.getProfondeurRealisee() == null || plongeurs.getProfondeurRealisee() <= 0){
+					erreurs.add("Erreur de profondeur réalisée (null ou négative) saisie pour le plongeur "+plongeurs.getNom()+" "+plongeurs.getPrenom()+" ");
+				}
+			}
+			// Vérif profondeur réalisée
+			
 		}
 		
 		// Verif saisie Heure de plongée
-		if(palanquee.getHeure() == null || palanquee.getHeure().isEmpty()){
-			erreurs.add("Pas de type de plongée saisie");
-		}
+		/*if(palanquee.getHeure() == null || palanquee.getHeure().isEmpty()){
+			erreurs.add("Pas d'heure de plongée saisie sur la palanquée "+palanquee.getNumero());
+		}*/
 		
 		/**
 		 * Vérification des règles de gestion
@@ -93,7 +144,7 @@ public class ValidationFiche {
 		// Type de plongé
 		if(palanquee.getProfondeurPrevue() <= 6){
 			if(palanquee.getTypePlonge() == EnumTypePlonge.AUTONOME){
-				erreurs.add("Impossible de plonger en autonomie entre 0 et 6 mètres de profondeur");
+				erreurs.add("Impossible de plonger en autonomie entre 0 et 6 mètres de profondeur pour la palanquée "+palanquee.getNumero());
 			}
 			else if(palanquee.getTypeGaz() == EnumTypeGaz.NITROX && palanquee.getTypePlonge() == EnumTypePlonge.ENCADRE){
 				erreurs.add("Impossible de plonger en exploration encadré au nitrox entre 0 et 6 mètres de profondeur");
@@ -230,36 +281,27 @@ public class ValidationFiche {
 			}
 		}
 	
-		// Vérification aptitudes plongeurs
-		for(Plongeur plongeur : palanquee.getPlongeurs()){
-			if(!validationAptitudes(plongeur,palanquee)){
-				erreurs.add("Un plongeur n'a pas les aptitudes nécéssaires pour cette plongée");
+		// Vérification Nitrox plongeurs
+		if(palanquee.getTypeGaz() == EnumTypeGaz.NITROX){
+			for(Plongeur plongeur : palanquee.getPlongeurs()){
+				if(!validationNitrox(plongeur,palanquee)){
+					erreurs.add("Le plongeur "+plongeur.getNom()+" "+plongeur.getPrenom()+" n'a pas les aptitudes nitrox nécéssaires pour cette plongée");
+				}
 			}
 		}
-		
-		
 		return erreurs;
 	}
 	
 	
-	private static boolean validationAptitudes(Plongeur plongeur, Palanquee palanquee){
-		boolean checkProfondeur = false;
-		boolean checkGaz = palanquee.getTypeGaz() != EnumTypeGaz.NITROX;
-		// Profondeur de plongée
-		double profondeurPlongeur = Math.ceil(palanquee.getProfondeurPrevue());
-		
+	private static boolean validationNitrox(Plongeur plongeur, Palanquee palanquee){
+
 		if(plongeur.getAptitudes() != null){
 			for(Aptitude aptitude : plongeur.getAptitudes()){
-				if(aptitude.getAjoutMax() >= profondeurPlongeur){
-					checkProfondeur = true;
-					if(checkGaz)
+				if(aptitude != null){
+					if(aptitude.getNitroxMax() >= 20){
+						// On considère qu'il s'agit d'un PN-C
 						return true;
-				}
-				if(aptitude.getNitroxMax() >= 20){
-					// On considère qu'il s'agit d'un PN-C
-					checkGaz = true;
-					if(checkProfondeur)
-						return true;
+					}
 				}
 			}
 			return false;
@@ -279,24 +321,22 @@ public class ValidationFiche {
 			return false;
 		else{
 			for(Aptitude aptitude : plongeur.getAptitudes()){
-				switch(palanquee.getTypePlonge()){
-					case AUTONOME:
+				if(aptitude != null){
+					if(palanquee.getTypePlonge() == EnumTypePlonge.AUTONOME){
 						if(aptitude.getAutonomeMax() >= profondeurPrevue)
 							return true;
-						break;
-					case ENCADRE:
+					}
+					else if(palanquee.getTypePlonge() == EnumTypePlonge.ENCADRE){
 						if(aptitude.getEncadreeMax() >= profondeurPrevue)
 							return true;
-						break;
-					case TECHNIQUE:
+					}
+					else if(palanquee.getTypePlonge() == EnumTypePlonge.TECHNIQUE){
 						if(aptitude.getTechniqueMax() >= profondeurPrevue)
 							return true;
-						break;
-					case BAPTEME:
+					}
+					else if(palanquee.getTypePlonge() == EnumTypePlonge.BAPTEME){
 						return true;
-					default:
-						break;
-				
+					}
 				}
 			}
 			return false;

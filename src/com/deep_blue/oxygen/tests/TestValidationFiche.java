@@ -51,6 +51,9 @@ public class TestValidationFiche {
 			
 			// Création d'une palanquée de test
 			Palanquee palanquee1 = new Palanquee();
+			palanquee1.setId(1L);
+			palanquee1.setIdFicheSecurite(1L);
+			palanquee1.setNumero(1);
 			fichesecuritetest.getPalanquees().add(palanquee1);
 			
 			// Type de plongée + Type de gaz + Profondeur prévue + Durée Prévue
@@ -60,7 +63,9 @@ public class TestValidationFiche {
 			palanquee1.setDureePrevue(20);
 			
 			// Ajout d'un moniteur
-			palanquee1.setMoniteur(directeurplonge);
+			Moniteur moniteur1 = moniteurFactory.generateDirecteurPlongee(1);
+			moniteur1 = moniteurFactory.addAptitudeForMoniteur(moniteur1, new String[]{"E-4"});
+			palanquee1.setMoniteur(moniteur1);
 			
 		
 			// Ajout des plongeurs à la palanquée de test
@@ -68,24 +73,27 @@ public class TestValidationFiche {
 			
 				// Création des plongeurs pour le test
 				Plongeur random1 = plongeurFactory.generateRandomPlongeur(1L, 1L);
-				random1 = plongeurFactory.addAptitudeForPlongeur(random1, new String[]{"PE-12"});
+				random1 = plongeurFactory.addAptitudeForPlongeur(random1, new String[]{"PE-20"});
 				
 				Plongeur random2 = plongeurFactory.generateRandomPlongeur(1L, 1L);
-				random1 = plongeurFactory.addAptitudeForPlongeur(random2, new String[]{"PE-20"});
+				random2 = plongeurFactory.addAptitudeForPlongeur(random2, new String[]{"PE-20"});
 				
 				Plongeur random3 = plongeurFactory.generateRandomPlongeur(1L, 1L);
-				random1 = plongeurFactory.addAptitudeForPlongeur(random3, new String[]{"PE-20","PA-12"});
+				random3 = plongeurFactory.addAptitudeForPlongeur(random3, new String[]{"PE-20","PA-12"});
 				
 				// Ajout à la palanquée
 				palanquee1.getPlongeurs().add(random1);
 				palanquee1.getPlongeurs().add(random2);
-				palanquee1.getPlongeurs().add(random3);
+				palanquee1.getPlongeurs().add(random3); 
 				
 		
 		// Test que ça marche
-		List<String> erreurs = ValidationFiche.validationEnregistrementFiche(fichesecuritetest);
+		List<String> erreurs = ValidationFiche.validationClotureFiche(fichesecuritetest);
+		Log.e("Nombre Erreurs","Nombre d'erreurs : "+erreurs.size());
+		int i = 0;
 		for(String erreur : erreurs){
-			Log.e("Erreur : %s", erreur);
+			Log.e("Erreur","Erreur numéro :"+i+" msg : "+erreur);
+			i++;
 		}
 	}
 

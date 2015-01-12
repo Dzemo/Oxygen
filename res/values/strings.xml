@@ -79,6 +79,8 @@
     <string name="list_fiche_autre_title">Autres fiches (%s)</string>
     <!-- LISTE FICHES SECURITE FIN -->
 
+	<!-- FICHES TITRE -->
+	<string name="title_activity_fiche_securite">Fiche de Sécurité</string>
 
     <!-- FICHE INFO DEBUT -->
     <string name="title_activity_fiche_securite_info">Fiche</string>

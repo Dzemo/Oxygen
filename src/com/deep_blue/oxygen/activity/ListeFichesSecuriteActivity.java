@@ -45,6 +45,7 @@ public class ListeFichesSecuriteActivity extends FragmentActivity implements Dir
 		
 		loadListeFiche();
 
+		// Test de validation des fiches
 		TestValidationFiche testvalidation = new TestValidationFiche(this);
 		testvalidation.testValidationEnregistrementFiche();
 

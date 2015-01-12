@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import com.deep_blue.oxygen.model.Aptitude;
 import com.deep_blue.oxygen.model.ListeAptitudes;
 import com.deep_blue.oxygen.model.Moniteur;
+import com.deep_blue.oxygen.model.Plongeur;
 
 public class MoniteurFactory {
 
@@ -32,6 +33,7 @@ public class MoniteurFactory {
 		
 		return moniteur;
 	}
+	
 	
 	public Moniteur addAptitudeForMoniteur(Moniteur moniteur, String[] aptitudesString){
 		moniteur.setAptitudes(new ListeAptitudes());
