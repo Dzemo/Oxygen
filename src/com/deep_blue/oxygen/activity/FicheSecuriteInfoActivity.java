@@ -1,5 +1,7 @@
 package com.deep_blue.oxygen.activity;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import com.deep_blue.oxygen.activity.fragment.dialog.FicheDateDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheDirecteurDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheEmbarcationDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.FicheSiteDialogFragment;
+import com.deep_blue.oxygen.activity.fragment.dialog.ListeErreursDialogFragment;
 import com.deep_blue.oxygen.dao.FicheSecuriteDao;
 import com.deep_blue.oxygen.dao.HistoriqueDao;
 import com.deep_blue.oxygen.listener.PalanqueeOnClickListener;
@@ -33,8 +36,9 @@ import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.util.DateStringUtils;
 import com.deep_blue.oxygen.util.IntentKey;
+import com.deep_blue.oxygen.util.ValidationFiche;
 
-public class FicheSecuriteInfoActivity extends FragmentActivity implements ConfirmDialogFragment.ConfirmDialogListener{
+public class FicheSecuriteInfoActivity extends FragmentActivity implements ConfirmDialogFragment.ConfirmDialogListener, ListeErreursDialogFragment.ListeErreursDialogListener{
 
 	private FicheSecurite ficheSecurite = null;
 	private View rootView;
@@ -134,7 +138,7 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 			confirmDialogFragmentValide.show(getSupportFragmentManager(), "ConfirmDialogFragment");
 			return true;
 		case R.id.itemSave:
-			if(sauvegarderFiche()){
+			if(sauvegarderFiche(true)){
 				//Affichage d'un message à l'utilisateur pour confirmer l'enregistrement
 				Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_securite_enregistrement_ok), Toast.LENGTH_SHORT);
 				toastSave.show();
@@ -152,6 +156,7 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 	@Override
 	public void onBackPressed(){
 		if(ficheSecurite.isModifie()){
+			//Si des modification non enregistré ont été apporté à la fiche, on propose d'abord de les enregistrer
 			ConfirmDialogFragment confirmDialogFragmentQuitterSansEnregistrer = new ConfirmDialogFragment(getResources().getString(R.string.fiche_info_dialog_quitter_sauvegrder), ConfirmDialogFragment.QUITTER_SANS_SAUVEGARDER);
 			confirmDialogFragmentQuitterSansEnregistrer.show(getSupportFragmentManager(), "ConfirmDialogFragment");
 		}else{
@@ -173,45 +178,29 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 			finish();
 		} 
 		else if(confirmType == ConfirmDialogFragment.CLOTURE_FICHE_SECURITE){
-			//TODO Vérification de cloture de la fiche
-			
-			//Appel dao pour cloturer la fiche
-			if(ficheSecurite.getId() == null || ficheSecurite.getId() < 0){
-				ficheSecurite = ficheSecuriteDao.insert(ficheSecurite);
-				ficheSecurite = ficheSecuriteDao.updateEtat(ficheSecurite, EnumEtat.VALIDE);
-			}
-			else{
-				ficheSecurite = ficheSecuriteDao.updateEtat(ficheSecurite, EnumEtat.VALIDE);
-			}
-			
-			if(ficheSecurite == null){
-				//Affichage d'un message à l'utilisateur lors d'une erreur lors de la cloture car la fiche retourner est null
-				Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_info_cloture_problem), Toast.LENGTH_SHORT);
-				toastSave.show();
-			}
-			else{		
-
-				//Enregistrement d'un historique
-				Historique historique = new Historique(utilisateur.getLogin(),  DateStringUtils.getCurrentTimestamps(), ficheSecurite.getId(), "Cloture de la fiche de sécurité");
-				HistoriqueDao historiqueDao = new HistoriqueDao(this);
-				historiqueDao.insert(historique);
-				
-				//Renvoi de l'utilisateur à l'activité parente (liste des fiches)
-				Intent result = new Intent();
-				result.putExtra(IntentKey.RESULT_TEXT.toString(), getResources().getString(R.string.fiche_info_cloture_confirm));
-				setResult(RESULT_OK, result);
-				finish();
-			}
+			cloturerFiche(true);
 		}
 		else if(confirmType == ConfirmDialogFragment.QUITTER_SANS_SAUVEGARDER){
 			//L'utilisateur souhaite quitter et enregister la fiche
-			if(sauvegarderFiche()){
+			if(sauvegarderFiche(true)){
 				//Renvoi de l'utilisateur à l'activité parente (liste des fiches)
 				Intent result = new Intent();
 				result.putExtra(IntentKey.RESULT_TEXT.toString(), getResources().getString(R.string.fiche_securite_enregistrement_ok));
 				setResult(RESULT_OK, result);
 				finish();
 			}
+		}
+		else if(confirmType == ListeErreursDialogFragment.LISTE_ERREURS_ENREGISTREMENT){
+			//On enregistre sans tenir compte des erreurs
+			if(sauvegarderFiche(false)){
+				//Affichage d'un message à l'utilisateur pour confirmer l'enregistrement
+				Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_securite_enregistrement_ok), Toast.LENGTH_SHORT);
+				toastSave.show();
+			}
+		}
+		else if(confirmType == ListeErreursDialogFragment.LISTE_ERREURS_CLOTURE){
+			//force la cloture de la fiche sans tenir compte des erreurs
+			cloturerFiche(false);
 		}
 	}
 
@@ -223,14 +212,78 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 			finish();
 		}
 	}
+	
+	/**
+	 * Tente de cloturer la fiche.
+	 * Si aucune erreur de gestion ne sont présente, cloture la fiche (dao) et termine cette activité pour retourner a la liste des fiche
+	 * Si des erreurs sont présente, affiche un modal avec la liste de ces erreurs
+	 * 
+	 * @param verifierRegleGestion Determine si les règles de gestion doivent être vérifier ou pas
+	 */
+	private void cloturerFiche(boolean verifierRegleGestion){
+		
+		if(verifierRegleGestion){
+			//vérification de la fiche
+			List<String> erreurs = ValidationFiche.validationEnregistrementFiche(ficheSecurite);
+			
+			if(erreurs.size() > 0){
+				//Si des erreurs sont présente, on affiche un dialog d'alert
+				ListeErreursDialogFragment listeErreursDialogFragment = new ListeErreursDialogFragment(erreurs, ListeErreursDialogFragment.LISTE_ERREURS_CLOTURE);
+				listeErreursDialogFragment.show(getSupportFragmentManager(), "ListeErreursDialogFragment");
+				return ;
+			}
+		}
+		
+		//Appel dao pour cloturer la fiche
+		if(ficheSecurite.getId() == null || ficheSecurite.getId() < 0){
+			ficheSecurite = ficheSecuriteDao.insert(ficheSecurite);
+			ficheSecurite = ficheSecuriteDao.updateEtat(ficheSecurite, EnumEtat.VALIDE);
+		}
+		else{
+			ficheSecurite = ficheSecuriteDao.updateEtat(ficheSecurite, EnumEtat.VALIDE);
+		}
+		
+		if(ficheSecurite == null){
+			//Affichage d'un message à l'utilisateur lors d'une erreur lors de la cloture car la fiche retourner est null
+			Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_info_cloture_problem), Toast.LENGTH_SHORT);
+			toastSave.show();
+		}
+		else{		
+
+			//Enregistrement d'un historique
+			Historique historique = new Historique(utilisateur.getLogin(),  DateStringUtils.getCurrentTimestamps(), ficheSecurite.getId(), "Cloture de la fiche de sécurité");
+			HistoriqueDao historiqueDao = new HistoriqueDao(this);
+			historiqueDao.insert(historique);
+			
+			//Renvoi de l'utilisateur à l'activité parente (liste des fiches)
+			Intent result = new Intent();
+			result.putExtra(IntentKey.RESULT_TEXT.toString(), getResources().getString(R.string.fiche_info_cloture_confirm));
+			setResult(RESULT_OK, result);
+			finish();
+		}
+	}
 
 	/**
 	 * Tenre de sauvegarder la fiche.
-	 * Si aucune erreur de gestion ne sont présente, enregistre la fiche et retourne true
+	 * Si aucune erreur de gestion ne sont présente, enregistre la fiche (dao) et retourne true
 	 * Si des erreurs sont présente, affiche un modal avec la liste de ces erreurs et renvoi false
+	 * 
+	 * @param verifierRegleGestion Determine si les règles de gestion doivent être vérifier ou pas
+	 * @return true si la fiche a été enregistre, false sinon
 	 */
-	private boolean sauvegarderFiche(){
-		//TODO vérification de la fiche
+	private boolean sauvegarderFiche(boolean verifierRegleGestion){
+		
+		if(verifierRegleGestion){
+			//vérification de la fiche
+			List<String> erreurs = ValidationFiche.validationEnregistrementFiche(ficheSecurite);
+			
+			if(erreurs.size() > 0){
+				//Si des erreurs sont présente, on affiche un dialog d'alert
+				ListeErreursDialogFragment listeErreursDialogFragment = new ListeErreursDialogFragment(erreurs, ListeErreursDialogFragment.LISTE_ERREURS_ENREGISTREMENT);
+				listeErreursDialogFragment.show(getSupportFragmentManager(), "ListeErreursDialogFragment");
+				return false;
+			}
+		}
 		
 		//Enregistrement de la fiche
 		String commentaire;
@@ -247,15 +300,17 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 			//Affichage d'un message à l'utilisateur lors d'une erreur lors de l'enregistrement car la fiche retourner est null
 			Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_securite_enregistrement_probleme), Toast.LENGTH_SHORT);
 			toastSave.show();
+			
+			return false;
 		}
 		else{
 			//Enregistrement d'un historique
 			Historique historique = new Historique(utilisateur.getLogin(),  DateStringUtils.getCurrentTimestamps(), ficheSecurite.getId(), commentaire);
 			HistoriqueDao historiqueDao = new HistoriqueDao(this);
 			historiqueDao.insert(historique);
+			
+			return true;
 		}
-		
-		return true;
 	}
 	
 	/**

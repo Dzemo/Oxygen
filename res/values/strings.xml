@@ -2,32 +2,38 @@
 <resources>
 
     <!-- CONFIG DEBUT -->
-    
-    <!-- Addresse URL par défaut du serveur de synchronisation, est équivalente 
-    	 à l'addresse utilisé par les utilisateurs pour accéder à l'interface web -->
+
+
+    <!--
+         Addresse URL par défaut du serveur de synchronisation, est équivalente 
+    	 à l'addresse utilisé par les utilisateurs pour accéder à l'interface web
+    -->
     <string name="remote_url_default">http://oxygen.plonge.mobi</string>
-    
+
     <!-- Si le login de l'utilisateur est enregistré sur l'écran de connexion, boolean (true/false) -->
     <string name="save_login_default">false</string>
-    
+
     <!-- Si l'utilisateur reste connecté à l'application, boolean (true/false) -->
     <string name="keep_connection_default">false</string>
-    
-    <!-- Si, lors de la synchronisation, toute les fiches sont récupérés ou uniquement celle dont le directeur 
-    	 de plongé est associés à l'utilisateur actuelle, boolean (true/false) -->
+
+    <!--
+         Si, lors de la synchronisation, toute les fiches sont récupérés ou uniquement celle dont le directeur 
+    	 de plongé est associés à l'utilisateur actuelle, boolean (true/false)
+    -->
     <string name="retrieve_all_type_fiche_default">false</string>
-    
+
     <!-- Nombre de jours de fiche récupérs, à 0 récupère uniquement les fiches du jours actuel, max 31 -->
     <string name="retrieve_length_default">0</string>
-    
+
     <!-- Profondeur par défaut (en metres) -->
     <string name="plonger_profondeur_default">40</string>
-    
+
     <!-- Durée par défaut (en minute) -->
     <string name="plonger_duree_default">20</string>
-    
+
     <!-- CONFIG FIN -->
-    
+
+
     <!-- GENERAL/MENU DEBUT -->
     <string name="app_name">Oxygen</string>
     <string name="action_settings">Settings</string>
@@ -46,15 +52,17 @@
     <string name="parametre_retrieve_type_all">Récupérer toute les fiches</string>
     <string name="parametre_retrieve_type_only_own">Récupérer seulement mes fiches</string>
     <string name="parametre_retrieve_length_label_zero">Récupère uniquement les fiches du jour actuel</string>
+
     <plurals name="parametre_retrieve_length_label">
         <item quantity="zero">Récupère uniquement les fiches du jour actuel</item>
         <item quantity="one">Récupère les fiches du prochain jour</item>
         <item quantity="other">Récupère les fiches des %d prochains jours</item>
     </plurals>
+
     <string name="parametre_last_synch_label">Dernière synchronisation :</string>
     <string name="parametre_saved">Paramètres enregistrés</string>
     <!-- GENERAL/MENU FIN -->
-    
+
 
     <!-- LOGIN DEBUT -->
     <string name="login_cancel">Annuler</string>
@@ -96,7 +104,7 @@
     <string name="fiche_info_cloture_problem">Un problème est survenu lors de la cloture de la fiche, veuillez contacter le support</string>
     <string name="fiche_securite_enregistrement_ok">Fiche de sécurité enregistrée</string>
     <string name="fiche_securite_enregistrement_probleme">Un problème est survenu lors de l\'enregistrement de la fiche, veuillez contacter le support</string>
-    
+
     <!-- FICHE DIALOG INFO DEBUT -->
     <string name="fiche_info_dialog_date_title">Date de plongée</string>
     <string name="fiche_info_dialog_site_title">Site de plongée</string>
@@ -107,7 +115,13 @@
     <string name="fiche_info_dialog_quitter_sauvegrder">Cette fiche de sécurité a été modifiée, voulez-vous l\'enregistrer ?</string>
     <string name="fiche_info_dialog_quitter">Quitter</string>
     <string name="fiche_info_dialog_sauvegarder">Sauvegarder</string>
+
+    <plurals name="fiche_info_dialog_erreurs">
+        <item quantity="one">Erreur de gestion :</item>
+        <item quantity="other">Erreurs de gestion :</item>
+    </plurals>
     <!-- FICHE DIALOG INFO DEBUT -->
+
 
     <!-- FICHE INFO FIN -->
 
@@ -123,7 +137,7 @@
     <string name="palanquee_info_duree_prevue_labelle">Durée prévue :</string>
     <string name="palanquee_info_duree_realisee_moniteur_labelle">Durée réalisée (moni):</string>
     <string name="palanquee_plongeur_title">Liste des plongeurs</string>
-   	<string name="palanquee_dialog_suppression_confirm">Palanquee %s supprimé</string>
+    <string name="palanquee_dialog_suppression_confirm">Palanquee %s supprimé</string>
 
     <!-- PALANQUEE DIALOG INFO DEBUT -->
     <string name="palanquee_dialog_profondeur_realisee_moniteur_title">Profondeur réalisée par le moniteur</string>
@@ -134,8 +148,9 @@
     <string name="palanquee_dialog_type_gaz_title">Type de gaz</string>
     <string name="palanquee_dialog_type_plongee_title">Type de plongée</string>
     <string name="palanquee_dialog_moniteur_title">Moniteur</string>
-   	<string name="palanquee_dialog_suppression">Voulez-vous vraiment supprimer la palanquée %s ?</string>
+    <string name="palanquee_dialog_suppression">Voulez-vous vraiment supprimer la palanquée %s ?</string>
     <!-- PALANQUEE DIALOG INFO DEBUT -->
+
 
     <!-- PALANQUEE INFO FIN -->
 
@@ -150,7 +165,7 @@
     <string name="plongeur_duree_realisee_labelle">Durée réalisée :</string>
     <string name="plongeur_telephone_labelle">Téléphone : </string>
     <string name="plongeur_telephone_urgence_labelle">Téléphone (urgence) :</string>
-   	<string name="plongeur_dialog_suppression_confirm">Plongeur %s supprimé</string>
+    <string name="plongeur_dialog_suppression_confirm">Plongeur %s supprimé</string>
 
     <!-- PLONGEUR DIALOG DEBUT -->
     <string name="plongeur_dialog_nom_title">Nom du plongeur</string>
@@ -161,7 +176,7 @@
     <string name="plongeur_dialog_date_naissance_title">Date de naissance</string>
     <string name="plongeur_dialog_telephone_title">Téléphone personnel du plongeur</string>
     <string name="plongeur_dialog_telephone_urgence_title">Téléphone de la personne à contacter en cas d\'urgence</string>
-   	<string name="plongeur_dialog_suppression">Voulez-vous vraiment supprimer le plongeur %s ?</string>
+    <string name="plongeur_dialog_suppression">Voulez-vous vraiment supprimer le plongeur %s ?</string>
     <!-- PLONGEUR DIALOG FIN -->
     <!-- PLONGEUR FIN -->
 
@@ -177,6 +192,7 @@
     <string name="dialog_annuler">Annuler</string>
     <string name="dialog_moi">Moi</string>
     <string name="dialog_aucun">Aucun</string>
+    <string name="dialog_corriger">Corriger</string>
     <!-- DIALOG GENERAL FIN -->
 
 

@@ -1,6 +1,8 @@
 package com.deep_blue.oxygen.activity.fragment.dialog;
 
-import com.deep_blue.oxygen.R;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,64 +10,67 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
-public class ConfirmDialogFragment extends DialogFragment {
+import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.activity.fragment.dialog.ConfirmDialogFragment.ConfirmDialogListener;
+
+public class ListeErreursDialogFragment extends DialogFragment {
     
 	//Valeur envoyé lors du clique pour savoir qu'elle confirmation était demandée
-	public static final int CLOTURE_FICHE_SECURITE = 4;
-	public static final int SUPPRESSION_FICHE_SECURITE = 3;
-	public static final int SUPPRESSION_PALANQUEE = 1;
-	public static final int SUPPRESSION_PLONGEUR = 2;
-	public static final int QUITTER_SANS_SAUVEGARDER = 5;
+	public static final int LISTE_ERREURS_ENREGISTREMENT = 1002;
+	public static final int LISTE_ERREURS_CLOTURE = 1001;
 	
     // Use this instance of the interface to deliver action events
     private ConfirmDialogListener mListener;
-	
-    //Le texte afficher dans le dialog
-    private String text;
     
-    //Pour savoir de quel confirmation il s'agit
+    //Pour savoir de quel type de liste d'erreur il s'agit
     private int confirmType;
-    
-    //Id des ressources string pour les bouttons
-    private int confirmResId, cancelResId;
+
+    //Liste des erreurs à afficher
+    private List<String> erreurs;
     
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
-    public interface ConfirmDialogListener {
+    public interface ListeErreursDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog, int confirmType);
         public void onDialogNegativeClick(DialogFragment dialog, int confirmType);
     }
     
-    public ConfirmDialogFragment(String text, int confirmType){
-    	this.text = text;
+    public ListeErreursDialogFragment(List<String> erreurs, int confirmType){
     	this.confirmType = confirmType;
-    	
-    	if(confirmType == QUITTER_SANS_SAUVEGARDER){
-    		confirmResId = R.string.fiche_info_dialog_sauvegarder;
-    		cancelResId = R.string.fiche_info_dialog_quitter;
-    	} else{
-    		confirmResId = R.string.dialog_confirm;
-    		cancelResId = R.string.dialog_annuler;
-    	}
+    	this.erreurs = erreurs;
     }
     
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {    	
+    	//Création de la liste 
+    	List<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+    	for(String erreur : erreurs){
+    		HashMap<String, String> hashMap = new HashMap<String, String>(1);
+    		hashMap.put("erreur", erreur);
+    		data.add(hashMap);
+    	}
+    	
+    	ListView view = new ListView(getActivity());
+    	view.setAdapter(new SimpleAdapter(getActivity(), data, android.R.layout.simple_list_item_1, new String[]{"erreur"}, new int[]{android.R.id.text1}));
+    	
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(text)
-               .setPositiveButton(confirmResId, new DialogInterface.OnClickListener() {
+        builder.setTitle(getResources().getQuantityText(R.plurals.fiche_info_dialog_erreurs, erreurs.size()))
+        	   .setView(view)
+               .setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Send the positive button event back to the host activity
-                       mListener.onDialogPositiveClick(ConfirmDialogFragment.this, confirmType);
+                       mListener.onDialogPositiveClick(ListeErreursDialogFragment.this, confirmType);
                    }
                })
-               .setNegativeButton(cancelResId, new DialogInterface.OnClickListener() {
+               .setNegativeButton(R.string.dialog_corriger, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Send the negative button event back to the host activity
-                       mListener.onDialogNegativeClick(ConfirmDialogFragment.this, confirmType);
+                       mListener.onDialogNegativeClick(ListeErreursDialogFragment.this, confirmType);
                    }
                });
         return builder.create();
