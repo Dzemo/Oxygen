@@ -46,8 +46,8 @@ public class ListeFichesSecuriteActivity extends FragmentActivity implements Dir
 		loadListeFiche();
 
 		// Test de validation des fiches
-		TestValidationFiche testvalidation = new TestValidationFiche(this);
-		testvalidation.testValidationEnregistrementFiche();
+		/*TestValidationFiche testvalidation = new TestValidationFiche(this);
+		testvalidation.testValidationEnregistrementFiche();*/
 
 		//Récupération de tout les moniteurs
     	MoniteurDao moniteurDao = new MoniteurDao(this);
