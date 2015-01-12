@@ -172,6 +172,7 @@ public class PlongeurDao extends BaseDao {
 		mDb.close();
 		
 		plongeur.setId(insertedId);
+		plongeur.setModifie(false);
 		return plongeur;
 	}
 	
@@ -203,7 +204,8 @@ public class PlongeurDao extends BaseDao {
 		
 		mDb.update(TABLE_NAME, value, ID  + " = ?", new String[] {String.valueOf(plongeur.getId())});
 		mDb.close();
-		
+
+		plongeur.setModifie(false);
 		return plongeur;
 	}
 	

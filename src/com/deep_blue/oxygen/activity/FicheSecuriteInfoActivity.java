@@ -134,30 +134,7 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 			confirmDialogFragmentValide.show(getSupportFragmentManager(), "ConfirmDialogFragment");
 			return true;
 		case R.id.itemSave:
-			//TODO vérification de la fiche
-			
-			//Enregistrement de la fiche
-			String commentaire;
-			if(ficheSecurite.getId() == null || ficheSecurite.getId() < 0){
-				ficheSecurite = ficheSecuriteDao.insert(ficheSecurite);
-				commentaire = "Création de la fiche";
-			}
-			else{
-				commentaire = "Mise à jours de la fiche";
-				ficheSecurite = ficheSecuriteDao.update(ficheSecurite);
-			}
-			
-			if(ficheSecurite == null){
-				//Affichage d'un message à l'utilisateur lors d'une erreur lors de l'enregistrement car la fiche retourner est null
-				Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_securite_enregistrement_probleme), Toast.LENGTH_SHORT);
-				toastSave.show();
-			}
-			else{
-				//Enregistrement d'un historique
-				Historique historique = new Historique(utilisateur.getLogin(),  DateStringUtils.getCurrentTimestamps(), ficheSecurite.getId(), commentaire);
-				HistoriqueDao historiqueDao = new HistoriqueDao(this);
-				historiqueDao.insert(historique);
-				
+			if(sauvegarderFiche()){
 				//Affichage d'un message à l'utilisateur pour confirmer l'enregistrement
 				Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_securite_enregistrement_ok), Toast.LENGTH_SHORT);
 				toastSave.show();
@@ -174,10 +151,13 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 	
 	@Override
 	public void onBackPressed(){
-		Toast toastSave = Toast.makeText(this, "Vérification de modification des données", Toast.LENGTH_SHORT);
-		toastSave.show();
-		setResult(RESULT_OK, new Intent());
-		finish();
+		if(ficheSecurite.isModifie()){
+			ConfirmDialogFragment confirmDialogFragmentQuitterSansEnregistrer = new ConfirmDialogFragment(getResources().getString(R.string.fiche_info_dialog_quitter_sauvegrder), ConfirmDialogFragment.QUITTER_SANS_SAUVEGARDER);
+			confirmDialogFragmentQuitterSansEnregistrer.show(getSupportFragmentManager(), "ConfirmDialogFragment");
+		}else{
+			setResult(RESULT_OK, new Intent());
+			finish();
+		}
 	}
 
 	@Override
@@ -191,7 +171,8 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 			result.putExtra(IntentKey.RESULT_TEXT.toString(), getResources().getString(R.string.fiche_info_suppression_confirm));
 			setResult(RESULT_OK, result);
 			finish();
-		} else if(confirmType == ConfirmDialogFragment.CLOTURE_FICHE_SECURITE){
+		} 
+		else if(confirmType == ConfirmDialogFragment.CLOTURE_FICHE_SECURITE){
 			//TODO Vérification de cloture de la fiche
 			
 			//Appel dao pour cloturer la fiche
@@ -222,11 +203,59 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 				finish();
 			}
 		}
+		else if(confirmType == ConfirmDialogFragment.QUITTER_SANS_SAUVEGARDER){
+			//L'utilisateur souhaite quitter et enregister la fiche
+			if(sauvegarderFiche()){
+				//Renvoi de l'utilisateur à l'activité parente (liste des fiches)
+				Intent result = new Intent();
+				result.putExtra(IntentKey.RESULT_TEXT.toString(), getResources().getString(R.string.fiche_securite_enregistrement_ok));
+				setResult(RESULT_OK, result);
+				finish();
+			}
+		}
 	}
 
 	@Override
 	public void onDialogNegativeClick(DialogFragment dialog, int confirmType) {
-		//L'utilisateur à choisi de ne pas supprimer cette palanquee, on ne fait rien alors
+		if(confirmType == ConfirmDialogFragment.QUITTER_SANS_SAUVEGARDER){
+			//L'utilisateur n'a pas souhaité enregistrer les modification, on quitte donc
+			setResult(RESULT_OK, new Intent());
+			finish();
+		}
+	}
+
+	/**
+	 * Tenre de sauvegarder la fiche.
+	 * Si aucune erreur de gestion ne sont présente, enregistre la fiche et retourne true
+	 * Si des erreurs sont présente, affiche un modal avec la liste de ces erreurs et renvoi false
+	 */
+	private boolean sauvegarderFiche(){
+		//TODO vérification de la fiche
+		
+		//Enregistrement de la fiche
+		String commentaire;
+		if(ficheSecurite.getId() == null || ficheSecurite.getId() < 0){
+			ficheSecurite = ficheSecuriteDao.insert(ficheSecurite);
+			commentaire = "Création de la fiche";
+		}
+		else{
+			commentaire = "Mise à jours de la fiche";
+			ficheSecurite = ficheSecuriteDao.update(ficheSecurite);
+		}
+		
+		if(ficheSecurite == null){
+			//Affichage d'un message à l'utilisateur lors d'une erreur lors de l'enregistrement car la fiche retourner est null
+			Toast toastSave = Toast.makeText(this, getResources().getString(R.string.fiche_securite_enregistrement_probleme), Toast.LENGTH_SHORT);
+			toastSave.show();
+		}
+		else{
+			//Enregistrement d'un historique
+			Historique historique = new Historique(utilisateur.getLogin(),  DateStringUtils.getCurrentTimestamps(), ficheSecurite.getId(), commentaire);
+			HistoriqueDao historiqueDao = new HistoriqueDao(this);
+			historiqueDao.insert(historique);
+		}
+		
+		return true;
 	}
 	
 	/**

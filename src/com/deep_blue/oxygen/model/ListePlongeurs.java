@@ -64,7 +64,7 @@ public class ListePlongeurs extends ArrayList<Plongeur> implements Parcelable {
 	
 	/**
 	 * Ajoute ou met à jours le plongeur passé en paramètre dans la liste des plongeurs
-	 * Ne fait rien si le plongeur est null
+	 * Ne fait rien si le plongeur est null ou modifie forcément la liste des plongeurs
 	 * @param plongeur
 	 */
 	public void ajouterOuMajPlongeur(Plongeur plongeur){

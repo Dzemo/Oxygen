@@ -171,7 +171,10 @@ public class FicheSecuriteDao extends BaseDao {
 		
 		//Maj de toute les palanquées
 		PalanqueeDao palanqueeDao = new PalanqueeDao(pContext);
-		return palanqueeDao.updatePalanqueeFromFiche(ficheSecurite);
+		ficheSecurite = palanqueeDao.updatePalanqueeFromFiche(ficheSecurite);
+		ficheSecurite.setModifie(false);
+		
+		return ficheSecurite;
 	}
 	
 	/**
@@ -195,6 +198,7 @@ public class FicheSecuriteDao extends BaseDao {
 		
 		mDb.update(TABLE_NAME, value, ID_LOCAL+" = ?", new String[]{ficheSecurite.getId().toString()});
 		mDb.close();
+		ficheSecurite.setModifie(false);
 
 		return ficheSecurite;
 	}
@@ -247,7 +251,8 @@ public class FicheSecuriteDao extends BaseDao {
 			ficheSecurite.getPalanquees().remove(i);
 			ficheSecurite.getPalanquees().add(i, palanquee);
 		}
-		
+
+		ficheSecurite.setModifie(false);
 		return ficheSecurite;
 	}
 	

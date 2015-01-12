@@ -112,7 +112,10 @@ public class PlongeurActivity extends FragmentActivity implements ConfirmDialogF
 	@Override
 	public void onBackPressed(){
 		Intent result = new Intent();
-		palanquee.getPlongeurs().ajouterOuMajPlongeur(plongeur);
+		if(plongeur != null){
+			palanquee.getPlongeurs().ajouterOuMajPlongeur(plongeur);
+			palanquee.setModifie(true);
+		}
 		result.putExtra(IntentKey.RESULT_PALANQUEE.toString(), palanquee);
 		setResult(RESULT_OK, result);
 		finish();
@@ -123,6 +126,7 @@ public class PlongeurActivity extends FragmentActivity implements ConfirmDialogF
 		if(confirmType == ConfirmDialogFragment.SUPPRESSION_PLONGEUR){
 			Intent result = new Intent();
 			palanquee.getPlongeurs().remove(plongeur);
+			palanquee.setModifie(true);
 			result.putExtra(IntentKey.RESULT_TEXT.toString(), String.format(getResources().getString(R.string.plongeur_dialog_suppression_confirm), plongeur.getPrenom()+" "+plongeur.getNom()));
 			result.putExtra(IntentKey.RESULT_PALANQUEE.toString(), palanquee);
 			setResult(RESULT_OK, result);

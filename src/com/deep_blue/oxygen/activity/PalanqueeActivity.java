@@ -164,7 +164,10 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 	@Override
 	public void onBackPressed(){
 		Intent result = new Intent();
-		ficheSecurite.getPalanquees().ajouterOuMajPalanquee(palanquee);
+		if(palanquee != null){
+			ficheSecurite.getPalanquees().ajouterOuMajPalanquee(palanquee);
+			ficheSecurite.setModifie(true);
+		}
 		result.putExtra(IntentKey.RESULT_FICHE_SECURITE.toString(), ficheSecurite);
 		setResult(RESULT_OK, result);
 		finish();
@@ -175,6 +178,7 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 		if(confirmType == ConfirmDialogFragment.SUPPRESSION_PALANQUEE){
 			Intent result = new Intent();
 			ficheSecurite.getPalanquees().remove(palanquee);
+			ficheSecurite.setModifie(true);
 			result.putExtra(IntentKey.RESULT_TEXT.toString(), String.format(getResources().getString(R.string.palanquee_dialog_suppression_confirm), palanquee.getNumero()));
 			result.putExtra(IntentKey.RESULT_FICHE_SECURITE.toString(), ficheSecurite);
 			setResult(RESULT_OK, result);

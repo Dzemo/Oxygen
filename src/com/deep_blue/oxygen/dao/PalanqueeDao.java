@@ -155,7 +155,9 @@ public class PalanqueeDao extends BaseDao {
 		
 		//Maj de toute les plongeurs
 		PlongeurDao plongeurDao = new PlongeurDao(pContext);
-		return plongeurDao.updatePlongeursFromPalanquee(palanquee);
+		palanquee = plongeurDao.updatePlongeursFromPalanquee(palanquee);
+		palanquee.setModifie(false);
+		return palanquee;
 	}
 	
 	/**
@@ -203,7 +205,8 @@ public class PalanqueeDao extends BaseDao {
 			palanquee.getPlongeurs().remove(i);
 			palanquee.getPlongeurs().add(i, plongeur);
 		}
-		
+
+		palanquee.setModifie(false);
 		return palanquee;
 	}
 	

@@ -88,6 +88,11 @@ public class Plongeur implements Parcelable {
 	 * Durée de plongé réalisé par le plongeur (en seconde)
 	 */
 	private Integer dureeRealisee;
+	
+	/**
+	 * Indique si le plongeur a été modifier lors de l'utilisation de l'application actuelle, pour proposer d'enregistrer la fiche de sécurité correspondente en quittant
+	 */
+	private boolean modifie;
 
 	public Plongeur() {
 		super();
@@ -104,6 +109,7 @@ public class Plongeur implements Parcelable {
 		this.profondeurRealisee = 0F;
 		this.dureeRealisee = 0;
 		this.version = -1L;
+		this.modifie = false;
 	}
 	
 	/**
@@ -141,6 +147,7 @@ public class Plongeur implements Parcelable {
 		this.profondeurRealisee = profondeurRealisee;
 		this.dureeRealisee = dureeRealisee;
 		this.version = version;
+		this.modifie = false;
 	}
 	
 	/**
@@ -161,6 +168,7 @@ public class Plongeur implements Parcelable {
 		profondeurRealisee = source.readFloat();
 		dureeRealisee = source.readInt();
 		version = source.readLong();
+		modifie = source.readByte() == 1;
 	}
 
 	public Long getId() {
@@ -169,6 +177,7 @@ public class Plongeur implements Parcelable {
 
 	public void setId(Long id) {
 		this.id = id;
+		this.modifie = true;
 	}
 
 	/**
@@ -183,6 +192,7 @@ public class Plongeur implements Parcelable {
 	 */
 	public void setIdWeb(Integer idWeb) {
 		this.idWeb = idWeb;
+		this.modifie = true;
 	}
 
 	public Long getIdPalanquee() {
@@ -191,6 +201,7 @@ public class Plongeur implements Parcelable {
 
 	public void setIdPalanquee(Long idPalanquee) {
 		this.idPalanquee = idPalanquee;
+		this.modifie = true;
 	}
 
 	public Long getIdFicheSecurite() {
@@ -199,6 +210,7 @@ public class Plongeur implements Parcelable {
 
 	public void setIdFicheSecurite(Long idFicheSecurite) {
 		this.idFicheSecurite = idFicheSecurite;
+		this.modifie = true;
 	}
 
 	public String getNom() {
@@ -207,6 +219,7 @@ public class Plongeur implements Parcelable {
 
 	public void setNom(String nom) {
 		this.nom = nom;
+		this.modifie = true;
 	}
 
 	public String getPrenom() {
@@ -215,6 +228,7 @@ public class Plongeur implements Parcelable {
 
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
+		this.modifie = true;
 	}
 
 	public ListeAptitudes getAptitudes() {
@@ -223,6 +237,7 @@ public class Plongeur implements Parcelable {
 
 	public void setAptitudes(ListeAptitudes aptitudes) {
 		this.aptitudes = aptitudes;
+		this.modifie = true;
 	}
 
 	public String getTelephone() {
@@ -231,6 +246,7 @@ public class Plongeur implements Parcelable {
 
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+		this.modifie = true;
 	}
 
 	public String getTelephoneUrgence() {
@@ -239,6 +255,7 @@ public class Plongeur implements Parcelable {
 
 	public void setTelephoneUrgence(String telephoneUrgence) {
 		this.telephoneUrgence = telephoneUrgence;
+		this.modifie = true;
 	}
 
 	public String getDateNaissance() {
@@ -247,6 +264,7 @@ public class Plongeur implements Parcelable {
 
 	public void setDateNaissance(String dateNaissance) {
 		this.dateNaissance = dateNaissance;
+		this.modifie = true;
 	}
 	
 	public Float getProfondeurRealisee() {
@@ -255,6 +273,7 @@ public class Plongeur implements Parcelable {
 
 	public void setProfondeurRealisee(Float profondeurRealisee) {
 		this.profondeurRealisee = profondeurRealisee;
+		this.modifie = true;
 	}
 	
 	public Integer getDureeRealisee() {
@@ -263,6 +282,7 @@ public class Plongeur implements Parcelable {
 
 	public void setDureeRealisee(Integer dureeRealisee) {
 		this.dureeRealisee = dureeRealisee;
+		this.modifie = true;
 	}
 
 	public Long getVersion() {
@@ -271,6 +291,7 @@ public class Plongeur implements Parcelable {
 
 	public void setVersion(Long version) {
 		this.version = version;
+		this.modifie = true;
 	}
 	
 	/**
@@ -278,6 +299,14 @@ public class Plongeur implements Parcelable {
 	 */
 	public void updateVersion(){
 		this.version =  DateStringUtils.getCurrentTimestamps();
+		this.modifie = true;
+	}
+	
+	public boolean isModifie() {
+		return modifie;
+	}
+	public void setModifie(boolean modifie) {
+		this.modifie = modifie;
 	}
 
 	/* (non-Javadoc)
@@ -292,7 +321,8 @@ public class Plongeur implements Parcelable {
 				+ "\n\ttelephoneUrgence: " + telephoneUrgence
 				+ "\n\tdateNaissance: " + dateNaissance + "\n\tversion: "
 				+ version + "\n\tprofondeurRealisee: " + profondeurRealisee
-				+ "\n\tdureeRealisee: " + dureeRealisee + "\n}";
+				+ "\n\tdureeRealisee: " + dureeRealisee + "\n\tmodifie: "
+				+ modifie + "\n}";
 	}
 
 	@Override
@@ -314,6 +344,7 @@ public class Plongeur implements Parcelable {
 		dest.writeString(dateNaissance != null ? dateNaissance : "");
 		dest.writeFloat(profondeurRealisee);
 		dest.writeInt(dureeRealisee);
-		dest.writeLong(version);		
+		dest.writeLong(version);	
+		dest.writeByte((byte) (modifie ? 1 : 0));
 	}
 }

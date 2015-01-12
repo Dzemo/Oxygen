@@ -16,6 +16,7 @@ public class ConfirmDialogFragment extends DialogFragment {
 	public static final int SUPPRESSION_FICHE_SECURITE = 3;
 	public static final int SUPPRESSION_PALANQUEE = 1;
 	public static final int SUPPRESSION_PLONGEUR = 2;
+	public static final int QUITTER_SANS_SAUVEGARDER = 5;
 	
     // Use this instance of the interface to deliver action events
     private ConfirmDialogListener mListener;
@@ -25,6 +26,8 @@ public class ConfirmDialogFragment extends DialogFragment {
     
     //Pour savoir de quel confirmation il s'agit
     private int confirmType;
+    
+    private int confirmResId, cancelResId;
     
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
@@ -37,6 +40,14 @@ public class ConfirmDialogFragment extends DialogFragment {
     public ConfirmDialogFragment(String text, int confirmType){
     	this.text = text;
     	this.confirmType = confirmType;
+    	
+    	if(confirmType == QUITTER_SANS_SAUVEGARDER){
+    		confirmResId = R.string.fiche_info_dialog_sauvegarder;
+    		cancelResId = R.string.fiche_info_dialog_quitter;
+    	} else{
+    		confirmResId = R.string.dialog_confirm;
+    		cancelResId = R.string.dialog_annuler;
+    	}
     }
     
     @Override
@@ -44,13 +55,13 @@ public class ConfirmDialogFragment extends DialogFragment {
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(text)
-               .setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
+               .setPositiveButton(confirmResId, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Send the positive button event back to the host activity
                        mListener.onDialogPositiveClick(ConfirmDialogFragment.this, confirmType);
                    }
                })
-               .setNegativeButton(R.string.dialog_annuler, new DialogInterface.OnClickListener() {
+               .setNegativeButton(cancelResId, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Send the negative button event back to the host activity
                        mListener.onDialogNegativeClick(ConfirmDialogFragment.this, confirmType);

@@ -31,6 +31,7 @@ public class FicheSecurite  implements Parcelable {
 	private EnumEtat etat;
 	private Long version;
 	private ListePalanquees palanquees;
+	private boolean modifie;
 	
 	public FicheSecurite() {
 		super();
@@ -43,6 +44,7 @@ public class FicheSecurite  implements Parcelable {
 		this.etat = EnumEtat.SYNCHRONISE;
 		this.version = -1L;
 		this.palanquees = new ListePalanquees();
+		this.modifie = false;
 	}
 	
 	/**
@@ -69,6 +71,7 @@ public class FicheSecurite  implements Parcelable {
 		this.etat = etat;
 		this.version = version;
 		this.palanquees = palanquees;
+		this.modifie = false;
 	}
 	
 	/**
@@ -111,6 +114,8 @@ public class FicheSecurite  implements Parcelable {
 			palanquees = source.readParcelable(ListePalanquees.class.getClassLoader());
 		else
 			palanquees = new ListePalanquees();
+		
+		modifie = source.readByte() == 1;
 	}
 
 	/**
@@ -125,6 +130,7 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void setId(Long id) {
 		this.id = id;
+		this.modifie = true;
 	}
 
 	/**
@@ -139,6 +145,7 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void setIdWeb(Integer idWeb) {
 		this.idWeb = idWeb;
+		this.modifie = true;
 	}
 
 	/**
@@ -153,6 +160,7 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void setEmbarcation(Embarcation embarcation) {
 		this.embarcation = embarcation;
+		this.modifie = true;
 	}
 
 	/**
@@ -167,6 +175,7 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void setDirecteurPlonge(Moniteur directeurPlonge) {
 		this.directeurPlonge = directeurPlonge;
+		this.modifie = true;
 	}
 
 	/**
@@ -181,10 +190,12 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
+		this.modifie = true;
 	}
 	
 	public void setDate(Date date){
 		timestamp = date.getTime() / 1000;
+		this.modifie = true;
 	}
 	
 	public Date getDate(){
@@ -203,6 +214,7 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void setSite(Site site) {
 		this.site = site;
+		this.modifie = true;
 	}
 
 	/**
@@ -217,6 +229,7 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void setEtat(EnumEtat etat) {
 		this.etat = etat;
+		this.modifie = true;
 	}
 
 	/**
@@ -231,6 +244,7 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void setVersion(Long version) {
 		this.version = version;
+		this.modifie = true;
 	}
 	
 	/**
@@ -238,6 +252,7 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void updateVersion(){
 		this.version = DateStringUtils.getCurrentTimestamps();
+		this.modifie = true;
 	}
 
 	/**
@@ -252,6 +267,21 @@ public class FicheSecurite  implements Parcelable {
 	 */
 	public void setPalanquees(ListePalanquees palanquees) {
 		this.palanquees = palanquees;
+		this.modifie = true;
+	}
+
+	/**
+	 * @return the modifie
+	 */
+	public boolean isModifie() {
+		return modifie;
+	}
+
+	/**
+	 * @param modifie the modifie to set
+	 */
+	public void setModifie(boolean modifie) {
+		this.modifie = modifie;
 	}
 	
 	/* (non-Javadoc)
@@ -263,7 +293,8 @@ public class FicheSecurite  implements Parcelable {
 				+ "\n\tembarcation: " + embarcation + "\n\tdirecteurPlonge: "
 				+ directeurPlonge + "\n\ttimestamp: " + timestamp
 				+ "\n\tsite: " + site + "\n\tetat: " + etat + "\n\tversion: "
-				+ version + "\n\tpalanquees: " + palanquees + "\n}";
+				+ version + "\n\tpalanquees: " + palanquees + "\n\tmodifie: "
+				+ modifie + "\n}";
 	}
 
 	@Override
@@ -289,6 +320,7 @@ public class FicheSecurite  implements Parcelable {
 		dest.writeLong(version);
 		dest.writeByte((byte)(palanquees != null ? 1 : 0));
 		dest.writeParcelable(palanquees, flags);
+		dest.writeByte((byte)(modifie ? 1 : 0));
 	}
 	
 	/**

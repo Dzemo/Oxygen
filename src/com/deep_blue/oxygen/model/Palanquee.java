@@ -39,6 +39,7 @@ public class Palanquee implements Parcelable {
 	private String heure;
 	private Long version;
 	private ListePlongeurs plongeurs;
+	private boolean modifie;
 	
 	public Palanquee() {
 		super();
@@ -56,6 +57,7 @@ public class Palanquee implements Parcelable {
 		this.heure = "";
 		this.version = 0L;
 		this.plongeurs = new ListePlongeurs();
+		this.modifie = false;
 	}
 	
 	/**
@@ -93,6 +95,7 @@ public class Palanquee implements Parcelable {
 		this.heure = heure;
 		this.version = version;
 		this.plongeurs = plongeurs;
+		this.modifie = false;
 	}
 	
 	public Palanquee(Parcel source){
@@ -110,6 +113,7 @@ public class Palanquee implements Parcelable {
 		heure = source.readString();
 		version = source.readLong();
 		plongeurs = source.readParcelable(ListePlongeurs.class.getClassLoader());
+		modifie = source.readByte() == 1;
 	}
 
 	public Long getId() {
@@ -118,6 +122,7 @@ public class Palanquee implements Parcelable {
 
 	public void setId(Long id) {
 		this.id = id;
+		this.modifie = true;
 	}
 
 	/**
@@ -132,6 +137,7 @@ public class Palanquee implements Parcelable {
 	 */
 	public void setIdWeb(Integer idWeb) {
 		this.idWeb = idWeb;
+		this.modifie = true;
 	}
 
 	public Long getIdFicheSecurite() {
@@ -140,6 +146,7 @@ public class Palanquee implements Parcelable {
 
 	public void setIdFicheSecurite(Long idFicheSecurite) {
 		this.idFicheSecurite = idFicheSecurite;
+		this.modifie = true;
 	}
 
 	public Moniteur getMoniteur() {
@@ -148,6 +155,7 @@ public class Palanquee implements Parcelable {
 
 	public void setMoniteur(Moniteur moniteur) {
 		this.moniteur = moniteur;
+		this.modifie = true;
 	}
 
 	public Integer getNumero() {
@@ -156,6 +164,7 @@ public class Palanquee implements Parcelable {
 
 	public void setNumero(Integer numero) {
 		this.numero = numero;
+		this.modifie = true;
 	}
 
 	public EnumTypePlonge getTypePlonge() {
@@ -164,6 +173,7 @@ public class Palanquee implements Parcelable {
 
 	public void setTypePlonge(EnumTypePlonge typePlonge) {
 		this.typePlonge = typePlonge != null ? typePlonge : EnumTypePlonge.NULL;
+		this.modifie = true;
 	}
 
 	public EnumTypeGaz getTypeGaz() {
@@ -172,6 +182,7 @@ public class Palanquee implements Parcelable {
 
 	public void setTypeGaz(EnumTypeGaz typeGaz) {
 		this.typeGaz = typeGaz != null ? typeGaz : EnumTypeGaz.NULL;
+		this.modifie = true;
 	}
 
 	public Float getProfondeurPrevue() {
@@ -180,6 +191,7 @@ public class Palanquee implements Parcelable {
 
 	public void setProfondeurPrevue(Float profondeurPrevue) {
 		this.profondeurPrevue = profondeurPrevue;
+		this.modifie = true;
 	}
 
 	public Float getProfondeurRealiseeMoniteur() {
@@ -188,6 +200,7 @@ public class Palanquee implements Parcelable {
 
 	public void setProfondeurRealiseeMoniteur(Float profondeurRealisee) {
 		this.profondeurRealiseeMoniteur = profondeurRealisee;
+		this.modifie = true;
 	}
 
 	public Integer getDureePrevue() {
@@ -196,6 +209,7 @@ public class Palanquee implements Parcelable {
 
 	public void setDureePrevue(Integer dureePrevue) {
 		this.dureePrevue = dureePrevue;
+		this.modifie = true;
 	}
 
 	public Integer getDureeRealiseeMoniteur() {
@@ -204,20 +218,16 @@ public class Palanquee implements Parcelable {
 
 	public void setDureeRealiseeMoniteur(Integer dureeRealisee) {
 		this.dureeRealiseeMoniteur = dureeRealisee;
+		this.modifie = true;
 	}
 
-	/**
-	 * @return the heure
-	 */
 	public String getHeure() {
 		return heure;
 	}
 
-	/**
-	 * @param heure the heure to set
-	 */
 	public void setHeure(String heure) {
 		this.heure = heure;
+		this.modifie = true;
 	}
 
 	public Long getVersion() {
@@ -226,6 +236,7 @@ public class Palanquee implements Parcelable {
 
 	public void setVersion(Long version) {
 		this.version = version;
+		this.modifie = true;
 	}
 
 	/**
@@ -241,8 +252,17 @@ public class Palanquee implements Parcelable {
 
 	public void setPlongeurs(ListePlongeurs plongeurs) {
 		this.plongeurs = plongeurs;
+		this.modifie = true;
 	}
-	
+
+	public boolean isModifie() {
+		return modifie;
+	}
+
+	public void setModifie(boolean modifie) {
+		this.modifie = modifie;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -258,7 +278,7 @@ public class Palanquee implements Parcelable {
 				+ dureePrevue + "\n\tdureeRealiseeMoniteur: "
 				+ dureeRealiseeMoniteur + "\n\theure: " + heure
 				+ "\n\tversion: " + version + "\n\tplongeurs: " + plongeurs
-				+ "\n}";
+				+ "\n\tmodifie: " + modifie + "\n}";
 	}
 
 	@Override
@@ -282,5 +302,6 @@ public class Palanquee implements Parcelable {
 		dest.writeString(heure);
 		dest.writeLong(version);
 		dest.writeParcelable(plongeurs, flags);
+		dest.writeByte((byte)(modifie ? 1 : 0));
 	}
 }

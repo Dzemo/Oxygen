@@ -102,6 +102,9 @@
     <string name="fiche_info_dialog_embarcation_title">Embarcation</string>
     <string name="fiche_info_dialog_suppression">Voulez-vous vraiment supprimer cette fiche de sécurité ? (elle sera supprimé uniquement sur cette appareil)</string>
     <string name="fiche_info_dialog_cloture">Voulez-vous vraiment cloturer cette fiche ? (il ne sera plus possible de la modifier par la suite, et elle sera archivée sur le serveur distant lors de la prochaine synchronisation)</string>
+    <string name="fiche_info_dialog_quitter_sauvegrder">Cette fiche de sécurité a été modifiée, voulez-vous l\'enregistrer ?</string>
+    <string name="fiche_info_dialog_quitter">Quitter</string>
+    <string name="fiche_info_dialog_sauvegarder">Sauvegarder</string>
     <!-- FICHE DIALOG INFO DEBUT -->
 
     <!-- FICHE INFO FIN -->
