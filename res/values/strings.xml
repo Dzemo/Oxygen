@@ -20,6 +20,12 @@
     <!-- Nombre de jours de fiche récupérs, à 0 récupère uniquement les fiches du jours actuel, max 31 -->
     <string name="retrieve_length_default">0</string>
     
+    <!-- Profondeur par défaut (en metres) -->
+    <string name="plonger_profondeur_default">40</string>
+    
+    <!-- Durée par défaut (en minute) -->
+    <string name="plonger_duree_default">20</string>
+    
     <!-- CONFIG FIN -->
     
     <!-- GENERAL/MENU DEBUT -->

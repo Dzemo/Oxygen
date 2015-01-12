@@ -133,6 +133,12 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 				Palanquee palanquee = new Palanquee();
 				palanquee.setId(ficheSecurite.getPalanquees().getNextNegativeId());
 				palanquee.setNumero(ficheSecurite.getPalanquees().getNextNumero());
+				try{
+					palanquee.setDureePrevue(Integer.valueOf(getResources().getString(R.string.plonger_duree_default)));
+				} catch(NumberFormatException e){}
+				try{
+					palanquee.setProfondeurPrevue(Float.valueOf(getResources().getString(R.string.plonger_profondeur_default)));
+				} catch(NumberFormatException e){}
 				ficheSecurite.getPalanquees().add(palanquee);
 				afficherPalanquees();
 			}

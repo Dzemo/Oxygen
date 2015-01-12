@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
-import com.deep_blue.oxygen.activity.PalanqueeActivity;
 import com.deep_blue.oxygen.dao.MoniteurDao;
 import com.deep_blue.oxygen.model.Moniteur;
 import com.deep_blue.oxygen.model.Palanquee;
