@@ -1,6 +1,5 @@
 package com.deep_blue.oxygen.activity.fragment.dialog;
 
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -34,7 +33,9 @@ public class PlongeurDateNaissanceDialogFragment extends DialogFragment {
 		
 		if (!plongeur.getDateNaissance().isEmpty()){
 			dateString = plongeur.getDateNaissance();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			//TODo ne pas parser string->date-ints mais string-ints via strtok
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", new Locale("fr_FR"));
 		    this.convertedDate = new Date();
 		        
 		    try {
@@ -64,7 +65,7 @@ public class PlongeurDateNaissanceDialogFragment extends DialogFragment {
 		int day = convertedDate.getDate();
 		
 		((DatePicker) dialogView.findViewById(R.id.dialoguePlongeurDatePicker)).updateDate(
-				year,day,month);
+				year,month, day);
 
 		
 		// builder
@@ -95,12 +96,12 @@ public class PlongeurDateNaissanceDialogFragment extends DialogFragment {
 			// On set la date le plongeur avec la nouvelle valeur
 			DatePicker datePicker = (DatePicker) dialogView
 					.findViewById(R.id.dialoguePlongeurDatePicker);
+			
 			int day = datePicker.getDayOfMonth();
-			int month = datePicker.getMonth();
-			int year = datePicker.getYear()-1900;
-			date = new Date(year, month, day);
-			Format formatter = new SimpleDateFormat("dd/MM/yyyy");
-			String dateNaissance = formatter.format(date);
+			int month = datePicker.getMonth()+1;
+			int year = datePicker.getYear();
+			
+			String dateNaissance = day+"/"+(month < 10 ? "0"+month : month)+"/"+year;			
 			plongeur.setDateNaissance(dateNaissance);
 		
 			((TextView) rootView
