@@ -144,7 +144,6 @@ public class SiteDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
-		value.put(ID, site.getId());
 		value.put(ID_WEB, site.getIdWeb());
 		value.put(NOM, site.getNom());
 		value.put(COMMENTAIRE, site.getCommentaire());

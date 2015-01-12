@@ -189,7 +189,6 @@ public class PlongeurDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
-		value.put(ID, plongeur.getId());
 		value.put(ID_WEB, plongeur.getIdWeb());
 		value.put(ID_PALANQUEE, plongeur.getIdPalanquee());
 		value.put(ID_FICHE_SECURITE, plongeur.getIdFicheSecurite());

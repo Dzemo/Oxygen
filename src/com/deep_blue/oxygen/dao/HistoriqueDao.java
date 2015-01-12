@@ -79,7 +79,6 @@ public class HistoriqueDao extends BaseDao {
 		SQLiteDatabase mDb = open();
 		
 		ContentValues value = new ContentValues();
-		value.put(HistoriqueDao.ID_HISTORIQUE, historique.getIdHistorique());
 		value.put(HistoriqueDao.LOGIN_UTILISATEUR, historique.getLoginUtilisateur());
 		value.put(HistoriqueDao.TIMESTAMP, historique.getTimestamp());
 		value.put(HistoriqueDao.ID_LOCAL_FICHE_SECURITE, historique.getIdFicheSecurite());
