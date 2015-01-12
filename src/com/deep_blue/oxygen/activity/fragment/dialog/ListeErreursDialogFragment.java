@@ -61,18 +61,22 @@ public class ListeErreursDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getResources().getQuantityText(R.plurals.fiche_info_dialog_erreurs, erreurs.size()))
         	   .setView(view)
-               .setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                       // Send the positive button event back to the host activity
-                       mListener.onDialogPositiveClick(ListeErreursDialogFragment.this, confirmType);
-                   }
-               })
                .setNegativeButton(R.string.dialog_corriger, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // Send the negative button event back to the host activity
                        mListener.onDialogNegativeClick(ListeErreursDialogFragment.this, confirmType);
                    }
                });
+        
+        if(confirmType != LISTE_ERREURS_CLOTURE){
+        	builder.setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // Send the positive button event back to the host activity
+                    mListener.onDialogPositiveClick(ListeErreursDialogFragment.this, confirmType);
+                }
+            });
+        }
+        
         return builder.create();
     }
     

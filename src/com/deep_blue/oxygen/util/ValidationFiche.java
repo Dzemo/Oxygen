@@ -3,8 +3,6 @@ package com.deep_blue.oxygen.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 import com.deep_blue.oxygen.model.Aptitude;
 import com.deep_blue.oxygen.model.EnumTypeGaz;
 import com.deep_blue.oxygen.model.EnumTypePlonge;

@@ -25,7 +25,6 @@ import com.deep_blue.oxygen.model.ListeFichesSecurite;
 import com.deep_blue.oxygen.model.Moniteur;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.synchronisation.SynchThread;
-import com.deep_blue.oxygen.tests.TestValidationFiche;
 import com.deep_blue.oxygen.util.DateStringUtils;
 import com.deep_blue.oxygen.util.IntentKey;
 
