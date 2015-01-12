@@ -103,27 +103,27 @@ public class ValidationFiche {
 		
 		// Verif saisie Type Gaz
 		if(palanquee.getTypeGaz() == null || palanquee.getTypeGaz() == EnumTypeGaz.NULL){
-			erreurs.add("Pas de gaz saisi sur la palanquée "+palanquee.getNumero());
+			erreurs.add("Pas de gaz saisi pour la palanquée "+palanquee.getNumero());
 		}
 		
 		// Verif saisie Type de plongée
 		if(palanquee.getTypePlonge() == null || palanquee.getTypePlonge() == EnumTypePlonge.NULL){
-			erreurs.add("Pas de type de plongée saisie sur la palanquée "+palanquee.getNumero());
+			erreurs.add("Pas de type de plongée pour la palanquée "+palanquee.getNumero());
 		}
 		
 		// Verif saisie Profondeur
 		if(palanquee.getProfondeurPrevue() == null || palanquee.getProfondeurPrevue() <= 0){
-			erreurs.add("Erreur de profondeur (null ou négative) saisie sur la palanquée "+palanquee.getNumero());
+			erreurs.add("Pas de profondeur prévue pour la palanquée "+palanquee.getNumero());
 		}
 		
 		if(cloture){
 			// Vérif durée réalisée
 			for(Plongeur plongeurs : palanquee.getPlongeurs()){
 				if(plongeurs.getDureeRealisee() == null || plongeurs.getDureeRealisee() <= 0){
-					erreurs.add("Erreur de durée réalisée (null ou négative) saisie pour le plongeur "+plongeurs.getNom()+" "+plongeurs.getPrenom()+" ");
+					erreurs.add("Pas de durée réalisée pour le plongeur "+plongeurs.getNom()+" "+plongeurs.getPrenom()+" de la palanquée "+palanquee.getId());
 				}
 				if(plongeurs.getProfondeurRealisee() == null || plongeurs.getProfondeurRealisee() <= 0){
-					erreurs.add("Erreur de profondeur réalisée (null ou négative) saisie pour le plongeur "+plongeurs.getNom()+" "+plongeurs.getPrenom()+" ");
+					erreurs.add("Pas de profondeur réalisée pour le plongeur "+plongeurs.getNom()+" "+plongeurs.getPrenom()+" de la palanquée "+palanquee.getId());
 				}
 			}
 			// Vérif profondeur réalisée
