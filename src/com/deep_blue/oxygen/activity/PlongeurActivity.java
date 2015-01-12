@@ -13,12 +13,12 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
+import com.deep_blue.oxygen.activity.fragment.dialog.ConfirmDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurAptitudeDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurDateNaissanceDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurDureeRealiseeDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurProfondeurRealiseeDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.PlongeurTextDialogFragment;
-import com.deep_blue.oxygen.activity.fragment.dialog.ConfirmDialogFragment;
 import com.deep_blue.oxygen.model.Palanquee;
 import com.deep_blue.oxygen.model.Plongeur;
 import com.deep_blue.oxygen.util.DateStringUtils;
@@ -30,6 +30,7 @@ public class PlongeurActivity extends FragmentActivity implements ConfirmDialogF
 	private Plongeur plongeur;
 	private View rootView;
 	private Palanquee palanquee;
+	private boolean modifiable;
 	
 	@SuppressLint("InflateParams") @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,8 @@ public class PlongeurActivity extends FragmentActivity implements ConfirmDialogF
 				.getParcelableExtra(IntentKey.PLONGEUR_COURANT.toString());
 		palanquee = (Palanquee) intent
 				.getParcelableExtra(IntentKey.PALANQUEE_COURANTE.toString());
-
+		modifiable = (boolean) intent.getBooleanExtra(IntentKey.MODIFIABLE.toString(), true);
+		
 		// Initialisaton de la vue avec le plongeur
 		((TextView) findViewById(R.id.textView_plongeur_nom_value))
 				.setText(plongeur.getNom());
@@ -71,7 +73,94 @@ public class PlongeurActivity extends FragmentActivity implements ConfirmDialogF
 		((TextView) findViewById(R.id.textView_plongeur_telephone_urgence_value))
 				.setText(plongeur.getTelephoneUrgence());
 		
-		//Ajout des onClick
+		//Gestion de l'affichage des icones de modification
+		if(modifiable){
+			// Ajout des onClick
+			ajouterOnClickListener();
+		} else {
+			cacherOnClickBouton();
+		}
+		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		//Affichage du menu uniquement sur les fiches de sécurité non validé
+		if(modifiable)
+			getMenuInflater().inflate(R.menu.plongeur, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		// Respond to the action bar's Up/Home button
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		case R.id.itemDelete:
+			ConfirmDialogFragment confirmDialogFragment = new ConfirmDialogFragment(
+					String.format(getResources().getString(R.string.plongeur_dialog_suppression), plongeur.getPrenom()+" "+plongeur.getNom()),
+					ConfirmDialogFragment.SUPPRESSION_PLONGEUR);
+			confirmDialogFragment.show(getSupportFragmentManager(), "ConfirmDialogFragment");
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	public void onBackPressed(){
+		Intent result = new Intent();
+		palanquee.getPlongeurs().ajouterOuMajPlongeur(plongeur);
+		result.putExtra(IntentKey.RESULT_PALANQUEE.toString(), palanquee);
+		setResult(RESULT_OK, result);
+		finish();
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, int confirmType) {
+		if(confirmType == ConfirmDialogFragment.SUPPRESSION_PLONGEUR){
+			Intent result = new Intent();
+			palanquee.getPlongeurs().remove(plongeur);
+			result.putExtra(IntentKey.RESULT_TEXT.toString(), String.format(getResources().getString(R.string.plongeur_dialog_suppression_confirm), plongeur.getPrenom()+" "+plongeur.getNom()));
+			result.putExtra(IntentKey.RESULT_PALANQUEE.toString(), palanquee);
+			setResult(RESULT_OK, result);
+			finish();
+		}
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog, int confirmType) {
+		//L'utilisateur à annulé la suppresion, on ne fait rien
+	}
+	
+	/**
+	 * Cache les cliques listener lorsqu'on visualise un plongeur non modifiable (d'une fiche de sécurité validé)
+	 */
+	private void cacherOnClickBouton(){
+		// Click pour changer le nom du plongeur
+		findViewById(R.id.iB_plongeur_nom).setVisibility(View.GONE);
+		// Click pour changer le prénom du plongeur
+		findViewById(R.id.iB_plongeur_prenom).setVisibility(View.GONE);
+		// Click pour changer le num de telephone du plongeur
+		findViewById(R.id.iB_plongeur_telephone).setVisibility(View.GONE);
+		// Click pour changer le numéro de téléphone d'urgence du plongeur
+		findViewById(R.id.iB_plongeur_telephone_urgence).setVisibility(View.GONE);
+		// Click pour changer la durée réalisée du plongeur
+		findViewById(R.id.iB_plongeur_duree_realisee).setVisibility(View.GONE);
+		// Click pour changer la profondeur réalisée du plongeur
+		findViewById(R.id.iB_plongeur_profondeur_realisee).setVisibility(View.GONE);
+		// Click pour changer la date de naissance du plongeur
+		findViewById(R.id.iB_plongeur_date_naissance).setVisibility(View.GONE);
+		// Click pour changer les aptitudes du plongeur
+		findViewById(R.id.iB_plongeur_aptitudes).setVisibility(View.GONE);
+	}
+	
+	/**
+	 * Ajoute les cliques listener pour la modificaton du plongeur
+	 */
+	private void ajouterOnClickListener(){
 		// Click pour changer le nom du plongeur
 		findViewById(R.id.iB_plongeur_nom)
 		.setOnClickListener(new OnClickListener() {
@@ -152,55 +241,5 @@ public class PlongeurActivity extends FragmentActivity implements ConfirmDialogF
 						ndf.show(getSupportFragmentManager(), "TAG");
 					}
 				});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.plongeur, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		// Respond to the action bar's Up/Home button
-		case android.R.id.home:
-			onBackPressed();
-			return true;
-		case R.id.itemDelete:
-			ConfirmDialogFragment confirmDialogFragment = new ConfirmDialogFragment(
-					String.format(getResources().getString(R.string.plongeur_dialog_suppression), plongeur.getPrenom()+" "+plongeur.getNom()),
-					ConfirmDialogFragment.SUPPRESSION_PLONGEUR);
-			confirmDialogFragment.show(getSupportFragmentManager(), "ConfirmDialogFragment");
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-	
-	@Override
-	public void onBackPressed(){
-		Intent result = new Intent();
-		palanquee.getPlongeurs().ajouterOuMajPlongeur(plongeur);
-		result.putExtra(IntentKey.RESULT_PALANQUEE.toString(), palanquee);
-		setResult(RESULT_OK, result);
-		finish();
-	}
-
-	@Override
-	public void onDialogPositiveClick(DialogFragment dialog, int confirmType) {
-		if(confirmType == ConfirmDialogFragment.SUPPRESSION_PLONGEUR){
-			Intent result = new Intent();
-			palanquee.getPlongeurs().remove(plongeur);
-			result.putExtra(IntentKey.RESULT_TEXT.toString(), String.format(getResources().getString(R.string.plongeur_dialog_suppression_confirm), plongeur.getPrenom()+" "+plongeur.getNom()));
-			result.putExtra(IntentKey.RESULT_PALANQUEE.toString(), palanquee);
-			setResult(RESULT_OK, result);
-			finish();
-		}
-	}
-
-	@Override
-	public void onDialogNegativeClick(DialogFragment dialog, int confirmType) {
-		//L'utilisateur à annulé la suppresion, on ne fait rien
 	}
 }

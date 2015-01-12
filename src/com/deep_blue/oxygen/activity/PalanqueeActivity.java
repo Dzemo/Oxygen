@@ -9,10 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TableRow.LayoutParams;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeDureePrevueDialogFragment;
@@ -25,6 +27,7 @@ import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeTypeGazDialogFragm
 import com.deep_blue.oxygen.activity.fragment.dialog.PalanqueeTypePlongeDialogFragment;
 import com.deep_blue.oxygen.activity.fragment.dialog.ConfirmDialogFragment;
 import com.deep_blue.oxygen.listener.PlongeurOnClickListener;
+import com.deep_blue.oxygen.model.EnumEtat;
 import com.deep_blue.oxygen.model.EnumTypeGaz;
 import com.deep_blue.oxygen.model.EnumTypePlonge;
 import com.deep_blue.oxygen.model.FicheSecurite;
@@ -63,145 +66,56 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 		rootView = getLayoutInflater().inflate(R.layout.activity_palanquee_layout, null);
 		setContentView(rootView);
 		
-		final Palanquee palanqueeFinal = palanquee;
-		
 		//Numéro de la palanquée dans le titre
 		setTitle(getTitle()+" "+palanquee.getNumero());
 
 		// Initialisation de la vue avec la palanquée séléctionné
-
-		// Info général de la palanquée
 		((TextView) rootView
 				.findViewById(R.id.textView_palanquee_info_gaz_value))
-				.setText(palanqueeFinal.getTypeGaz() != EnumTypeGaz.NULL ? palanqueeFinal.getTypeGaz().toString() : "");
+				.setText(palanquee.getTypeGaz() != EnumTypeGaz.NULL ? palanquee.getTypeGaz().toString() : "");
 		((TextView) rootView
 				.findViewById(R.id.textView_palanquee_info_plongee_value))
-				.setText(palanqueeFinal.getTypePlonge() != EnumTypePlonge.NULL ? palanqueeFinal.getTypePlonge().toString() : "");
+				.setText(palanquee.getTypePlonge() != EnumTypePlonge.NULL ? palanquee.getTypePlonge().toString() : "");
 		((TextView) rootView
 				.findViewById(R.id.textView_palanquee_info_profondeur_prevue_value))
-				.setText(palanqueeFinal.getProfondeurPrevue() != 0F ? palanqueeFinal.getProfondeurPrevue().toString()
+				.setText(palanquee.getProfondeurPrevue() != 0F ? palanquee.getProfondeurPrevue().toString()
 						+ " mètres" : "");
-		if (palanqueeFinal.getProfondeurRealiseeMoniteur() != null  && palanqueeFinal.getProfondeurRealiseeMoniteur() > 0)
+		if (palanquee.getProfondeurRealiseeMoniteur() != null  && palanquee.getProfondeurRealiseeMoniteur() > 0)
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_profondeur_realisee_moniteur_value))
-					.setText(palanqueeFinal.getProfondeurRealiseeMoniteur()
+					.setText(palanquee.getProfondeurRealiseeMoniteur()
 							.toString() + " mètres");
 		((TextView) rootView
 				.findViewById(R.id.textView_palanquee_info_duree_prevue_value))
-				.setText(DateStringUtils.secondsToNiceString(palanqueeFinal
+				.setText(DateStringUtils.secondsToNiceString(palanquee
 						.getDureePrevue()));
-		if (palanqueeFinal.getDureeRealiseeMoniteur() > 0)
+		if (palanquee.getDureeRealiseeMoniteur() > 0)
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_duree_realisee_moniteur_value))
-					.setText(DateStringUtils.secondsToNiceString(palanqueeFinal
+					.setText(DateStringUtils.secondsToNiceString(palanquee
 							.getDureeRealiseeMoniteur()));
 		((TextView) rootView.findViewById(R.id.textView_palanquee_heure))
-				.setText(palanqueeFinal.getHeure());
-
-		// onClick listener sur les images
-		//Profondeur réalisée
-		rootView.findViewById(R.id.iB_palanquee_profondeur_realisee_moniteur)
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						PalanqueeProfondeurRealiseeMoniteurDialogFragment ndf = new PalanqueeProfondeurRealiseeMoniteurDialogFragment(
-								rootView, palanqueeFinal);
-						ndf.show(getSupportFragmentManager(), "TAG");
-					}
-				});
-		//Profondeur prévue
-		rootView.findViewById(R.id.iB_palanquee_profondeur_prevue)
-		.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				PalanqueeProfondeurPrevueDialogFragment ndf = new PalanqueeProfondeurPrevueDialogFragment(
-						rootView, palanqueeFinal);
-				ndf.show(getSupportFragmentManager(), "TAG");
-			}
-		});
-		//Duree prévue
-		rootView.findViewById(R.id.iB_palanquee_duree_prevue)
-		.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				PalanqueeDureePrevueDialogFragment ndf = new PalanqueeDureePrevueDialogFragment(
-						rootView, palanqueeFinal);
-				ndf.show(getSupportFragmentManager(), "TAG");
-			}
-		});
-		//Duree réalisé
-		rootView.findViewById(R.id.iB_palanquee_duree_realisee_moniteur)
-		.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				PalanqueeDureeRealiseeMoniteurDialogFragment ndf = new PalanqueeDureeRealiseeMoniteurDialogFragment(
-						rootView, palanqueeFinal);
-				ndf.show(getSupportFragmentManager(), "TAG");
-			}
-		});
-		//Heure
-		rootView.findViewById(R.id.iB_palanquee_heure)
-		.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				PalanqueeHeureDialogFragment ndf = new PalanqueeHeureDialogFragment(
-						rootView, palanqueeFinal);
-				ndf.show(getSupportFragmentManager(), "TAG");
-			}
-		});
-		//Type gaz
-		rootView.findViewById(R.id.iB_palanquee_gaz)
-		.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				PalanqueeTypeGazDialogFragment ndf = new PalanqueeTypeGazDialogFragment(
-						rootView, palanqueeFinal);
-				ndf.show(getSupportFragmentManager(), "TAG");
-			}
-		});
-		//Type plonge
-		rootView.findViewById(R.id.iB_palanquee_plonge)
-		.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				PalanqueeTypePlongeDialogFragment ndf = new PalanqueeTypePlongeDialogFragment(
-						rootView, palanqueeFinal);
-				ndf.show(getSupportFragmentManager(), "TAG");
-			}
-		});
-		//Moniteur
-		rootView.findViewById(R.id.iB_palanquee_moniteur)
-		.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				PalanqueeMoniteurDialogFragment ndf = new PalanqueeMoniteurDialogFragment(
-						rootView, palanqueeFinal);
-				ndf.show(getSupportFragmentManager(), "TAG");
-			}
-		});
-
+				.setText(palanquee.getHeure());
 		//Moniteur si présent
-		Moniteur moniteur = palanqueeFinal.getMoniteur();
+		Moniteur moniteur = palanquee.getMoniteur();
 		if (moniteur != null) {
 			((TextView) rootView.findViewById(R.id.textView_palanquee_moniteur)).setText(moniteur != null ? moniteur.getPrenom() + " " + moniteur.getNom() : "");
 		} 
 		updateMoniteurVisibilite();
 		
-
 		
-		// Ajout du clique d'ajout de plongeur
-		rootView.findViewById(R.id.iB_palanquee_ajout_plongeur)
-		.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Plongeur plongeur = new Plongeur();
-				plongeur.setId(palanquee.getPlongeurs().getNextNegativeId());
-				plongeur.setIdPalanquee(palanquee.getId());
-				plongeur.setIdFicheSecurite(palanquee.getIdFicheSecurite());
-				palanquee.getPlongeurs().add(plongeur);
-				afficherPlongeurs();
-			}
-		});
+		if(ficheSecurite.getEtat() == EnumEtat.VALIDE){
+			cacherBoutonModification();			
+			
+			//Alignement pour le titre
+			TextView tvTitrePalanquee = ((TextView)findViewById(R.id.textView_palanquee_plongeur_title));
+			TableRow.LayoutParams params = (LayoutParams) tvTitrePalanquee.getLayoutParams();
+			params.span = 2;
+			tvTitrePalanquee.setLayoutParams(params); // causes layout update
+		} else{
+			// onClick listener sur les images
+			ajouterClickListener();
+		}		
 
 		//Affichage des plongeurs
 		afficherPlongeurs();
@@ -220,11 +134,13 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 		}
 		
 		afficherPlongeurs();
-	}	
+	}
 		
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.palanquee, menu);
+		//Affichage du menu uniquement sur les fiches de sécurité non validé
+		if(ficheSecurite.getEtat() != EnumEtat.VALIDE)
+			getMenuInflater().inflate(R.menu.palanquee, menu);
 		return true;
 	}
 	
@@ -272,6 +188,131 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 	}
 	
 	/**
+	 * Cache les boutons permettend de modifier la palanquée
+	 */
+	private void cacherBoutonModification(){
+		//Profondeur réalisée
+		rootView.findViewById(R.id.iB_palanquee_profondeur_realisee_moniteur).setVisibility(View.GONE);
+		//Profondeur prévue
+		rootView.findViewById(R.id.iB_palanquee_profondeur_prevue).setVisibility(View.GONE);
+		//Duree prévue
+		rootView.findViewById(R.id.iB_palanquee_duree_prevue).setVisibility(View.GONE);
+		//Duree réalisé
+		rootView.findViewById(R.id.iB_palanquee_duree_realisee_moniteur).setVisibility(View.GONE);
+		//Heure
+		rootView.findViewById(R.id.iB_palanquee_heure).setVisibility(View.GONE);
+		//Type gaz
+		rootView.findViewById(R.id.iB_palanquee_gaz).setVisibility(View.GONE);
+		//Type plonge
+		rootView.findViewById(R.id.iB_palanquee_plonge).setVisibility(View.GONE);
+		//Moniteur
+		rootView.findViewById(R.id.iB_palanquee_moniteur).setVisibility(View.GONE);
+		
+		// Ajout du clique d'ajout de plongeur
+		rootView.findViewById(R.id.iB_palanquee_ajout_plongeur).setVisibility(View.GONE);
+	}
+	
+	/**
+	 * Ajoute les onClickListener qui fait apparaitre le dialog fragment correspondant pour les informations de la palanquée
+	 */
+	private void ajouterClickListener(){
+		//Profondeur réalisée
+		rootView.findViewById(R.id.iB_palanquee_profondeur_realisee_moniteur)
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						PalanqueeProfondeurRealiseeMoniteurDialogFragment ndf = new PalanqueeProfondeurRealiseeMoniteurDialogFragment(
+								rootView, palanquee);
+						ndf.show(getSupportFragmentManager(), "TAG");
+					}
+				});
+		//Profondeur prévue
+		rootView.findViewById(R.id.iB_palanquee_profondeur_prevue)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PalanqueeProfondeurPrevueDialogFragment ndf = new PalanqueeProfondeurPrevueDialogFragment(
+						rootView, palanquee);
+				ndf.show(getSupportFragmentManager(), "TAG");
+			}
+		});
+		//Duree prévue
+		rootView.findViewById(R.id.iB_palanquee_duree_prevue)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PalanqueeDureePrevueDialogFragment ndf = new PalanqueeDureePrevueDialogFragment(
+						rootView, palanquee);
+				ndf.show(getSupportFragmentManager(), "TAG");
+			}
+		});
+		//Duree réalisé
+		rootView.findViewById(R.id.iB_palanquee_duree_realisee_moniteur)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PalanqueeDureeRealiseeMoniteurDialogFragment ndf = new PalanqueeDureeRealiseeMoniteurDialogFragment(
+						rootView, palanquee);
+				ndf.show(getSupportFragmentManager(), "TAG");
+			}
+		});
+		//Heure
+		rootView.findViewById(R.id.iB_palanquee_heure)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PalanqueeHeureDialogFragment ndf = new PalanqueeHeureDialogFragment(
+						rootView, palanquee);
+				ndf.show(getSupportFragmentManager(), "TAG");
+			}
+		});
+		//Type gaz
+		rootView.findViewById(R.id.iB_palanquee_gaz)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PalanqueeTypeGazDialogFragment ndf = new PalanqueeTypeGazDialogFragment(
+						rootView, palanquee);
+				ndf.show(getSupportFragmentManager(), "TAG");
+			}
+		});
+		//Type plonge
+		rootView.findViewById(R.id.iB_palanquee_plonge)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PalanqueeTypePlongeDialogFragment ndf = new PalanqueeTypePlongeDialogFragment(
+						rootView, palanquee);
+				ndf.show(getSupportFragmentManager(), "TAG");
+			}
+		});
+		//Moniteur
+		rootView.findViewById(R.id.iB_palanquee_moniteur)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PalanqueeMoniteurDialogFragment ndf = new PalanqueeMoniteurDialogFragment(
+						rootView, palanquee);
+				ndf.show(getSupportFragmentManager(), "TAG");
+			}
+		});
+		
+		// Ajout du clique d'ajout de plongeur
+		rootView.findViewById(R.id.iB_palanquee_ajout_plongeur)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Plongeur plongeur = new Plongeur();
+				plongeur.setId(palanquee.getPlongeurs().getNextNegativeId());
+				plongeur.setIdPalanquee(palanquee.getId());
+				plongeur.setIdFicheSecurite(palanquee.getIdFicheSecurite());
+				palanquee.getPlongeurs().add(plongeur);
+				afficherPlongeurs();
+			}
+		});
+	}
+	
+	/**
 	 * Met à jours la visibilité du moniteur dans la palanquée en fonction du type de plongé
 	 */
 	public void updateMoniteurVisibilite(){
@@ -311,9 +352,14 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 				row.setBackgroundResource(R.drawable.list_item_background_plongeur_2);
 			parite_background++;
 
+			if (ficheSecurite.getEtat() == EnumEtat.VALIDE) {
+				// Pour les fiches validée, on change l'icone des plongeurs
+				((ImageButton)row.findViewById(R.id.iB_palanquee_plongeur)).setImageResource(android.R.drawable.ic_menu_info_details);
+			}
+			
 			// Clik listener sur la row
 			row.findViewById(R.id.iB_palanquee_plongeur).setOnClickListener(new PlongeurOnClickListener(
-					plongeur, null, palanquee, this));
+					plongeur, null, palanquee, ficheSecurite.getEtat() != EnumEtat.VALIDE, this));
 			
 			// Ajout de la row dans la table
 			tableLayout.addView(row, index, row.getLayoutParams());

@@ -16,14 +16,16 @@ public class PlongeurOnClickListener implements OnClickListener{
 	private Plongeur clickedPlongeur;
 	private Utilisateur currentUtilisateur;
 	private Palanquee currentPalanquee;
+	private boolean modifiable;
 	
 	private FragmentActivity palanqueeActivity;
 	
-	public PlongeurOnClickListener(Plongeur clickedPlongeur, Utilisateur utilisateur, Palanquee palanquee, FragmentActivity palanqueeActivity){
+	public PlongeurOnClickListener(Plongeur clickedPlongeur, Utilisateur utilisateur, Palanquee palanquee, boolean modifiable, FragmentActivity palanqueeActivity){
 		this.clickedPlongeur = clickedPlongeur;
 		this.palanqueeActivity = palanqueeActivity;
 		this.currentUtilisateur = utilisateur;
 		this.currentPalanquee = palanquee;
+		this.modifiable = modifiable;
 	}
 	
 	@Override
@@ -32,6 +34,7 @@ public class PlongeurOnClickListener implements OnClickListener{
 		intent.putExtra(IntentKey.PLONGEUR_COURANT.toString(), clickedPlongeur);
 		intent.putExtra(IntentKey.UTILISATEUR_COURANT.toString(), currentUtilisateur);
 		intent.putExtra(IntentKey.PALANQUEE_COURANTE.toString(), currentPalanquee);
+		intent.putExtra(IntentKey.MODIFIABLE.toString(), modifiable);
 		
 		palanqueeActivity.startActivityForResult(intent, 0);
 	}

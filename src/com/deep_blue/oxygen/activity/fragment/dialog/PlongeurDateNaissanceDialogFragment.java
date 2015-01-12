@@ -90,8 +90,6 @@ public class PlongeurDateNaissanceDialogFragment extends DialogFragment {
 
 	public void dismiss(boolean updateValue) {
 		
-		final Date date;
-		
 		if (updateValue) {
 			// On set la date le plongeur avec la nouvelle valeur
 			DatePicker datePicker = (DatePicker) dialogView

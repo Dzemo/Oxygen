@@ -9,8 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,67 +86,19 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 							.getEmbarcation().getLibelle() : "");
 		}
 
-		// Ajout du clique de modification de la date
-		rootView.findViewById(R.id.iB_infos_date).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						FicheDateDialogFragment ndf = new FicheDateDialogFragment(
-								rootView, ficheSecurite);
-						ndf.show(getSupportFragmentManager(), "TAG");
-					}
-				});
-		// Ajout du clique de modification du directeur de plonge
-		rootView.findViewById(R.id.iB_infos_directeur_plonge)
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						FicheDirecteurDialogFragment ndf = new FicheDirecteurDialogFragment(
-								rootView, ficheSecurite);
-						ndf.show(getSupportFragmentManager(), "TAG");
-					}
-				});
-		// Ajout du clique de modification de l'embarcation
-		rootView.findViewById(R.id.iB_infos_embarcation)
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						FicheEmbarcationDialogFragment ndf = new FicheEmbarcationDialogFragment(
-								rootView, ficheSecurite);
-						ndf.show(getSupportFragmentManager(), "TAG");
-					}
-				});
-		// Ajout du clique de modification du site
-		rootView.findViewById(R.id.iB_infos_site)
-		.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FicheSiteDialogFragment ndf = new FicheSiteDialogFragment(
-						rootView, ficheSecurite);
-				ndf.show(getSupportFragmentManager(), "TAG");
-			}
-		});
-		
-		// Ajout du clique d'ajout de palanquee
-		rootView.findViewById(R.id.iB_fiche_ajout_palanquee)
-		.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Palanquee palanquee = new Palanquee();
-				palanquee.setId(ficheSecurite.getPalanquees().getNextNegativeId());
-				palanquee.setNumero(ficheSecurite.getPalanquees().getNextNumero());
-				try{
-					palanquee.setDureePrevue(Integer.valueOf(getResources().getString(R.string.plonger_duree_default)));
-				} catch(NumberFormatException e){}
-				try{
-					palanquee.setProfondeurPrevue(Float.valueOf(getResources().getString(R.string.plonger_profondeur_default)));
-				} catch(NumberFormatException e){}
-				ficheSecurite.getPalanquees().add(palanquee);
-				afficherPalanquees();
-			}
-		});
-
 		afficherPalanquees();
+		
+		if(ficheSecurite.getEtat() == EnumEtat.VALIDE){			
+			cacherBoutonModification();			
+			
+			//Alignement pour le titre
+			TextView tvTitrePalanquee = ((TextView)findViewById(R.id.textView_palanquee_plongeur_title));
+			TableRow.LayoutParams params = (LayoutParams) tvTitrePalanquee.getLayoutParams();
+			params.span = 2;
+			tvTitrePalanquee.setLayoutParams(params); // causes layout update
+		} else {
+			ajouterClickListener();	
+		}
 	}	
 	
 	@Override
@@ -156,13 +110,15 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 			Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
 			toast.show();
 		}
-		
+			
 		afficherPalanquees();
 	}	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.fiche_securite_info, menu);
+		//Affichage du menu uniquement sur les fiches de sécurité non validé
+		if(ficheSecurite.getEtat() != EnumEtat.VALIDE)
+			getMenuInflater().inflate(R.menu.fiche_securite_info, menu);
 		return true;
 	}
 
@@ -273,6 +229,94 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 		//L'utilisateur à choisi de ne pas supprimer cette palanquee, on ne fait rien alors
 	}
 	
+	/**
+	 * Cache les bouton de modifications des informations de la palanque 
+	 */
+	private void cacherBoutonModification(){
+		// Ne pas afficher le bouton de modification de la date
+		rootView.findViewById(R.id.iB_infos_date).setVisibility(View.GONE);
+		
+		// Ne pas afficher le bouton de modification du directeur de plonge
+		rootView.findViewById(R.id.iB_infos_directeur_plonge).setVisibility(View.GONE);
+		
+		// Ne pas afficher le bouton de modification de l'embarcation
+		rootView.findViewById(R.id.iB_infos_embarcation).setVisibility(View.GONE);
+		
+		// Ne pas afficher le bouton de modification du site
+		rootView.findViewById(R.id.iB_infos_site).setVisibility(View.GONE);
+		
+		// Ne pas afficher le bouton d'ajout de palanquee
+		rootView.findViewById(R.id.iB_fiche_ajout_palanquee).setVisibility(View.GONE);
+	}
+	
+	/**
+	 * Ajoute les cliques listeners sur les boutons d'édition
+	 */
+	private void ajouterClickListener(){
+		// Ajout du clique de modification de la date
+		rootView.findViewById(R.id.iB_infos_date).setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						FicheDateDialogFragment ndf = new FicheDateDialogFragment(
+								rootView, ficheSecurite);
+						ndf.show(getSupportFragmentManager(), "TAG");
+					}
+				});
+		// Ajout du clique de modification du directeur de plonge
+		rootView.findViewById(R.id.iB_infos_directeur_plonge)
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						FicheDirecteurDialogFragment ndf = new FicheDirecteurDialogFragment(
+								rootView, ficheSecurite);
+						ndf.show(getSupportFragmentManager(), "TAG");
+					}
+				});
+		// Ajout du clique de modification de l'embarcation
+		rootView.findViewById(R.id.iB_infos_embarcation)
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						FicheEmbarcationDialogFragment ndf = new FicheEmbarcationDialogFragment(
+								rootView, ficheSecurite);
+						ndf.show(getSupportFragmentManager(), "TAG");
+					}
+				});
+		// Ajout du clique de modification du site
+		rootView.findViewById(R.id.iB_infos_site)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FicheSiteDialogFragment ndf = new FicheSiteDialogFragment(
+						rootView, ficheSecurite);
+				ndf.show(getSupportFragmentManager(), "TAG");
+			}
+		});
+		
+		// Ajout du clique d'ajout de palanquee
+		rootView.findViewById(R.id.iB_fiche_ajout_palanquee)
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Palanquee palanquee = new Palanquee();
+				palanquee.setId(ficheSecurite.getPalanquees().getNextNegativeId());
+				palanquee.setNumero(ficheSecurite.getPalanquees().getNextNumero());
+				try{
+					palanquee.setDureePrevue(Integer.valueOf(getResources().getString(R.string.plonger_duree_default)));
+				} catch(NumberFormatException e){}
+				try{
+					palanquee.setProfondeurPrevue(Float.valueOf(getResources().getString(R.string.plonger_profondeur_default)));
+				} catch(NumberFormatException e){}
+				ficheSecurite.getPalanquees().add(palanquee);
+				afficherPalanquees();
+			}
+		});
+	}
+	
+	/**
+	 * Affiche la liste des palanquées
+	 */
 	private void afficherPalanquees(){
 		TableLayout tableLayout = (TableLayout) rootView.findViewById(R.id.activity_fiche_securite_info_palanquees);
 		
@@ -298,9 +342,15 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 			else
 				row.setBackgroundResource(R.drawable.list_item_background_1);
 
-			// Clik listener sur l'image de modification de la palanquee
-			row.findViewById(R.id.iB_palanquee).setOnClickListener(new PalanqueeOnClickListener(
-					palanquee, utilisateur, ficheSecurite, this));
+			if (ficheSecurite.getEtat() == EnumEtat.VALIDE) {
+				// Pour les fiches validée, on change l'icone des palanquée
+				((ImageButton)row.findViewById(R.id.iB_palanquee)).setImageResource(android.R.drawable.ic_menu_info_details);
+			}
+			
+			// Clik listener sur l'image de la palanquee
+			row.findViewById(R.id.iB_palanquee).setOnClickListener(
+					new PalanqueeOnClickListener(palanquee, utilisateur,
+							ficheSecurite, this));
 			
 			// Ajout de la row dans la table
 			tableLayout.addView(row, index);
