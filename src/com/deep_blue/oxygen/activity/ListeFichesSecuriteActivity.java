@@ -145,68 +145,77 @@ public class ListeFichesSecuriteActivity extends FragmentActivity implements Dir
 		//Chargement de la liste des fiches		
 		FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
 		ListeFichesSecurite listeFiche = ficheSecuriteDao.getAll();
-		int parite = 0;
-		int index = 1;
-		int countFichePerso = 0, countFicheAutre = 0;
-
-		// Si l'utilisateur courant à un moniteur associé, on affiche d'abord la
-		// liste des fiches perso
-		if (utilisateur.getMoniteurAssocie() != null) {
+		
+		
+		if(listeFiche.size() == 0){
+			//Si aucune fiche affichage d'un message à l'utilisateur
+			Toast toast = Toast.makeText(this, getResources().getString(R.string.list_fiche_aucune_fiche), Toast.LENGTH_LONG);
+			toast.show();
+		} 
+		else {
+			int parite = 0;
+			int index = 1;
+			int countFichePerso = 0, countFicheAutre = 0;
+	
+			// Si l'utilisateur courant à un moniteur associé, on affiche d'abord la
+			// liste des fiches perso
+			if (utilisateur.getMoniteurAssocie() != null) {
+				for (FicheSecurite ficheSecurite : listeFiche) {
+					if (ficheSecurite.getDirecteurPlonge() != null && ficheSecurite.getDirecteurPlonge().getIdWeb() == utilisateur
+							.getMoniteurAssocie().getIdWeb()) {
+	
+						//Génération de la tablerow
+						TableRow row = genererRowPourFiche(ficheSecurite, tableLayout, parite);
+						
+						// Ajout de la row dans la table
+						tableLayout.addView(row, index);
+	
+						index++;
+						parite++;
+						countFichePerso++;
+					}
+				}
+			}
+	
+			// Affichage des autres fiches
+			parite = 0;
+			index++;
 			for (FicheSecurite ficheSecurite : listeFiche) {
-				if (ficheSecurite.getDirecteurPlonge() != null && ficheSecurite.getDirecteurPlonge().getIdWeb() == utilisateur
-						.getMoniteurAssocie().getIdWeb()) {
-
+				if (ficheSecurite.getDirecteurPlonge() == null || utilisateur.getMoniteurAssocie() == null
+						|| ficheSecurite.getDirecteurPlonge().getIdWeb() != utilisateur
+								.getMoniteurAssocie().getIdWeb()) {
+					
 					//Génération de la tablerow
 					TableRow row = genererRowPourFiche(ficheSecurite, tableLayout, parite);
 					
 					// Ajout de la row dans la table
 					tableLayout.addView(row, index);
-
-					index++;
+	
 					parite++;
-					countFichePerso++;
+					index++;
+					countFicheAutre++;
 				}
 			}
-		}
-
-		// Affichage des autres fiches
-		parite = 0;
-		index++;
-		for (FicheSecurite ficheSecurite : listeFiche) {
-			if (ficheSecurite.getDirecteurPlonge() == null || utilisateur.getMoniteurAssocie() == null
-					|| ficheSecurite.getDirecteurPlonge().getIdWeb() != utilisateur
-							.getMoniteurAssocie().getIdWeb()) {
+	
+			// Sinon on cache les titres de row
+			if (utilisateur.getMoniteurAssocie() != null) {
+				findViewById(R.id.liste_fiche_perso_title).setVisibility(View.VISIBLE);
+				findViewById(R.id.liste_fiche_autre_title).setVisibility(View.VISIBLE);
 				
-				//Génération de la tablerow
-				TableRow row = genererRowPourFiche(ficheSecurite, tableLayout, parite);
-				
-				// Ajout de la row dans la table
-				tableLayout.addView(row, index);
-
-				parite++;
-				index++;
-				countFicheAutre++;
+				((TextView) findViewById(R.id.textView_liste_fiche_perso_title))
+						.setText(String.format(
+								getResources().getString(
+										R.string.list_fiche_perso_title),
+								countFichePerso));
+				((TextView) findViewById(R.id.textView_liste_fiche_autre_title))
+						.setText(String.format(
+								getResources().getString(
+										R.string.list_fiche_autre_title),
+								countFicheAutre));
+			} else {
+				findViewById(R.id.liste_fiche_perso_title).setVisibility(View.GONE);
+				findViewById(R.id.liste_fiche_autre_title).setVisibility(View.GONE);
 			}
-		}
-
-		// Sinon on cache les titres de row
-		if (utilisateur.getMoniteurAssocie() != null) {
-			findViewById(R.id.liste_fiche_perso_title).setVisibility(View.VISIBLE);
-			findViewById(R.id.liste_fiche_autre_title).setVisibility(View.VISIBLE);
-			
-			((TextView) findViewById(R.id.textView_liste_fiche_perso_title))
-					.setText(String.format(
-							getResources().getString(
-									R.string.list_fiche_perso_title),
-							countFichePerso));
-			((TextView) findViewById(R.id.textView_liste_fiche_autre_title))
-					.setText(String.format(
-							getResources().getString(
-									R.string.list_fiche_autre_title),
-							countFicheAutre));
-		} else {
-			findViewById(R.id.liste_fiche_perso_title).setVisibility(View.GONE);
-			findViewById(R.id.liste_fiche_autre_title).setVisibility(View.GONE);
 		}
 	}
 	

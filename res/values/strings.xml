@@ -77,6 +77,7 @@
     <string name="imageTitle">Un beau logo mon flavio</string>
     <string name="imageAnnuler">Cross icon with Annuler string</string>
     <string name="imageValider">Validate icon with Valider string</string>
+    <string name="login_aucun_utilisateur">Aucun utilisateur d\'enregistrer sur l\'appareil, veuillez synchroniser l\'application</string>
     <!-- LOGIN FIN -->
 
 
@@ -88,6 +89,7 @@
     <string name="list_fiche_desc">Plongée [type] à [lieu]</string>
     <string name="list_fiche_perso_title">Mes fiches (%s)</string>
     <string name="list_fiche_autre_title">Autres fiches (%s)</string>
+    <string name="list_fiche_aucune_fiche">Aucune fiche de sécurité enregistrée sur l\'appareil</string>
     <!-- LISTE FICHES SECURITE FIN -->
 
 	<!-- FICHES TITRE -->

@@ -59,6 +59,13 @@ public class LoginActivity extends Activity {
 				startActivity(intent);
 			}
 		}
+		
+		Long maxVersion = utilisateurDao.getMaxVersion();
+		if(maxVersion == 0){
+			//Aucun utilisateur en base, affichage d'un toaster à l'utilisateur
+			Toast toast = Toast.makeText(this, getResources().getString(R.string.login_aucun_utilisateur), Toast.LENGTH_LONG);
+			toast.show();
+		}
 	}
 
 	@Override
