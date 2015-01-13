@@ -34,12 +34,12 @@ public class ValidationFiche {
 		
 		// Vérif saisie de la date
 		if(fichesecurite.getTimestamp() == null || fichesecurite.getTimestamp() <= 0){
-			erreurs.add("Pas de date saisie (format JJ/MM/AAAA attendu)");
+			erreurs.add("Pas de date saisie (format JJ/MM/AAAA attendu) pour la fiche "+fichesecurite.getId());
 		}
 	
 		// Verif saisie Directeur de plongée
 		if(fichesecurite.getDirecteurPlonge() == null || fichesecurite.getDirecteurPlonge().getIdWeb() <= 0){
-			erreurs.add("Pas de directeur de plongée saisie");
+			erreurs.add("Pas de directeur de plongée saisie pour la fiche "+fichesecurite.getId());
 		}
 	
 		// Verif palanquées
@@ -69,12 +69,12 @@ public class ValidationFiche {
 		
 		// Vérif saisie de la date
 		if(fichesecurite.getTimestamp() == null || fichesecurite.getTimestamp() <= 0){
-			erreurs.add("Pas de date saisie (format JJ/MM/AAAA attendu)");
+			erreurs.add("Pas de date saisie (format JJ/MM/AAAA attendu) pour la fiche "+fichesecurite.getId());
 		}
 	
 		// Verif saisie Directeur de plongée
 		if(fichesecurite.getDirecteurPlonge() == null || fichesecurite.getDirecteurPlonge().getIdWeb() <= 0){
-			erreurs.add("Pas de directeur de plongée saisie");
+			erreurs.add("Pas de directeur de plongée saisie pour la fiche "+fichesecurite.getId());
 		}
 	
 		// Verif palanquées
@@ -145,17 +145,17 @@ public class ValidationFiche {
 				erreurs.add("Impossible de plonger en autonomie entre 0 et 6 mètres de profondeur pour la palanquée "+palanquee.getNumero());
 			}
 			else if(palanquee.getTypeGaz() == EnumTypeGaz.NITROX && palanquee.getTypePlonge() == EnumTypePlonge.ENCADRE){
-				erreurs.add("Impossible de plonger en exploration encadré au nitrox entre 0 et 6 mètres de profondeur");
+				erreurs.add("Impossible de plonger en exploration encadré au nitrox entre 0 et 6 mètres de profondeur pour la palanquée "+palanquee.getNumero());
 			}
 		}
 		else if(palanquee.getTypePlonge() == EnumTypePlonge.BAPTEME){
-			erreurs.add("Impossible de faire un baptême au dela de 6 mètres");
+			erreurs.add("Impossible de faire un baptême au dela de 6 mètres pour la palanquée "+palanquee.getNumero());
 		}	
 		
 		// Présence du moniteur
 		if(palanquee.getTypePlonge() != EnumTypePlonge.AUTONOME){
 			if(palanquee.getMoniteur() == null){
-				erreurs.add("Il est nécéssaire d'avoir un moniteur pour ce type de plongée");
+				erreurs.add("Il est nécéssaire d'avoir un moniteur pour ce type de plongée pour la palanquée "+palanquee.getNumero());
 			}
 		}
 	
@@ -175,11 +175,11 @@ public class ValidationFiche {
 						}
 					}
 					if(plongeurBonus == 0){
-						erreurs.add("Le plongeur supplémentaire de cette palanquée n'a pas les bonnes aptitudes pour cette plongée");
+						erreurs.add("Le plongeur supplémentaire de la palanquée "+palanquee.getNumero()+" n'a pas les bonnes aptitudes pour un baptême");
 					}
 				}
 				else {
-					erreurs.add("Il y a trop de plongeurs dans cette palanquée pour cette plongée");
+					erreurs.add("Il y a trop de plongeurs dans la palanquée "+palanquee.getNumero()+" pour un baptême");
 				}
 			}
 			
@@ -199,11 +199,11 @@ public class ValidationFiche {
 						}
 					}
 					if(plongeurBonus == 0){
-						erreurs.add("Le plongeur supplémentaire de cette palanquée n'a pas les bonnes aptitudes pour cette plongée");
+						erreurs.add("Le plongeur supplémentaire de la palanquée "+palanquee.getNumero()+" n'a pas les bonnes aptitudes pour cette plongée");
 					}
 				}
 				else {
-					erreurs.add("Il y a trop de plongeurs dans cette palanquée pour cette plongée");
+					erreurs.add("Il y a trop de plongeurs dans la palanquée "+palanquee.getNumero()+" pour cette plongée");
 				}
 			}
 		}
@@ -211,14 +211,14 @@ public class ValidationFiche {
 			// Plongée autonome [3 plongeurs minimum]
 			int minPlongeurs = 3;
 			if(palanquee.getPlongeurs().size() < minPlongeurs){
-				erreurs.add("Il n'y a pas assez de plongeurs dans cette palanquée pour une plongée autonome");
+				erreurs.add("Il n'y a pas assez de plongeurs dans la palanquée "+palanquee.getNumero()+" pour une plongée autonome");
 			}
 			
 		}
 		// Vérification de la profondeur
 		for(Plongeur plongeur : palanquee.getPlongeurs()){
 			if(!validationProfondeur(plongeur,palanquee)){
-				erreurs.add("Un plongeur ne peut pas plonger à cette profondeur");
+				erreurs.add("Le plongeur "+plongeur.getNom()+" "+plongeur.getPrenom()+" ne peut pas plonger à cette profondeur");
 			}
 		}
 		
