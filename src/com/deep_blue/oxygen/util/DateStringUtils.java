@@ -55,11 +55,11 @@ public class DateStringUtils {
 		if (minute > 0) {
 
 			if (minute > 60) {
-				result += (minute / 60) + "h";
+				result += (minute / 60) + " h";
 				minute /= 60;
 			}
 
-			result += (minute % 60) + "m";
+			result += (minute % 60) + " min";
 		}
 		return result;
 	}

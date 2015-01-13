@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.model.Palanquee;
+import com.deep_blue.oxygen.model.Plongeur;
 
 public class PalanqueeProfondeurRealiseeMoniteurDialogFragment extends DialogFragment {
 	private View rootView;
@@ -95,6 +96,14 @@ public class PalanqueeProfondeurRealiseeMoniteurDialogFragment extends DialogFra
 			// On set la profondeur realisee de la palanquee avec la nouvelle valeur
 			palanquee.setProfondeurRealiseeMoniteur(total);
 			
+			// On set la profondeur realisee des plongeurs de la palanquée qui n'ont pas de profondeur réalisé
+			for(Plongeur plongeur : palanquee.getPlongeurs()){
+				if(plongeur.getProfondeurRealisee() == null || plongeur.getProfondeurRealisee() <= 0F){
+					plongeur.setProfondeurRealisee(total);
+				}
+			}
+			
+			//On met à jours l'affichage
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_profondeur_realisee_moniteur_value))
 					.setText(palanquee.getProfondeurRealiseeMoniteur() + " mètres");

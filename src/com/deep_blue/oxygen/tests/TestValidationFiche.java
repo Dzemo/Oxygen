@@ -20,12 +20,10 @@ import com.deep_blue.oxygen.util.ValidationFiche;
 
 public class TestValidationFiche {
 	
-	private Context pContext;
 	private PlongeurFactory plongeurFactory;
 	private MoniteurFactory moniteurFactory;
 	
 	public TestValidationFiche(Context pContext){
-		this.pContext = pContext;
 		
 		AptitudeDao aptitudeDao = new AptitudeDao(pContext);
 		

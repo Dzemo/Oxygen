@@ -18,7 +18,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -351,7 +350,7 @@ public class SynchThread extends Thread {
 				FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(pContext);
 				SiteDao siteDao = new SiteDao(pContext);
 				for(FicheSecurite ficheSecurite : jsonResponseContainer.getFichesSecurite()){
-					Log.e("Nombre Palanquee","Nb Palanquee"+ficheSecurite.getPalanquees().size());
+
 					FicheSecurite ficheSecuriteExistant = ficheSecuriteDao.getByIdWeb(ficheSecurite.getIdWeb());
 					if(ficheSecuriteExistant != null){
 						//On ne récupère pas les fiches qui ont déjà été synchronisé

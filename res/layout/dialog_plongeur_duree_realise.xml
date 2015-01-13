@@ -12,7 +12,7 @@
         android:orientation="horizontal" >
 
         <NumberPicker
-            android:id="@+id/dureePickerMinute"
+            android:id="@+id/dureePickerHeure"
             android:layout_width="100dp"
             android:layout_height="match_parent" />
 
@@ -20,11 +20,11 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/dialog_minute" >
+            android:text="@string/dialog_heure" >
         </TextView>
 
         <NumberPicker
-            android:id="@+id/dureePickerSeconde"
+            android:id="@+id/dureePickerMinute"
             android:layout_width="100dp"
             android:layout_height="match_parent" >
         </NumberPicker>
@@ -33,7 +33,7 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/dialog_secondes" >
+            android:text="@string/dialog_minute" >
         </TextView>
     </LinearLayout>
 

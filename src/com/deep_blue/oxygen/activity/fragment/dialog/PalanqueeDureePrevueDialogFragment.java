@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.deep_blue.oxygen.R;
 import com.deep_blue.oxygen.model.Palanquee;
+import com.deep_blue.oxygen.util.DateStringUtils;
 
 public class PalanqueeDureePrevueDialogFragment extends DialogFragment {
 	private View rootView;
@@ -27,7 +28,7 @@ public class PalanqueeDureePrevueDialogFragment extends DialogFragment {
 		if (palanquee.getDureePrevue() != 0)
 			dureeParDefaut = palanquee.getDureePrevue();
 		else
-			dureeParDefaut = 1200;
+			dureeParDefaut = 20;
 	}
 
 	@SuppressLint("InflateParams") @Override
@@ -41,16 +42,16 @@ public class PalanqueeDureePrevueDialogFragment extends DialogFragment {
 				.inflate(R.layout.dialog_palanquee_duree, null);
 
 		// Ajout des numberpicker
-		NumberPicker npMinute = (NumberPicker) dialogView
-				.findViewById(R.id.dureePickerMinute);
-		npMinute.setMaxValue(120);
-		npMinute.setMinValue(0);
-		npMinute.setValue(dureeParDefaut.intValue()/60);
+		NumberPicker npHeure = (NumberPicker) dialogView
+				.findViewById(R.id.dureePickerHeure);
+		npHeure.setMaxValue(2);
+		npHeure.setMinValue(0);
+		npHeure.setValue(dureeParDefaut.intValue()/60);
 		
-		NumberPicker npSecond = (NumberPicker) dialogView.findViewById(R.id.dureePickerSeconde);
-		npSecond.setMaxValue(59);
-		npSecond.setMinValue(0);
-		npSecond.setValue(dureeParDefaut%60);
+		NumberPicker npMinute = (NumberPicker) dialogView.findViewById(R.id.dureePickerMinute);
+		npMinute.setMaxValue(59);
+		npMinute.setMinValue(0);
+		npMinute.setValue(dureeParDefaut%60);
 		
 		dialogView.findViewById(R.id.button_palanquee_dialog_duree_now).setVisibility(View.GONE);
 
@@ -77,18 +78,17 @@ public class PalanqueeDureePrevueDialogFragment extends DialogFragment {
 	public void dismiss(boolean type) {
 
 		if (type) {
+			int heures = ((NumberPicker) dialogView
+					.findViewById(R.id.dureePickerHeure)).getValue();
 			int minutes = ((NumberPicker) dialogView
 					.findViewById(R.id.dureePickerMinute)).getValue();
-			int secondes = ((NumberPicker) dialogView
-					.findViewById(R.id.dureePickerSeconde)).getValue();
-			int duree = minutes * 60 + secondes;
+			int duree = heures * 60 + minutes;
 			
 			// On set la profondeur realisee de la palanquee avec la nouvelle valeur
 			palanquee.setDureePrevue(duree);
 			
 			((TextView) rootView
-					.findViewById(R.id.textView_palanquee_info_duree_prevue_value))
-					.setText(minutes+"m"+secondes+"s");
+					.findViewById(R.id.textView_palanquee_info_duree_prevue_value)).setText(DateStringUtils.minutesToNiceString(palanquee.getDureePrevue()));
 		}
 		
 		super.dismiss();
