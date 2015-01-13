@@ -62,7 +62,7 @@ public class PlongeurActivity extends FragmentActivity implements ConfirmDialogF
 		
 		if (plongeur.getDureeRealisee() > 0)
 			((TextView) findViewById(R.id.textView_plongeur_duree_realisee_value))
-					.setText(DateStringUtils.secondsToNiceString(plongeur
+					.setText(DateStringUtils.minutesToNiceString(plongeur
 							.getDureeRealisee()));
 		((TextView) findViewById(R.id.textView_plongeur_aptitudes_value))
 				.setText(plongeur.getAptitudes().toString());
@@ -112,7 +112,7 @@ public class PlongeurActivity extends FragmentActivity implements ConfirmDialogF
 	@Override
 	public void onBackPressed(){
 		Intent result = new Intent();
-		if(plongeur != null){
+		if(plongeur != null && plongeur.isModifie()){
 			palanquee.getPlongeurs().ajouterOuMajPlongeur(plongeur);
 			palanquee.setModifie(true);
 		}

@@ -43,25 +43,23 @@ public class DateStringUtils {
 	}
 	
 	/**
-	 * Transforme des seconds en hh'mm''ss Renvoi une chaine vide pour 0
+	 * Transforme des minutes en hh'mm''ss Renvoi une chaine vide pour 0
 	 * secondes
 	 * 
-	 * @param seconds
+	 * @param minute
 	 * @return
 	 */
-	public static String secondsToNiceString(Integer seconds) {
+	public static String minutesToNiceString(Integer minute) {
 		String result = "";
 
-		if (seconds > 0) {
+		if (minute > 0) {
 
-			if (seconds > 3600) {
-				result += (seconds / 3600) + "h";
-				seconds /= 3600;
+			if (minute > 60) {
+				result += (minute / 60) + "h";
+				minute /= 60;
 			}
-			if (seconds > 60)
-				result += (seconds / 60) + "m";
 
-			result += (seconds % 60) + "s";
+			result += (minute % 60) + "m";
 		}
 		return result;
 	}

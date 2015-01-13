@@ -92,12 +92,12 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 							.toString() + " mètres");
 		((TextView) rootView
 				.findViewById(R.id.textView_palanquee_info_duree_prevue_value))
-				.setText(DateStringUtils.secondsToNiceString(palanquee
+				.setText(DateStringUtils.minutesToNiceString(palanquee
 						.getDureePrevue()));
 		if (palanquee.getDureeRealiseeMoniteur() > 0)
 			((TextView) rootView
 					.findViewById(R.id.textView_palanquee_info_duree_realisee_moniteur_value))
-					.setText(DateStringUtils.secondsToNiceString(palanquee
+					.setText(DateStringUtils.minutesToNiceString(palanquee
 							.getDureeRealiseeMoniteur()));
 		((TextView) rootView.findViewById(R.id.textView_palanquee_heure))
 				.setText(palanquee.getHeure());
@@ -169,7 +169,7 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 	@Override
 	public void onBackPressed(){
 		Intent result = new Intent();
-		if(palanquee != null){
+		if(palanquee != null && palanquee.isModifie()){
 			ficheSecurite.getPalanquees().ajouterOuMajPalanquee(palanquee);
 			ficheSecurite.setModifie(true);
 		}
