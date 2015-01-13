@@ -34,6 +34,7 @@ public class PlongeurDao extends BaseDao {
 	public static final String PROFONDEUR_REALISEE = "profondeur_realisee";
 	public static final String DUREE_REALISEE = "duree_realisee";
 	public static final String VERSION = "version";
+	public static final String DESACTIVE = "desactive";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
 		    ID +" INTEGER PRIMARY KEY," +
@@ -48,8 +49,10 @@ public class PlongeurDao extends BaseDao {
 		    DATE_NAISSANCE + " TEXT, " +
 		    PROFONDEUR_REALISEE + " REAL, " +
 		    DUREE_REALISEE + " INTEGER, " +
-		    VERSION + " INTEGER INTEGER DEFAULT 0" +
+		    VERSION + " INTEGER DEFAULT 0," +
+		    DESACTIVE + " INTEGER DEFAULT 0" +
 	    ");";
+	
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	
 	private Context pContext;
@@ -65,7 +68,7 @@ public class PlongeurDao extends BaseDao {
 	 */
 	public Long getMaxVersion(){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME + " WHERE " + DESACTIVE+ " = 0",null);
 		mDb.close();
 		
 		if(cursor.getCount() == 1){
@@ -115,7 +118,7 @@ public class PlongeurDao extends BaseDao {
 	 */
 	public Plongeur getById(int idPlongeur){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID+" = ?", new String[]{String.valueOf(idPlongeur)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID+" = ?", new String[]{String.valueOf(idPlongeur)});
 		
 		List<Plongeur> resultList  = cursorToPlongeurList(cursor);
 		
@@ -136,7 +139,7 @@ public class PlongeurDao extends BaseDao {
 	 */
 	public ListePlongeurs getByIdPalanquee(int idPalanquee){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_PALANQUEE+" = ?", new String[]{String.valueOf(idPalanquee)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_PALANQUEE+" = ?", new String[]{String.valueOf(idPalanquee)});
 		
 		ListePlongeurs resultList  = cursorToPlongeurList(cursor);
 		
@@ -152,7 +155,7 @@ public class PlongeurDao extends BaseDao {
 	 */
 	public ListePlongeurs getByIdFicheSecurite(int idFicheSecurite){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_FICHE_SECURITE+" = ?", new String[]{String.valueOf(idFicheSecurite)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_FICHE_SECURITE+" = ?", new String[]{String.valueOf(idFicheSecurite)});
 		
 		ListePlongeurs resultList  = cursorToPlongeurList(cursor);
 		
@@ -167,7 +170,7 @@ public class PlongeurDao extends BaseDao {
 	 */
 	public ListePlongeurs getAll(){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + "WHERE "+DESACTIVE+" = 0", null);
 		
 		ListePlongeurs resultList  = cursorToPlongeurList(cursor);
 		
@@ -255,7 +258,7 @@ public class PlongeurDao extends BaseDao {
 			return null;
 		}
 		
-		//Suppression des palanquées qui ont été supprimées de la fiche
+		//Suppression logique des plongeurs des palanquees qui ont été supprimées de la fiche
 		String whereClause = ID_PALANQUEE+" = ?";
 		String[] whereArgs = new String[palanquee.getPlongeurs().size()+1];
 		whereArgs[0] = palanquee.getId().toString();
@@ -264,6 +267,8 @@ public class PlongeurDao extends BaseDao {
 			whereClause += " AND "+ID+" != ?";
 			whereArgs[i] = plongeur.getId().toString();
 		}	
+		ContentValues value = new ContentValues();
+		value.put(DESACTIVE, 1);
 		SQLiteDatabase mDb = open();
 		mDb.delete(TABLE_NAME, whereClause, whereArgs);
 		mDb.close();		
@@ -285,13 +290,79 @@ public class PlongeurDao extends BaseDao {
 	}
 	
 	/**
-	 * Delete an Plongeur by his Id
-	 * @param PlongeurId
+	 * Suppression physique d'un plongeur
+	 * @param plongeurId
 	 */
-	public void delete(Integer PlongeurId){
+	public void deletePhysique(Long plongeurId){
 		SQLiteDatabase mDb = open();
 	
-		mDb.delete(TABLE_NAME, ID + " = ?", new String[] {String.valueOf(PlongeurId)});
+		mDb.delete(TABLE_NAME, ID + " = ?", new String[] {String.valueOf(plongeurId)});
+		
+		mDb.close();
+	}
+	
+	/**
+	 * Suppression logique d'un plongeur
+	 * @param plongeurId
+	 */
+	public void deleteLogique(Long plongeurId){
+		SQLiteDatabase mDb = open();
+		
+		ContentValues value = new ContentValues();
+		value.put(DESACTIVE, 1);
+		mDb.update(TABLE_NAME, value, ID + " = ?", new String[] {String.valueOf(plongeurId)});
+		
+		mDb.close();
+	}
+	
+	/**
+	 * Suppression physique des plongeur appartenant à une palanquee
+	 * @param palanqueeId
+	 */
+	public void deletePhysiqueParPalanqueeId(Long palanqueeId){
+		SQLiteDatabase mDb = open();
+	
+		mDb.delete(TABLE_NAME, ID_PALANQUEE + " = ?", new String[] {String.valueOf(palanqueeId)});
+		
+		mDb.close();
+	}
+	
+	/**
+	 * Suppression logique des plongeur appartenant à une palanquee
+	 * @param palanqueeId
+	 */
+	public void deleteLogiqueParPalanqueeId(Long palanqueeId){
+		SQLiteDatabase mDb = open();
+		
+		ContentValues value = new ContentValues();
+		value.put(DESACTIVE, 1);
+		mDb.update(TABLE_NAME, value, ID_PALANQUEE + " = ?", new String[] {String.valueOf(palanqueeId)});
+		
+		mDb.close();
+	}
+	
+	/**
+	 * Suppression physique des plongeur appartenant à une palanquee de la fiche spécifié
+	 * @param ficheId
+	 */
+	public void deletePhysiqueParFicheId(Long ficheId){
+		SQLiteDatabase mDb = open();
+	
+		mDb.delete(TABLE_NAME, ID_FICHE_SECURITE + " = ?", new String[] {String.valueOf(ficheId)});
+		
+		mDb.close();
+	}
+	
+	/**
+	 * Suppression logique des plongeur appartenant à une palanquee de la fiche spécifié
+	 * @param ficheId
+	 */
+	public void deleteLogiqueParFicheId(Long ficheId){
+		SQLiteDatabase mDb = open();
+		
+		ContentValues value = new ContentValues();
+		value.put(DESACTIVE, 1);
+		mDb.update(TABLE_NAME, value, ID_FICHE_SECURITE + " = ?", new String[] {String.valueOf(ficheId)});
 		
 		mDb.close();
 	}

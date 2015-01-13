@@ -396,7 +396,7 @@ public class SynchThread extends Thread {
 			//Suppression des fiches archivés
 			if(jsonResponseContainer.getFichesOk() != null){
 				FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(pContext);
-				ficheSecuriteDao.deleteByIds(jsonResponseContainer.getFichesOk());
+				ficheSecuriteDao.deleteLogiqueByIds(jsonResponseContainer.getFichesOk());
 			}
 			
 			//Suppression des historiques

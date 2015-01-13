@@ -38,7 +38,7 @@ public class UtilisateurDao extends BaseDao{
 					EMAIL + " TEXT, " + 
 					ACTIF + " INTEGER, " + 
 					ID_WEB_MONITEUR_ASSOCIE +" INTEGER DEFAULT NULL," +
-					VERSION + " INTEGER INTEGER DEFAULT 0"+
+					VERSION + " INTEGER DEFAULT 0"+
 					");";
 	
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";

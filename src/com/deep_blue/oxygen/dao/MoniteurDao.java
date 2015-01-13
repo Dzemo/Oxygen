@@ -36,7 +36,7 @@ public static final String TABLE_NAME = "db_moniteur";
 		    DIRECTEUR_PLONGE + " INTEGER, " +
 		    EMAIL + " TEXT, " +
 		    TELEPHONE + " TEXT, " +
-		    VERSION + " INTEGER INTEGER DEFAULT 0" +
+		    VERSION + " INTEGER DEFAULT 0" +
 	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	

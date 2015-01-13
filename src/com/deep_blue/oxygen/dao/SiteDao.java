@@ -24,7 +24,7 @@ public class SiteDao extends BaseDao {
 			ID_WEB + " INTEGER, " +
 			NOM + " TEXT, " +
 			COMMENTAIRE + " TEXT, " +
-			DESACTIVE + " INTEGER INTEGER DEFAULT 0," +
+			DESACTIVE + " INTEGER DEFAULT 0," +
 			VERSION +" INTEGER" +			
 	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";

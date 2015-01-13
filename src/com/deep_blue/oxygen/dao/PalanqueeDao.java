@@ -29,6 +29,7 @@ public class PalanqueeDao extends BaseDao {
 	public static final String HEURE = "heure";
 	public static final String DUREE_REALISE_MONITEUR = "duree_realise_moniteur";
 	public static final String VERSION = "version";
+	public static final String DESACTIVE = "desactive";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
 			ID + " INTEGER PRIMARY KEY, " +
@@ -43,7 +44,8 @@ public class PalanqueeDao extends BaseDao {
 		    DUREE_PREVUE + " INTEGER, " +
 		    HEURE + " TEXT," +
 		    DUREE_REALISE_MONITEUR + " INTEGER, " +
-		    VERSION + " INTEGER INTEGER DEFAULT 0" +
+		    VERSION + " INTEGER  DEFAULT 0," +
+		    DESACTIVE + " INTEGER DEFAULT 0" +
 	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	
@@ -61,7 +63,7 @@ public class PalanqueeDao extends BaseDao {
 	 */
 	public Long getMaxVersion(){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME,null);
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0",null);
 		mDb.close();
 		
 		if(cursor.getCount() == 1){
@@ -79,7 +81,7 @@ public class PalanqueeDao extends BaseDao {
 	 */
 	public Palanquee getById(int idPlalanquee){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID+" = ?", new String[]{String.valueOf(idPlalanquee)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID+" = ?", new String[]{String.valueOf(idPlalanquee)});
 		
 		ListePalanquees resultList  = cursorToPalanqueeList(cursor);
 		
@@ -100,7 +102,7 @@ public class PalanqueeDao extends BaseDao {
 	 */
 	public ListePalanquees getByIdFicheSecurite(int idFicheSecurite){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_FICHE_SECURITE+" = ?", new String[]{String.valueOf(idFicheSecurite)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_FICHE_SECURITE+" = ?", new String[]{String.valueOf(idFicheSecurite)});
 		
 		ListePalanquees resultList  = cursorToPalanqueeList(cursor);
 		
@@ -215,17 +217,22 @@ public class PalanqueeDao extends BaseDao {
 			return null;
 		}
 		
-		//Suppression des palanquées qui ont été supprimées de la fiche
+		//Suppression logique des palanquées qui ont été supprimées de la fiche
 		String whereClause = ID_FICHE_SECURITE+" = ?";
 		String[] whereArgs = new String[ficheSecurite.getPalanquees().size()+1];
 		whereArgs[0] = ficheSecurite.getId().toString();
 		int i = 1;
+		PlongeurDao plongeurDao = new PlongeurDao(pContext);
 		for(Palanquee palanquee : ficheSecurite.getPalanquees()){
 			whereClause += " AND "+ID+" != ?";
 			whereArgs[i] = palanquee.getId().toString();
+			
+			//Suppression des plongeurs
+			plongeurDao.deleteLogiqueParPalanqueeId(palanquee.getId());
 		}	
-		SQLiteDatabase mDb = open();
-		mDb.delete(TABLE_NAME, whereClause, whereArgs);
+		SQLiteDatabase mDb = open();ContentValues value = new ContentValues();
+		value.put(DESACTIVE, 1);
+		mDb.update(TABLE_NAME, value, whereClause, whereArgs);
 		mDb.close();		
 		
 		//Mise à jours des palanquées
@@ -244,6 +251,36 @@ public class PalanqueeDao extends BaseDao {
 		}
 		
 		return ficheSecurite;
+	}
+	
+	/**
+	 * Effectue une suppression logique des palanquées appartenant à la fiche spécifié
+	 * @param idFicheSecurite
+	 */
+	public void deleteLogiqueByFicheSecuriteId(Long idFicheSecurite){
+		
+		PlongeurDao plongeurDao = new PlongeurDao(pContext);
+		plongeurDao.deleteLogiqueParFicheId(idFicheSecurite);
+		
+		SQLiteDatabase mDb = open();
+		ContentValues value = new ContentValues();
+		value.put(DESACTIVE, 1);
+		mDb.update(TABLE_NAME, value, ID_FICHE_SECURITE +" = ?", new String[]{idFicheSecurite.toString()});
+		mDb.close();	
+	}
+	
+	/**
+	 * Effectue une suppression physique des palanquées appartenant à la fiche spécifié
+	 * @param idFicheSecurite
+	 */
+	public void deletePhysiqueByFicheSecuriteId(Long idFicheSecurite){
+		
+		PlongeurDao plongeurDao = new PlongeurDao(pContext);
+		plongeurDao.deletePhysiqueParFicheId(idFicheSecurite);
+		
+		SQLiteDatabase mDb = open();
+		mDb.delete(TABLE_NAME, ID_FICHE_SECURITE +" = ?", new String[]{idFicheSecurite.toString()});
+		mDb.close();	
 	}
 	
 	/**

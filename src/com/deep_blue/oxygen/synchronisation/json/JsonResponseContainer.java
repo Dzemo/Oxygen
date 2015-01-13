@@ -17,7 +17,7 @@ public class JsonResponseContainer {
 	private List<Embarcation> embarcations;
 	private List<Site> sites;
 	private List<Moniteur> moniteurs;
-	private List<Integer> fichesOk;
+	private List<Long> fichesOk;
 	private List<Integer> historiquesOk;
 	
 	public JsonResponseContainer() {
@@ -119,14 +119,14 @@ public class JsonResponseContainer {
 	/**
 	 * @return the fichesOk
 	 */
-	public List<Integer> getFichesOk() {
+	public List<Long> getFichesOk() {
 		return fichesOk;
 	}
 
 	/**
 	 * @param fichesOk the fichesOk to set
 	 */
-	public void setFichesOk(List<Integer> fichesOk) {
+	public void setFichesOk(List<Long> fichesOk) {
 		this.fichesOk = fichesOk;
 	}
 

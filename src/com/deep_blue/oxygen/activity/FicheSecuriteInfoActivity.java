@@ -170,7 +170,7 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 		if(confirmType == ConfirmDialogFragment.SUPPRESSION_FICHE_SECURITE){
 			//Suppression de la fiche de sécurité si elle était enregistrée
 			if(ficheSecurite.getId() != null || ficheSecurite.getId() < 0){
-				ficheSecuriteDao.delete(ficheSecurite.getId());
+				ficheSecuriteDao.deleteLogique(ficheSecurite.getId());
 			}
 			Intent result = new Intent();
 			result.putExtra(IntentKey.RESULT_TEXT.toString(), getResources().getString(R.string.fiche_info_suppression_confirm));

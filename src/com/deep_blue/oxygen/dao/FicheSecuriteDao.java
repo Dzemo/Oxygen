@@ -24,6 +24,7 @@ public class FicheSecuriteDao extends BaseDao {
 	public static final String ID_SITE = "id_site";
 	public static final String ETAT = "etat";
 	public static final String VERSION = "version";
+	public static final String DESACTIVE = "desactive";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
 			ID_LOCAL + " INTEGER PRIMARY KEY, " +
@@ -33,8 +34,10 @@ public class FicheSecuriteDao extends BaseDao {
 			TIMESTAMP + " INTEGER, " +
 			ID_SITE + " TEXT, " +
 			ETAT + " TEXT, " +
-		    VERSION + " INTEGER INTEGER DEFAULT 0" +
+		    VERSION + " INTEGER DEFAULT 0," +
+			DESACTIVE + " INTEGER DEFAULT 0" +
 	    ");";
+	
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	
 	private Context pContext;
@@ -51,7 +54,7 @@ public class FicheSecuriteDao extends BaseDao {
 	 */
 	public Long getMaxVersion(){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME + " WHERE "+ETAT+" != '" +EnumEtat.VALIDE.toString()+"'",null);
+		Cursor cursor = mDb.rawQuery("SELECT max("+VERSION+") FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ETAT+" != '" +EnumEtat.VALIDE.toString()+"'",null);
 
 		Long maxVersion = Long.valueOf(0);
 		if(cursor.getCount() == 1){
@@ -71,7 +74,7 @@ public class FicheSecuriteDao extends BaseDao {
 	 */
 	public FicheSecurite getById(int idFicheSecurite){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_LOCAL+" = ?", new String[]{String.valueOf(idFicheSecurite)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_LOCAL+" = ?", new String[]{String.valueOf(idFicheSecurite)});
 		
 		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
 		
@@ -92,7 +95,7 @@ public class FicheSecuriteDao extends BaseDao {
 	 */
 	public FicheSecurite getByIdWeb(int idWebFicheSecurite){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_WEB+" = ?", new String[]{String.valueOf(idWebFicheSecurite)});
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_WEB+" = ?", new String[]{String.valueOf(idWebFicheSecurite)});
 		
 		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
 		
@@ -113,7 +116,7 @@ public class FicheSecuriteDao extends BaseDao {
 	 */
 	public ListeFichesSecurite getByEtat(EnumEtat etat){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ETAT+" = '"+String.valueOf(etat)+"'", null);
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ETAT+" = '"+String.valueOf(etat)+"'", null);
 		
 		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
 		
@@ -128,7 +131,7 @@ public class FicheSecuriteDao extends BaseDao {
 	 */
 	public ListeFichesSecurite getAll(){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0", null);
 		
 		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
 		
@@ -257,34 +260,41 @@ public class FicheSecuriteDao extends BaseDao {
 	}
 	
 	/**
-	 * Supprime toute les fiches archivées dont l'id est dans la liste fourni
+	 * Suppression logique toute les fiches archivées dont l'id est dans la liste fourni
 	 * @param idsFiche
 	 */
-	public void deleteByIds(List<Integer> idsFiche){
+	public void deleteLogiqueByIds(List<Long> idsFiche){
 		if(idsFiche.size() > 0){
 			String whereClause = "";
 			String[] whereArgs =  new String[idsFiche.size()];
-			
+
+			PalanqueeDao palanqueeDao = new PalanqueeDao(pContext);
 			int i = 0;
-			for(Integer idFiche : idsFiche){
+			for(Long idFiche : idsFiche){
 				whereArgs[i] = idFiche.toString();
 				if(!whereClause.isEmpty()) whereClause += " OR ";
 				whereClause += ID_LOCAL + " = ?";
 				i++;
+				
+				//Suppression des palanquées
+				palanqueeDao.deleteLogiqueByFicheSecuriteId(idFiche);
 			}		
 			whereClause = ETAT + " = '" + EnumEtat.VALIDE.toString()+"' AND ( " + whereClause + " )";
-			
+
+			ContentValues value = new ContentValues();
+			value.put(DESACTIVE, 1);
 			SQLiteDatabase mDb = open();
-			mDb.delete(TABLE_NAME, whereClause, whereArgs);
+			mDb.update(TABLE_NAME, value, whereClause, whereArgs);
 			mDb.close();
+			
 		}
 	}
 
 	/**
-	 * Supprime la fiche passé en paramêtre et ses éventuelles historiques
+	 * Supprime physique la fiche passé en paramêtre et ses éventuelles historiques
 	 * @param id
 	 */
-	public void delete(Long id) {
+	public void deletePhysique(Long id) {
 		if(id != null){
 			HistoriqueDao historiqueDao = new HistoriqueDao(pContext);
 			historiqueDao.deleteByIdFiche(id);
@@ -293,6 +303,21 @@ public class FicheSecuriteDao extends BaseDao {
 			mDb.delete(TABLE_NAME, ID_LOCAL +" = ?", new String[]{id.toString()});
 			mDb.close();
 		}
+	}
+	
+	/**
+	 * Supprime logique la fiche en base de données
+	 * @param palanquee
+	 * @return
+	 */
+	public void deleteLogique(Long id){
+		//Maj de la fiche
+		SQLiteDatabase mDb = open();
+		ContentValues value = new ContentValues();
+		value.put(DESACTIVE, 1);
+		
+		mDb.update(TABLE_NAME, value, ID_LOCAL+" = ?", new String[]{id.toString()});
+		mDb.close();
 	}
 	
 	/**

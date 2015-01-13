@@ -27,7 +27,7 @@ public class EmbarcationDao extends BaseDao {
 		    COMMENTAIRE + " TEXT, " +
 		    DISPONIBLE + " INTEGER, " +
 		    CONTENANCE + " INTEGER, " +
-		    VERSION + " INTEGER INTEGER DEFAULT 0" +
+		    VERSION + " INTEGER DEFAULT 0" +
 	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	
