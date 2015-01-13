@@ -31,8 +31,6 @@ import com.deep_blue.oxygen.dao.EmbarcationDao;
 import com.deep_blue.oxygen.dao.FicheSecuriteDao;
 import com.deep_blue.oxygen.dao.HistoriqueDao;
 import com.deep_blue.oxygen.dao.MoniteurDao;
-import com.deep_blue.oxygen.dao.PalanqueeDao;
-import com.deep_blue.oxygen.dao.PlongeurDao;
 import com.deep_blue.oxygen.dao.SiteDao;
 import com.deep_blue.oxygen.dao.UtilisateurDao;
 import com.deep_blue.oxygen.model.Aptitude;
@@ -42,8 +40,6 @@ import com.deep_blue.oxygen.model.FicheSecurite;
 import com.deep_blue.oxygen.model.Historique;
 import com.deep_blue.oxygen.model.ListeFichesSecurite;
 import com.deep_blue.oxygen.model.Moniteur;
-import com.deep_blue.oxygen.model.Palanquee;
-import com.deep_blue.oxygen.model.Plongeur;
 import com.deep_blue.oxygen.model.Site;
 import com.deep_blue.oxygen.model.Utilisateur;
 import com.deep_blue.oxygen.synchronisation.json.JsonRequestContainer;
@@ -353,8 +349,6 @@ public class SynchThread extends Thread {
 			//Récupération des nouvelles fiches
 			if(jsonResponseContainer.getFichesSecurite() != null){
 				FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(pContext);
-				PalanqueeDao palanqueeDao = new PalanqueeDao(pContext);
-				PlongeurDao plongeurDao = new PlongeurDao(pContext);
 				SiteDao siteDao = new SiteDao(pContext);
 				for(FicheSecurite ficheSecurite : jsonResponseContainer.getFichesSecurite()){
 					Log.e("Nombre Palanquee","Nb Palanquee"+ficheSecurite.getPalanquees().size());
@@ -373,22 +367,7 @@ public class SynchThread extends Thread {
 						}
 						
 						//Enregistrement de la fiche
-						FicheSecurite insertedFiche = ficheSecuriteDao.insert(ficheSecurite);
-						
-						//Mise à jours de l'id fiche local pour les palanquées  (car il ne sont pas envyé par le serveur)
-						for(Palanquee palanquee : ficheSecurite.getPalanquees()){
-							palanquee.setIdFicheSecurite(insertedFiche.getId());
-							
-							//Enregistrement de la palanquee
-							Palanquee insertedPalanquee = palanqueeDao.insert(palanquee);
-							
-							//Mise à jours de l'id fiche et palanquee local pour les plongeurs (car il ne sont pas envyé par le serveur)
-							for(Plongeur plongeur : palanquee.getPlongeurs()){
-								plongeur.setIdFicheSecurite(insertedFiche.getId());
-								plongeur.setIdPalanquee(insertedPalanquee.getId());
-								plongeurDao.insert(plongeur);
-							}
-						}
+						ficheSecuriteDao.insert(ficheSecurite);
 					}
 				}
 			}

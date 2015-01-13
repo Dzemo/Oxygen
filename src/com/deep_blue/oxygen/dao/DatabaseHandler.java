@@ -136,6 +136,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE "+FicheSecuriteDao.TABLE_NAME+" ADD COLUMN "+FicheSecuriteDao.DESACTIVE+ " INTEGER DEFAULT 0");
 			db.execSQL("ALTER TABLE "+PalanqueeDao.TABLE_NAME+" ADD COLUMN "+PalanqueeDao.DESACTIVE+ " INTEGER DEFAULT 0");
 			db.execSQL("ALTER TABLE "+PlongeurDao.TABLE_NAME+" ADD COLUMN "+PlongeurDao.DESACTIVE+ " INTEGER DEFAULT 0");
+		} else if(newVersion == 24){
+			db.execSQL(AptitudeDao.TABLE_DROP);
+			db.execSQL(EmbarcationDao.TABLE_DROP);
+			db.execSQL(FicheSecuriteDao.TABLE_DROP);
+			db.execSQL(HistoriqueDao.TABLE_DROP);
+			db.execSQL(MoniteurDao.TABLE_DROP);
+			db.execSQL(PlongeurDao.TABLE_DROP);
+			db.execSQL(PalanqueeDao.TABLE_DROP);
+			db.execSQL(UtilisateurDao.TABLE_DROP);
+			db.execSQL(SiteDao.TABLE_DROP);
+	
+			onCreate(db);
 		}
 	}
 }
