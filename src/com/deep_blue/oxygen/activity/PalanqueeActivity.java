@@ -377,6 +377,9 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 		
 		tableLayout.removeAllViews();
 		
+		//Affichage du titre en fonction du nombre de plongeurs
+		((TextView) findViewById(R.id.textView_palanquee_plongeur_title)).setText(getResources().getQuantityText(R.plurals.palanquee_plongeur_title, palanquee.getPlongeurs().size()));
+		
 		int index = 0;
 		int parite_background = palanquee.getMoniteur() != null ? 1 : 0;
 

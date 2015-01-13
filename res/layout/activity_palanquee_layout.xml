@@ -121,7 +121,6 @@
                 android:layout_margin="@dimen/textview_margin"
                 android:layout_span="2"
                 android:gravity="center"
-                android:text="@string/palanquee_plongeur_title"
                 android:textAppearance="@style/PlongeurTitle" />
         </TableRow>
 

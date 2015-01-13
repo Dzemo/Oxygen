@@ -407,6 +407,9 @@ public class FicheSecuriteInfoActivity extends FragmentActivity implements Confi
 		//On efface les anciennes palanquée
 		tableLayout.removeAllViews();
 
+		//Mise à jours du titre en fonction du nombre de palanquées
+		((TextView)findViewById(R.id.textView_palanquee_plongeur_title)).setText(getResources().getQuantityText(R.plurals.palanquee_title, ficheSecurite.getPalanquees().size()));
+		
 		//Affichage des palanquée
 		int index = 0;
 		for (Palanquee palanquee : ficheSecurite.getPalanquees()) {

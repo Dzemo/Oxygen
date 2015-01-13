@@ -203,15 +203,9 @@ public class ListeFichesSecuriteActivity extends FragmentActivity implements Dir
 				findViewById(R.id.liste_fiche_autre_title).setVisibility(View.VISIBLE);
 				
 				((TextView) findViewById(R.id.textView_liste_fiche_perso_title))
-						.setText(String.format(
-								getResources().getString(
-										R.string.list_fiche_perso_title),
-								countFichePerso));
+						.setText(getResources().getQuantityString(R.plurals.list_fiche_perso_title, countFichePerso, countFichePerso));								
 				((TextView) findViewById(R.id.textView_liste_fiche_autre_title))
-						.setText(String.format(
-								getResources().getString(
-										R.string.list_fiche_autre_title),
-								countFicheAutre));
+						.setText(getResources().getQuantityString(R.plurals.list_fiche_autre_title, countFicheAutre, countFicheAutre));								
 			} else {
 				findViewById(R.id.liste_fiche_perso_title).setVisibility(View.GONE);
 				findViewById(R.id.liste_fiche_autre_title).setVisibility(View.GONE);
@@ -219,6 +213,13 @@ public class ListeFichesSecuriteActivity extends FragmentActivity implements Dir
 		}
 	}
 	
+	/**
+	 * Créer la TableRow pour une fiche de sécurité dans le TableLayout spécifié avec la coloration selon la parité
+	 * @param ficheSecurite
+	 * @param tableLayout
+	 * @param parite
+	 * @return
+	 */
 	private TableRow genererRowPourFiche(FicheSecurite ficheSecurite, TableLayout tableLayout, int parite){
 		TableRow row = (TableRow) getLayoutInflater().inflate(
 				R.layout.activity_list_row_fiche_layout, tableLayout, false);

@@ -87,8 +87,16 @@
     <string name="list_icon_valid">Validé</string>
     <string name="list_fiche_number">n°X</string>
     <string name="list_fiche_desc">Plongée [type] à [lieu]</string>
-    <string name="list_fiche_perso_title">Mes fiches (%s)</string>
-    <string name="list_fiche_autre_title">Autres fiches (%s)</string>
+    <plurals name="list_fiche_perso_title">
+        <item quantity ="zero">Mes fiches (%d)</item>
+        <item quantity ="one">Ma fiche (%d)</item>
+        <item quantity ="other">Mes fiches (%d)</item>
+    </plurals>
+     <plurals name="list_fiche_autre_title">
+        <item quantity ="zero">Autres fiches (%d)</item>
+        <item quantity ="one">Autre fiche (%d)</item>
+        <item quantity ="other">Autres fiches (%d)</item>
+    </plurals>
     <string name="list_fiche_aucune_fiche">Aucune fiche de sécurité enregistrée sur l\'appareil</string>
     <!-- LISTE FICHES SECURITE FIN -->
 
@@ -103,7 +111,10 @@
     <string name="fiche_infos_site_labelle">Site :</string>
     <string name="fiche_infos_directeur_plonge_labelle">Directeur :</string>
     <string name="fiche_infos_embarcation_labelle">Embarcation :</string>
-    <string name="palanquee_title">Palanquée</string>
+     <plurals name="palanquee_title">
+        <item quantity="one">Palanquée</item>
+        <item quantity="other">Palanquées</item>
+    </plurals>
     <string name="fiche_info_suppression_confirm">Fiche de sécurité supprimée</string>
     <string name="fiche_info_cloture_confirm">Fiche de sécurité cloture</string>
     <string name="fiche_info_cloture_problem">Un problème est survenu lors de la cloture de la fiche, veuillez contacter le support</string>
@@ -141,7 +152,10 @@
     <string name="palanquee_info_profondeur_realisee_moniteur_labelle">Prof. réalisée (moni) :</string>
     <string name="palanquee_info_duree_prevue_labelle">Durée prévue :</string>
     <string name="palanquee_info_duree_realisee_moniteur_labelle">Durée réalisée (moni):</string>
-    <string name="palanquee_plongeur_title">Liste des plongeurs</string>
+    <plurals name="palanquee_plongeur_title">
+        <item quantity="one">Liste de plongeur</item>
+        <item quantity="other">Liste des plongeurs</item>
+    </plurals>
     <string name="palanquee_dialog_suppression_confirm">Palanquee %s supprimé</string>
 
     <!-- PALANQUEE DIALOG INFO DEBUT -->
