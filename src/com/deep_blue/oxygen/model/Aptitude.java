@@ -98,6 +98,16 @@ public class Aptitude implements Parcelable {
 	private int encadrementMax;
 	
 	/**
+     * Indique si cette aptitude peut concerner les moniteurs
+     */
+	private boolean pourMoniteur;
+	
+	/**
+     * Indique si cette aptitude peut concerner les plongeurs
+     */
+	private boolean pourPlongeur;
+	
+	/**
 	 * Version de l'aptitude, utilisé pour la synchronisation. Timestamp de derniere modification
 	 */
 	private Long version;	
@@ -116,6 +126,8 @@ public class Aptitude implements Parcelable {
 		this.enseignementNitroxMax = 0;
 		this.encadrementMax = 0;
 		this.version = null;
+		this.pourMoniteur = true;
+		this.pourPlongeur = true;
 	}
 	
 	/**
@@ -136,7 +148,7 @@ public class Aptitude implements Parcelable {
 	public Aptitude(int idWeb, String libelleCourt, String libelleLong,
 			int techniqueMax, int encardeeMax, int autonomeMax, int nitroxMax,
 			int ajoutMax, int enseignementAirMax, int enseignementNitroxMax,
-			int encadrementMax, Long version) {
+			int encadrementMax, boolean pourMoniteur, boolean pourPlongeur, Long version) {
 		super();
 		this.idWeb = idWeb;
 		this.libelleCourt = libelleCourt;
@@ -149,6 +161,8 @@ public class Aptitude implements Parcelable {
 		this.enseignementAirMax = enseignementAirMax;
 		this.enseignementNitroxMax = enseignementNitroxMax;
 		this.encadrementMax = encadrementMax;
+		this.pourMoniteur = pourMoniteur;
+		this.pourPlongeur = pourPlongeur;
 		this.version = version;
 	}
 	
@@ -169,6 +183,8 @@ public class Aptitude implements Parcelable {
 		enseignementNitroxMax = source.readInt();
 		encadrementMax = source.readInt();
 		
+		pourMoniteur = source.readByte() == 1;
+		pourPlongeur = source.readByte() == 1;
 		version  = source.readLong();
 	}
 
@@ -245,19 +261,36 @@ public class Aptitude implements Parcelable {
 	public void setVersion(Long version) {
 		this.version = version;
 	}
-
-	@Override
-	public String toString() {
-		return "Aptitude [idWeb=" + idWeb + ", libelleCourt=" + libelleCourt
-				+ ", libelleLong=" + libelleLong + ", techniqueMax="
-				+ techniqueMax + ", encadreeMax=" + encadreeMax
-				+ ", autonomeMax=" + autonomeMax + ", nitroxMax=" + nitroxMax
-				+ ", ajoutMax=" + ajoutMax + ", enseignementAirMax="
-				+ enseignementAirMax + ", enseignementNitroxMax="
-				+ enseignementNitroxMax + ", encadrementMax=" + encadrementMax
-				+ ", version=" + version + "]";
+	public boolean isPourMoniteur() {
+		return pourMoniteur;
+	}
+	public void setPourMoniteur(boolean pourMoniteur) {
+		this.pourMoniteur = pourMoniteur;
+	}
+	public boolean isPourPlongeur() {
+		return pourPlongeur;
+	}
+	public void setPourPlongeur(boolean pourPlongeur) {
+		this.pourPlongeur = pourPlongeur;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return getClass().getName() + " {\n\tidWeb: " + idWeb
+				+ "\n\tlibelleCourt: " + libelleCourt + "\n\tlibelleLong: "
+				+ libelleLong + "\n\ttechniqueMax: " + techniqueMax
+				+ "\n\tencadreeMax: " + encadreeMax + "\n\tautonomeMax: "
+				+ autonomeMax + "\n\tnitroxMax: " + nitroxMax
+				+ "\n\tajoutMax: " + ajoutMax + "\n\tenseignementAirMax: "
+				+ enseignementAirMax + "\n\tenseignementNitroxMax: "
+				+ enseignementNitroxMax + "\n\tencadrementMax: "
+				+ encadrementMax + "\n\tpourMoniteur: " + pourMoniteur
+				+ "\n\tpourPlongeur: " + pourPlongeur + "\n\tversion: "
+				+ version + "\n}";
+	}
 
 	@Override
 	public int describeContents() {
@@ -282,6 +315,8 @@ public class Aptitude implements Parcelable {
 		dest.writeInt(enseignementNitroxMax);
 		dest.writeInt(encadrementMax);
 		
+		dest.writeByte((byte)(pourMoniteur ? 1 : 0));
+		dest.writeByte((byte)(pourPlongeur ? 1 : 0));
 		dest.writeLong(version);
 	}
 	

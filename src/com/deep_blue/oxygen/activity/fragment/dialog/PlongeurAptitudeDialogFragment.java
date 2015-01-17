@@ -29,7 +29,7 @@ public class PlongeurAptitudeDialogFragment extends DialogFragment{
 	private SparseArray<Aptitude> allAptitudes;
 	private boolean[] checkedItems;
 	
-	private HashMap<Integer,Aptitude> selectedItems= new HashMap<Integer,Aptitude>();
+	@SuppressLint("UseSparseArrays") private HashMap<Integer,Aptitude> selectedItems= new HashMap<Integer,Aptitude>();
 	
 	// Constructeur
 	public PlongeurAptitudeDialogFragment(View rootView, Plongeur plongeur, Palanquee palanquee) {
@@ -39,7 +39,7 @@ public class PlongeurAptitudeDialogFragment extends DialogFragment{
 		
 		// Nous avons besoin d'un Aptitude DAO pour aller chercher la liste des Aptitudes qu'il existe
 		AptitudeDao aptitudeDao = new AptitudeDao(rootView.getContext());
-		allAptitudes = aptitudeDao.getAll();
+		allAptitudes = aptitudeDao.getAllPourPlongeur();
 		
 		// Items va contenir les aptitudes selectionné
 		items = new ArrayList<String>();

@@ -120,7 +120,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if(newVersion < 23){
+		
+		if(oldVersion < 22){
+			// Les versions strictement inferieurs à 23 ont été utilisé lors du developpement, ont doit donc initialiser les tables
 			db.execSQL(AptitudeDao.TABLE_DROP);
 			db.execSQL(EmbarcationDao.TABLE_DROP);
 			db.execSQL(FicheSecuriteDao.TABLE_DROP);
@@ -132,22 +134,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL(SiteDao.TABLE_DROP);
 	
 			onCreate(db);
-		} else if (newVersion == 23){
+		}
+		
+		if(oldVersion < 23){
+			// Ajout des colonnes DESACTIVE sur les tables des fiches sécurités, palanquées et plongeurs en version 23
 			db.execSQL("ALTER TABLE "+FicheSecuriteDao.TABLE_NAME+" ADD COLUMN "+FicheSecuriteDao.DESACTIVE+ " INTEGER DEFAULT 0");
 			db.execSQL("ALTER TABLE "+PalanqueeDao.TABLE_NAME+" ADD COLUMN "+PalanqueeDao.DESACTIVE+ " INTEGER DEFAULT 0");
-			db.execSQL("ALTER TABLE "+PlongeurDao.TABLE_NAME+" ADD COLUMN "+PlongeurDao.DESACTIVE+ " INTEGER DEFAULT 0");
-		} else if(newVersion == 24){
-			db.execSQL(AptitudeDao.TABLE_DROP);
-			db.execSQL(EmbarcationDao.TABLE_DROP);
-			db.execSQL(FicheSecuriteDao.TABLE_DROP);
-			db.execSQL(HistoriqueDao.TABLE_DROP);
-			db.execSQL(MoniteurDao.TABLE_DROP);
-			db.execSQL(PlongeurDao.TABLE_DROP);
-			db.execSQL(PalanqueeDao.TABLE_DROP);
-			db.execSQL(UtilisateurDao.TABLE_DROP);
-			db.execSQL(SiteDao.TABLE_DROP);
-	
-			onCreate(db);
+			db.execSQL("ALTER TABLE "+PlongeurDao.TABLE_NAME+" ADD COLUMN "+PlongeurDao.DESACTIVE+ " INTEGER DEFAULT 0");			
+		}
+		
+		// La version 24 n'a pas apporter de changement
+		
+		if(oldVersion < 25){
+			// Ajout de la differentiation des aptitudes de plongeur et moniteur
+			db.execSQL("ALTER TABLE "+AptitudeDao.TABLE_NAME+" ADD COLUMN "+AptitudeDao.POUR_MONITEUR+ " INTEGER DEFAULT 1");
+			db.execSQL("ALTER TABLE "+AptitudeDao.TABLE_NAME+" ADD COLUMN "+AptitudeDao.POUR_PLONGEUR+ " INTEGER DEFAULT 1");
 		}
 	}
 }

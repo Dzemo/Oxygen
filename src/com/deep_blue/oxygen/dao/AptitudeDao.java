@@ -28,7 +28,9 @@ public class AptitudeDao extends BaseDao {
 	public static final String ENSEIGNEMENT_AIR_MAX = "enseignement_air_max";
 	public static final String ENSEIGNEMENT_NITROX_MAX = "enseignement_nitrox_max";
 	public static final String ENCADREMENT_MAX = "encadrement_max";
-
+	
+	public static final String POUR_MONITEUR = "pour_moniteur";
+	public static final String POUR_PLONGEUR = "pour_plongeur";
 	public static final String VERSION = "version";
 	
 	public static final String TABLE_CREATE = "CREATE TABLE "+TABLE_NAME+" ( "+
@@ -43,6 +45,8 @@ public class AptitudeDao extends BaseDao {
 																		    ENSEIGNEMENT_AIR_MAX + " INTEGER, " +
 																		    ENSEIGNEMENT_NITROX_MAX + " INTEGER, " +
 																		    ENCADREMENT_MAX + " INTEGER, " +
+																		    POUR_MONITEUR + " INTEGER DEFAULT 1," +
+																		    POUR_PLONGEUR + " INTEGER DEFAULT 1," +
 																		    VERSION + " INTEGER DEFAULT 0 " +
 																	    ");";
 	public static final String TABLE_DROP =  "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
@@ -89,6 +93,36 @@ public class AptitudeDao extends BaseDao {
 		else{
 			return null;
 		}
+	}
+	
+	/**
+	 * Renvoie toute les aptitudes qui concernent les plongeurs, indexées par leurs ids
+	 * @return
+	 */
+	public SparseArray<Aptitude> getAllPourPlongeur(){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME+" WHERE "+POUR_PLONGEUR+" = 1", null);
+		
+		SparseArray<Aptitude> resultList  = cursorToAptitudeList(cursor);
+		
+		mDb.close();
+		
+		return resultList;
+	}
+	
+	/**
+	 * Renvoie toute les aptitudes qui concernent les moniteurs, indexées par leurs ids
+	 * @return
+	 */
+	public SparseArray<Aptitude> getAllPourMoniteur(){
+		SQLiteDatabase mDb = open();
+		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME+" WHERE "+POUR_MONITEUR+" = 1", null);
+		
+		SparseArray<Aptitude> resultList  = cursorToAptitudeList(cursor);
+		
+		mDb.close();
+		
+		return resultList;
 	}
 	
 	/**
@@ -160,6 +194,8 @@ public class AptitudeDao extends BaseDao {
 		value.put(ENSEIGNEMENT_NITROX_MAX, aptitude.getEnseignementNitroxMax());
 		value.put(ENCADREMENT_MAX, aptitude.getEncadrementMax());
 		
+		value.put(POUR_MONITEUR, aptitude.isPourMoniteur() ? 1 : 0);
+		value.put(POUR_PLONGEUR, aptitude.isPourPlongeur() ? 1 : 0);
 		value.put(VERSION, aptitude.getVersion());
 		
 		mDb.insert(TABLE_NAME, null, value);
@@ -191,6 +227,8 @@ public class AptitudeDao extends BaseDao {
 		value.put(ENSEIGNEMENT_NITROX_MAX, aptitude.getEnseignementNitroxMax());
 		value.put(ENCADREMENT_MAX, aptitude.getEncadrementMax());
 		
+		value.put(POUR_MONITEUR, aptitude.isPourMoniteur() ? 1 : 0);
+		value.put(POUR_PLONGEUR, aptitude.isPourPlongeur() ? 1 : 0);
 		value.put(VERSION, aptitude.getVersion());
 		
 		mDb.update(TABLE_NAME, value, ID_WEB  + " = ?", new String[] {String.valueOf(aptitude.getIdWeb())});
@@ -236,6 +274,8 @@ public class AptitudeDao extends BaseDao {
 					cursor.getInt(cursor.getColumnIndex(ENSEIGNEMENT_NITROX_MAX)),
 					cursor.getInt(cursor.getColumnIndex(ENCADREMENT_MAX)),
 					
+					cursor.getInt(cursor.getColumnIndex(POUR_MONITEUR)) == 1,
+					cursor.getInt(cursor.getColumnIndex(POUR_PLONGEUR)) == 1,
 					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 			

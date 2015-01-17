@@ -36,7 +36,7 @@ public class PlongeurPickerDialogFragment extends DialogFragment implements Dial
 		listePlongeurSuggeresLabel[0] = "Nouveau plongeur";
 		int i = 1;
 		for(Plongeur plongeur : listePlongeurSuggeres){
-			listePlongeurSuggeresLabel[i] = plongeur.getPrenom() + " " + plongeur.getPrenom() + " " + plongeur.getDateNaissance();
+			listePlongeurSuggeresLabel[i] = plongeur.getPrenom() + " " + plongeur.getNom() + " " + plongeur.getDateNaissance();
 			i++;
 		}
 	}

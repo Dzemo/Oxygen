@@ -389,8 +389,7 @@ public class PalanqueeActivity extends FragmentActivity implements ConfirmDialog
 			
 			// Ajout du plongeur
 			((TextView) row.findViewById(R.id.textView_palanquee_plongeur_label))
-			.setText("Plongeur: " + plongeur.getPrenom() + " "
-					+ plongeur.getNom());
+			.setText("Plongeur: " + plongeur.getPrenom() + " " + plongeur.getNom() + " (" + plongeur.getAptitudes().toString() + ")");
 
 			// Coloration selon la parité de la row
 			if (parite_background % 2 == 0)
