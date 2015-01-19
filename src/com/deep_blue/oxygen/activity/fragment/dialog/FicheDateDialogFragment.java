@@ -52,7 +52,7 @@ public class FicheDateDialogFragment extends DialogFragment {
 		int day = date.getDate();
 		
 		((DatePicker) dialogView.findViewById(R.id.dialogueFicheDatePicker)).updateDate(
-				year,day,month);
+				year,month, day);
 
 		// builder
 		builder.setView(dialogView)
