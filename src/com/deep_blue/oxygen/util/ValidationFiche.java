@@ -208,10 +208,12 @@ public class ValidationFiche {
 			}
 		}
 		else{
-			// Plongée autonome [3 plongeurs minimum]
-			int minPlongeurs = 3;
-			if(palanquee.getPlongeurs().size() < minPlongeurs){
-				erreurs.add("Il n'y a pas assez de plongeurs dans la palanquée "+palanquee.getNumero()+" pour une plongée autonome");
+			// Plongée autonome [3 plongeurs maximum]
+			int maxPlongeurs = 3;
+			if(palanquee.getPlongeurs().size() > maxPlongeurs){
+				erreurs.add("Il y a trop de plongeurs dans la palanquée "+palanquee.getNumero()+" pour une plongée autonome (3 maximum)");
+			} else if (palanquee.getPlongeurs().size() < 2){
+				erreurs.add("Il n'y a pas assez de plongeurs dans la palanquée "+palanquee.getNumero()+" pour une plongée autonome (2 minimum)");
 			}
 			
 		}
