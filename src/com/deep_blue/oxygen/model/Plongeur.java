@@ -93,7 +93,12 @@ public class Plongeur implements Parcelable {
 	 * Indique si le plongeur a été modifier lors de l'utilisation de l'application actuelle, pour proposer d'enregistrer la fiche de sécurité correspondente en quittant
 	 */
 	private boolean modifie;
-
+	
+	/**
+	 * Indique si le plongeur a été supprimer
+	 */
+	private boolean desactive;
+	
 	public Plongeur() {
 		super();
 		this.id = -1L;
@@ -110,6 +115,7 @@ public class Plongeur implements Parcelable {
 		this.dureeRealisee = 0;
 		this.version = -1L;
 		this.modifie = false;
+		this.desactive = false;
 	}
 	
 	/**
@@ -126,12 +132,13 @@ public class Plongeur implements Parcelable {
 	 * @param dateNaissance
 	 * @param profondeurRealisee
 	 * @param dureeRealisee
+	 * @param desactive
 	 * @param version
 	 */
 	public Plongeur(Long id, Integer idWeb, Long idPalanquee, Long idFicheSecurite,
 			String nom, String prenom, ListeAptitudes aptitudes,
 			String telephone, String telephoneUrgence, String dateNaissance, Float profondeurRealisee,
-			Integer dureeRealisee,
+			Integer dureeRealisee, Boolean desactive,
 			Long version) {
 		super();
 		this.id = id;
@@ -148,6 +155,7 @@ public class Plongeur implements Parcelable {
 		this.dureeRealisee = dureeRealisee;
 		this.version = version;
 		this.modifie = false;
+		this.desactive = desactive;
 	}
 	
 	/**
@@ -169,6 +177,7 @@ public class Plongeur implements Parcelable {
 		dureeRealisee = source.readInt();
 		version = source.readLong();
 		modifie = source.readByte() == 1;
+		desactive = source.readByte() == 1;
 	}
 
 	public Long getId() {
@@ -293,6 +302,14 @@ public class Plongeur implements Parcelable {
 		this.version = version;
 		this.modifie = true;
 	}
+
+	public boolean isDesactive() {
+		return desactive;
+	}
+
+	public void setDesactive(boolean desactive) {
+		this.desactive = desactive;
+	}	
 	
 	/**
 	 * Met à jours la version
@@ -322,7 +339,7 @@ public class Plongeur implements Parcelable {
 				+ "\n\tdateNaissance: " + dateNaissance + "\n\tversion: "
 				+ version + "\n\tprofondeurRealisee: " + profondeurRealisee
 				+ "\n\tdureeRealisee: " + dureeRealisee + "\n\tmodifie: "
-				+ modifie + "\n}";
+				+ modifie + "\n\tdesactive: " + desactive + "\n}";
 	}
 
 	@Override
@@ -346,5 +363,6 @@ public class Plongeur implements Parcelable {
 		dest.writeInt(dureeRealisee);
 		dest.writeLong(version);	
 		dest.writeByte((byte) (modifie ? 1 : 0));
+		dest.writeByte((byte)(desactive ? 1 : 0));
 	}
 }

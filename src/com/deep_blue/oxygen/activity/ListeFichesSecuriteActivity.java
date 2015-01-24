@@ -51,16 +51,18 @@ public class ListeFichesSecuriteActivity extends FragmentActivity implements Dir
 		//Récupération de tout les moniteurs
     	MoniteurDao moniteurDao = new MoniteurDao(this);
     	directeurs = moniteurDao.getAllActifDirecteurPlonge();
-    	if(utilisateur.getMoniteurAssocie() != null){
-    		//Si l'utilisateur a un moniteur associé, on le replace en tête de liste
-    		for(int i = 0; i < directeurs.size(); i++){
-    			if(utilisateur.getMoniteurAssocie().getIdWeb() == directeurs.get(i).getIdWeb()){
-    				directeurs.remove(i);
-    				directeurs.add(i, directeurs.get(0));
-    				directeurs.add(0, utilisateur.getMoniteurAssocie());
-    			}
-    		}
-    	}
+//    	if(utilisateur.getMoniteurAssocie() != null){
+//    		//Si l'utilisateur a un moniteur associé, on le replace en tête de liste (si il y a plusieurs moniteurs dans la liste)
+//    		if(directeurs.size() > 1){
+//	    		for(int i = 0; i < directeurs.size(); i++){
+//	    			if(utilisateur.getMoniteurAssocie().getIdWeb() == directeurs.get(i).getIdWeb()){
+//	    				directeurs.remove(i);
+//	    				directeurs.add(i, directeurs.get(0));
+//	    				directeurs.add(0, utilisateur.getMoniteurAssocie());
+//	    			}
+//	    		}
+//    		}
+//    	}
 	}
 	
 	@Override
@@ -82,6 +84,7 @@ public class ListeFichesSecuriteActivity extends FragmentActivity implements Dir
 			FicheSecurite nouvelleFiche = new FicheSecurite();
 			nouvelleFiche.setIdWeb(-1);
 			nouvelleFiche.setId(-1L);
+			nouvelleFiche.setEtat(EnumEtat.SYNCHRONISE);
 			nouvelleFiche.setDirecteurPlonge(directeurPlonge);
 			
 			Intent intent = new Intent(this, FicheSecuriteInfoActivity.class);		
@@ -144,7 +147,7 @@ public class ListeFichesSecuriteActivity extends FragmentActivity implements Dir
 		
 		//Chargement de la liste des fiches		
 		FicheSecuriteDao ficheSecuriteDao = new FicheSecuriteDao(this);
-		ListeFichesSecurite listeFiche = ficheSecuriteDao.getAll();
+		ListeFichesSecurite listeFiche = ficheSecuriteDao.getAll(false);
 		
 		
 		if(listeFiche.size() == 0){
@@ -274,5 +277,19 @@ public class ListeFichesSecuriteActivity extends FragmentActivity implements Dir
 				ficheSecurite, utilisateur, this));
 		
 		return row;
+	}
+
+	/**
+	 * @return the utilisateur
+	 */
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	/**
+	 * @param utilisateur the utilisateur to set
+	 */
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
 	}
 }

@@ -72,53 +72,59 @@ public class FicheSecuriteDao extends BaseDao {
 	 * @param idFicheSecurite
 	 * @return
 	 */
-	public FicheSecurite getById(int idFicheSecurite){
-		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_LOCAL+" = ?", new String[]{String.valueOf(idFicheSecurite)});
-		
-		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
-		
-		mDb.close();
-		
-		if(resultList.size() == 1){
-			return resultList.get(0);
-		}
-		else{
-			return null;
-		}
-	}
+//	public FicheSecurite getById(int idFicheSecurite){
+//		SQLiteDatabase mDb = open();
+//		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_LOCAL+" = ?", new String[]{String.valueOf(idFicheSecurite)});
+//		
+//		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
+//		
+//		mDb.close();
+//		
+//		if(resultList.size() == 1){
+//			return resultList.get(0);
+//		}
+//		else{
+//			return null;
+//		}
+//	}
 	
 	/**
 	 * Return la fiche de sécurite d'id web spécifié
 	 * @param idWebFicheSecurite
 	 * @return
 	 */
-	public FicheSecurite getByIdWeb(int idWebFicheSecurite){
-		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_WEB+" = ?", new String[]{String.valueOf(idWebFicheSecurite)});
-		
-		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
-		
-		mDb.close();
-		
-		if(resultList.size() == 1){
-			return resultList.get(0);
-		}
-		else{
-			return null;
-		}
-	}
+//	public FicheSecurite getByIdWeb(int idWebFicheSecurite){
+//		SQLiteDatabase mDb = open();
+//		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_WEB+" = ?", new String[]{String.valueOf(idWebFicheSecurite)});
+//		
+//		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
+//		
+//		mDb.close();
+//		
+//		if(resultList.size() == 1){
+//			return resultList.get(0);
+//		}
+//		else{
+//			return null;
+//		}
+//	}
 	
 	/**
 	 * Return tout les fiches de sécurité appartenant à l'état spécifié
+	 * @param avecDesactive Inclue ou pas les fiches, palanquées et plongeurs desactivé
 	 * @param etat
 	 * @return
 	 */
-	public ListeFichesSecurite getByEtat(EnumEtat etat){
+	public ListeFichesSecurite getByEtat(EnumEtat etat, boolean avecDesactive){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ETAT+" = '"+String.valueOf(etat)+"'", null);
 		
-		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
+		Cursor cursor;
+		if(avecDesactive)
+			cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ETAT+" = '"+String.valueOf(etat)+"'", null);
+		else
+			cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ETAT+" = '"+String.valueOf(etat)+"'", null);
+			
+		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor, avecDesactive);
 		
 		mDb.close();
 		
@@ -127,13 +133,19 @@ public class FicheSecuriteDao extends BaseDao {
 	
 	/**
 	 * Return toutes les fiches de sécurité
+	 * @param avecDesactive Inclue ou pas les fiches, palanquées et plongeurs desactivé
 	 * @return
 	 */
-	public ListeFichesSecurite getAll(){
+	public ListeFichesSecurite getAll(boolean avecDesactive){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0", null);
 		
-		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor);
+		Cursor cursor;
+		if(avecDesactive)
+			cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+		else
+			cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0", null);
+			
+		ListeFichesSecurite resultList  = cursorToFichesecuriteList(cursor, avecDesactive);
 		
 		mDb.close();
 		
@@ -146,8 +158,8 @@ public class FicheSecuriteDao extends BaseDao {
 	 * @return
 	 */
 	public FicheSecurite update(FicheSecurite ficheSecurite){
-		/*if(ficheSecurite == null)
-			return null;*/
+		if(ficheSecurite == null)
+			return null;
 		
 		//Enregistrement du site si il n'est pas déjà enregistré
 		if(ficheSecurite.getSite() != null && (ficheSecurite.getSite().getId() == null || ficheSecurite.getSite().getId() < 0)){
@@ -168,6 +180,7 @@ public class FicheSecuriteDao extends BaseDao {
 		value.put(ID_SITE, ficheSecurite.getSite() != null ? ficheSecurite.getSite().getId() : null);
 		value.put(ETAT, ficheSecurite.getEtat() != null ? ficheSecurite.getEtat().toString() : null);
 		value.put(VERSION, ficheSecurite.getVersion());
+		value.put(DESACTIVE, ficheSecurite.isDesactive() ? 1 : 0);
 		
 		mDb.update(TABLE_NAME, value, ID_LOCAL+" = ?", new String[]{ficheSecurite.getId().toString()});
 		mDb.close();
@@ -235,6 +248,7 @@ public class FicheSecuriteDao extends BaseDao {
 		value.put(ID_SITE, ficheSecurite.getSite() != null ? ficheSecurite.getSite().getId() : null);
 		value.put(ETAT, ficheSecurite.getEtat() != null ? ficheSecurite.getEtat().toString() : null);
 		value.put(VERSION, ficheSecurite.getVersion());
+		value.put(DESACTIVE, ficheSecurite.isDesactive() ? 1 : 0);
 		
 		long insertedId = mDb.insert(TABLE_NAME, null, value);
 		mDb.close();
@@ -325,7 +339,7 @@ public class FicheSecuriteDao extends BaseDao {
 	 * @param cursor
 	 * @return
 	 */
-	private ListeFichesSecurite cursorToFichesecuriteList(Cursor cursor){
+	private ListeFichesSecurite cursorToFichesecuriteList(Cursor cursor, boolean avecDesative){
 		ListeFichesSecurite resultList = new ListeFichesSecurite();
 		
 		MoniteurDao moniteurDao = new MoniteurDao(pContext);
@@ -343,7 +357,8 @@ public class FicheSecuriteDao extends BaseDao {
 					siteDao.getById((cursor.getInt(cursor.getColumnIndex(ID_SITE)))),
 					EnumEtat.valueOf(cursor.getString(cursor.getColumnIndex(ETAT))),
 					cursor.getLong(cursor.getColumnIndex(VERSION)),
-					palanqueeDao.getByIdFicheSecurite(cursor.getInt(cursor.getColumnIndex(ID_LOCAL)))
+					palanqueeDao.getByIdFicheSecurite(cursor.getInt(cursor.getColumnIndex(ID_LOCAL)), avecDesative),
+					cursor.getInt(cursor.getColumnIndex(DESACTIVE)) == 1
 					);
 			
 			resultList.add(ficheSecurite);

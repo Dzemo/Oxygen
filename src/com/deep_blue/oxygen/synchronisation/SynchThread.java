@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -62,6 +63,18 @@ public class SynchThread extends Thread {
 	 * Nom du parametre get dans la requete http contenant les données à envoyer
 	 */
 	private static final String QUERY_DATA = "data";
+	
+	/**
+	 * Nom du parametre get dans le requete http contenant la version de l'api de cette application
+	 */
+	private static final String QUERY_API_VERSION = "api_version";
+	
+	/**
+	 * Nombre entier.
+	 * Version de l'api, à augmenter quand des modifications sont appporter sur la synchronisation dans 
+	 * cette application android ou sur le serveur
+	 */
+	private static final String API_VERSION = "1";
 
 	private Context pContext;
 	private SynchThreadHandler handler;
@@ -155,7 +168,20 @@ public class SynchThread extends Thread {
 			msg.getData().putString(IntentKey.SYNCH_ERROR_TEXT.toString(), pContext.getResources().getString(
 							R.string.synch_error_no_data));
 			handler.sendMessage(msg);
-		} else{
+		}
+		else if("older-version".equals(response)){
+			Message msg = handler.obtainMessage(SynchThreadHandler.CODE_ERROR);
+			msg.getData().putString(IntentKey.SYNCH_ERROR_TEXT.toString(), pContext.getResources().getString(
+							R.string.synch_error_older_version));
+			handler.sendMessage(msg);
+		}
+		else if("newer-version".equals(response)){
+			Message msg = handler.obtainMessage(SynchThreadHandler.CODE_ERROR);
+			msg.getData().putString(IntentKey.SYNCH_ERROR_TEXT.toString(), pContext.getResources().getString(
+							R.string.synch_error_newer_version));
+			handler.sendMessage(msg);
+		}
+		else{
 			try {
 				processResponse(response);
 				Message msg = handler.obtainMessage(SynchThreadHandler.CODE_SUCCESS);
@@ -239,8 +265,12 @@ public class SynchThread extends Thread {
 			jsonRequestContainer.setMoniteurMaxVersion(moniteurDao
 					.getMaxVersion());
 
-			// Fiche et historique
-			ListeFichesSecurite listeFichesSecuriteValidees = ficheSecuriteDao.getByEtat(EnumEtat.VALIDE);
+			// Fiche en cours
+			ListeFichesSecurite listeFichesSecuriteEnCours = ficheSecuriteDao.getByEtat(EnumEtat.SYNCHRONISE, true);
+			jsonRequestContainer.setFichesSecuriteEnCours(listeFichesSecuriteEnCours);
+			
+			// Fiche validées et historique
+			ListeFichesSecurite listeFichesSecuriteValidees = ficheSecuriteDao.getByEtat(EnumEtat.VALIDE, true);
 			jsonRequestContainer.setFichesSecuriteValidees(listeFichesSecuriteValidees);
 			HistoriqueDao historiqueDao = new HistoriqueDao(pContext);
 			List<Historique> listeHistoriques = historiqueDao.getForListFiche(listeFichesSecuriteValidees);
@@ -264,6 +294,9 @@ public class SynchThread extends Thread {
 		// Ajout des data
 		params.put(QUERY_DATA, json);
 
+		//Ajout de la version de l'application
+		params.put(QUERY_API_VERSION, API_VERSION);
+		
 		return params;
 	}
 
@@ -351,21 +384,21 @@ public class SynchThread extends Thread {
 				SiteDao siteDao = new SiteDao(pContext);
 				for(FicheSecurite ficheSecurite : jsonResponseContainer.getFichesSecurite()){
 
-					FicheSecurite ficheSecuriteExistant = ficheSecuriteDao.getByIdWeb(ficheSecurite.getIdWeb());
-					if(ficheSecuriteExistant != null){
-						//On ne récupère pas les fiches qui ont déjà été synchronisé
-					} else{
-						
-						//Récupération du site
-						if(ficheSecurite.getSite() != null){
-							Site site = siteDao.getByIdWeb(ficheSecurite.getSite().getIdWeb());
-							if(site == null){
-								site = siteDao.insert(ficheSecurite.getSite());
-							}
-							ficheSecurite.setSite(site);
+					//Récupération du site
+					if(ficheSecurite.getSite() != null){
+						//Enregistrement des sites qui n'existe pas en locale
+						Site site = siteDao.getByIdWeb(ficheSecurite.getSite().getIdWeb());
+						if(site == null){
+							site = siteDao.insert(ficheSecurite.getSite());
 						}
-						
-						//Enregistrement de la fiche
+						ficheSecurite.setSite(site);
+					}
+					
+					if(ficheSecurite.getId() != null && ficheSecurite.getId() > 0){
+						//La fiche existe déjà en sur l'application mobile, on la met à jours
+						ficheSecuriteDao.update(ficheSecurite);
+					} else{						
+						//Enregistrement de la nouvelle fiche
 						ficheSecuriteDao.insert(ficheSecurite);
 					}
 				}
@@ -385,10 +418,17 @@ public class SynchThread extends Thread {
 			
 			//Rechargement de la liste des fiches si instance de ListeFichesSecuriteActivity
 			if(pContext instanceof ListeFichesSecuriteActivity){
-				((ListeFichesSecuriteActivity)pContext).loadListeFiche();
+				ListeFichesSecuriteActivity listeFichesSecuriteActivity = (ListeFichesSecuriteActivity) pContext;
+				
+				//Mise à jours de l'utilisateur courant, si sont moniteur associé à été récupéré
+				UtilisateurDao utilisateurDao = new UtilisateurDao(pContext);
+				listeFichesSecuriteActivity.setUtilisateur(utilisateurDao.getByLogin(listeFichesSecuriteActivity.getUtilisateur().getLogin()));
+				
+				listeFichesSecuriteActivity.loadListeFiche();
 			}
 			
 		} catch (JsonParseException e) {
+			Log.e("Donnée", response);
 			e.printStackTrace();
 			throw new SynchronisationException(e);
 		} catch (IOException e) {

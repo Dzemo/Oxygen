@@ -75,51 +75,21 @@ public class PalanqueeDao extends BaseDao {
 	}
 	
 	/**
-	 * Return la palanquee d'id spécifié
-	 * @param idPlalanquee
-	 * @return
-	 */
-	public Palanquee getById(int idPlalanquee){
-		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID+" = ?", new String[]{String.valueOf(idPlalanquee)});
-		
-		ListePalanquees resultList  = cursorToPalanqueeList(cursor);
-		
-		mDb.close();
-		
-		if(resultList.size() == 1){
-			return resultList.get(0);
-		}
-		else{
-			return null;
-		}
-	}
-	
-	/**
 	 * Return tout les palanquées appartenant à la fiche de sécurité désignée
 	 * @param idFicheSecurite
+	 * @param avecDesactive Inclue ou pas les palanquées et plongeurs desactivé (pour la synchronisation)
 	 * @return
 	 */
-	public ListePalanquees getByIdFicheSecurite(int idFicheSecurite){
+	public ListePalanquees getByIdFicheSecurite(int idFicheSecurite, boolean avecDesactive){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_FICHE_SECURITE+" = ?", new String[]{String.valueOf(idFicheSecurite)});
 		
-		ListePalanquees resultList  = cursorToPalanqueeList(cursor);
+		Cursor cursor;
+		if(avecDesactive)
+			cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_FICHE_SECURITE+" = ?", new String[]{String.valueOf(idFicheSecurite)});
+		else
+			cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_FICHE_SECURITE+" = ?", new String[]{String.valueOf(idFicheSecurite)});
 		
-		mDb.close();
-		
-		return resultList;
-	}
-	
-	/**
-	 * Return toutes les palanquees
-	 * @return
-	 */
-	public ListePalanquees getAll(){
-		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-		
-		ListePalanquees resultList  = cursorToPalanqueeList(cursor);
+		ListePalanquees resultList  = cursorToPalanqueeList(cursor, avecDesactive);
 		
 		mDb.close();
 		
@@ -149,6 +119,7 @@ public class PalanqueeDao extends BaseDao {
 		value.put(PROFONDEUR_REALISE_MONITEUR, palanquee.getProfondeurRealiseeMoniteur());
 		value.put(DUREE_PREVUE, palanquee.getDureePrevue());
 		value.put(DUREE_REALISE_MONITEUR, palanquee.getDureeRealiseeMoniteur());
+		value.put(DESACTIVE, palanquee.isDesactive() ? 1 : 0);
 		value.put(HEURE, palanquee.getHeure());
 		value.put(VERSION, palanquee.getVersion());
 		
@@ -186,6 +157,7 @@ public class PalanqueeDao extends BaseDao {
 		value.put(PROFONDEUR_REALISE_MONITEUR, palanquee.getProfondeurRealiseeMoniteur());
 		value.put(DUREE_PREVUE, palanquee.getDureePrevue());
 		value.put(DUREE_REALISE_MONITEUR, palanquee.getDureeRealiseeMoniteur());
+		value.put(DESACTIVE, palanquee.isDesactive() ? 1 : 0);
 		value.put(HEURE, palanquee.getHeure());
 		value.put(VERSION, palanquee.getVersion());
 		
@@ -219,21 +191,28 @@ public class PalanqueeDao extends BaseDao {
 		
 		//Suppression logique des palanquées qui ont été supprimées de la fiche
 		String whereClause = ID_FICHE_SECURITE+" = ?";
-		String[] whereArgs = new String[ficheSecurite.getPalanquees().size()+1];
-		whereArgs[0] = ficheSecurite.getId().toString();
+		String[] whereArgsTmp = new String[ficheSecurite.getPalanquees().size()+1];
+		whereArgsTmp[0] = ficheSecurite.getId().toString();
 		int i = 1;
 		PlongeurDao plongeurDao = new PlongeurDao(pContext);
 		for(Palanquee palanquee : ficheSecurite.getPalanquees()){
-			whereClause += " AND "+ID+" != ?";
-			whereArgs[i] = palanquee.getId().toString();
+			if(palanquee.getId() != null){
+				whereClause += " AND "+ID+" != ?";
+				whereArgsTmp[i] = palanquee.getId().toString();
 			
-			//Suppression des plongeurs
-			plongeurDao.deleteLogiqueParPalanqueeId(palanquee.getId());
+				//Suppression des plongeurs
+				plongeurDao.deleteLogiqueParPalanqueeId(palanquee.getId());
+				
+				i++;
+			}
 		}	
-		SQLiteDatabase mDb = open();ContentValues value = new ContentValues();
+		SQLiteDatabase mDb = open();
+		ContentValues value = new ContentValues();
 		value.put(DESACTIVE, 1);
+		String[] whereArgs = new String[i];
+		System.arraycopy(whereArgsTmp, 0, whereArgs, 0, i);
 		mDb.update(TABLE_NAME, value, whereClause, whereArgs);
-		mDb.close();		
+		mDb.close();	
 		
 		//Mise à jours des palanquées
 		for(int j = 0; j < ficheSecurite.getPalanquees().size(); j++){
@@ -286,9 +265,10 @@ public class PalanqueeDao extends BaseDao {
 	/**
 	 * Transforme a cursor result of a query on the palanquee table into an array of Palanquee
 	 * @param cursor
+	 * @param avecDesactive
 	 * @return
 	 */
-	private ListePalanquees cursorToPalanqueeList(Cursor cursor){
+	private ListePalanquees cursorToPalanqueeList(Cursor cursor, boolean avecDesactive){
 		ListePalanquees resultList = new ListePalanquees();
 		
 		MoniteurDao moniteurDao = new MoniteurDao(pContext);
@@ -308,8 +288,9 @@ public class PalanqueeDao extends BaseDao {
 					cursor.getInt(cursor.getColumnIndex(DUREE_PREVUE)),
 					cursor.getInt(cursor.getColumnIndex(DUREE_REALISE_MONITEUR)),
 					cursor.getString(cursor.getColumnIndex(HEURE)),
+					cursor.getInt(cursor.getColumnIndex(DESACTIVE)) == 1,
 					cursor.getLong(cursor.getColumnIndex(VERSION)),
-					plongeurDao.getByIdPalanquee(cursor.getInt(cursor.getColumnIndex(ID)))
+					plongeurDao.getByIdPalanquee(cursor.getInt(cursor.getColumnIndex(ID)), avecDesactive)
 					);
 			
 			resultList.add(palanquee);			

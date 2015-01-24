@@ -135,42 +135,17 @@ public class PlongeurDao extends BaseDao {
 	/**
 	 * Return tout les plongeur appartenant à la palanquée désignée
 	 * @param idPalanquee
+	 * @param desactive Inclue ou pas les plongeur désactivés (pour la synchronisation)
 	 * @return
 	 */
-	public ListePlongeurs getByIdPalanquee(int idPalanquee){
+	public ListePlongeurs getByIdPalanquee(int idPalanquee, boolean desactive){
 		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_PALANQUEE+" = ?", new String[]{String.valueOf(idPalanquee)});
 		
-		ListePlongeurs resultList  = cursorToPlongeurList(cursor);
-		
-		mDb.close();
-		
-		return resultList;
-	}
-	
-	/**
-	 * Return tout les plongeur appartenant à la fiche de sécurité désignée
-	 * @param idFicheSecurite
-	 * @return
-	 */
-	public ListePlongeurs getByIdFicheSecurite(int idFicheSecurite){
-		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_FICHE_SECURITE+" = ?", new String[]{String.valueOf(idFicheSecurite)});
-		
-		ListePlongeurs resultList  = cursorToPlongeurList(cursor);
-		
-		mDb.close();
-		
-		return resultList;
-	}
-	
-	/**
-	 * Return all Plongeur
-	 * @return
-	 */
-	public ListePlongeurs getAll(){
-		SQLiteDatabase mDb = open();
-		Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + "WHERE "+DESACTIVE+" = 0", null);
+		Cursor cursor;
+		if(desactive)
+			cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ID_PALANQUEE+" = ?", new String[]{String.valueOf(idPalanquee)});
+		else
+			cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+DESACTIVE+" = 0 AND "+ID_PALANQUEE+" = ?", new String[]{String.valueOf(idPalanquee)});
 		
 		ListePlongeurs resultList  = cursorToPlongeurList(cursor);
 		
@@ -199,10 +174,11 @@ public class PlongeurDao extends BaseDao {
 		value.put(PRENOM, plongeur.getPrenom());		
 		value.put(APTITUDES, plongeur.getAptitudes().toIdsList());
 		value.put(TELEPHONE, plongeur.getTelephone());
-		value.put(TELEPHONE_URGENCE, plongeur.getPrenom());
+		value.put(TELEPHONE_URGENCE, plongeur.getTelephoneUrgence());
 		value.put(DATE_NAISSANCE, plongeur.getDateNaissance());
 		value.put(PROFONDEUR_REALISEE, plongeur.getProfondeurRealisee());
 		value.put(DUREE_REALISEE, plongeur.getDureeRealisee());
+		value.put(DESACTIVE, plongeur.isDesactive() ? 1 : 0);
 		value.put(VERSION, plongeur.getVersion());
 		
 		Long insertedId = mDb.insert(TABLE_NAME, null, value);
@@ -233,10 +209,11 @@ public class PlongeurDao extends BaseDao {
 		value.put(PRENOM, plongeur.getPrenom());		
 		value.put(APTITUDES, plongeur.getAptitudes().toIdsList());
 		value.put(TELEPHONE, plongeur.getTelephone());
-		value.put(TELEPHONE_URGENCE, plongeur.getPrenom());
+		value.put(TELEPHONE_URGENCE, plongeur.getTelephoneUrgence());
 		value.put(DATE_NAISSANCE, plongeur.getDateNaissance());
 		value.put(PROFONDEUR_REALISEE, plongeur.getProfondeurRealisee());
 		value.put(DUREE_REALISEE, plongeur.getDureeRealisee());
+		value.put(DESACTIVE, plongeur.isDesactive() ? 1 : 0);
 		value.put(VERSION, plongeur.getVersion());
 		
 		mDb.update(TABLE_NAME, value, ID  + " = ?", new String[] {String.valueOf(plongeur.getId())});
@@ -260,23 +237,32 @@ public class PlongeurDao extends BaseDao {
 		
 		//Suppression logique des plongeurs des palanquees qui ont été supprimées de la fiche
 		String whereClause = ID_PALANQUEE+" = ?";
-		String[] whereArgs = new String[palanquee.getPlongeurs().size()+1];
-		whereArgs[0] = palanquee.getId().toString();
+		String[] whereArgsTmp = new String[palanquee.getPlongeurs().size()+1];
+		whereArgsTmp[0] = palanquee.getId().toString();
 		int i = 1;
 		for(Plongeur plongeur : palanquee.getPlongeurs()){
-			whereClause += " AND "+ID+" != ?";
-			whereArgs[i] = plongeur.getId().toString();
+			if(plongeur.getId() != null){
+				whereClause += " AND "+ID+" != ?";
+				whereArgsTmp[i] = plongeur.getId().toString();
+				
+				i++;
+			}
 		}	
 		ContentValues value = new ContentValues();
 		value.put(DESACTIVE, 1);
 		SQLiteDatabase mDb = open();
-		mDb.delete(TABLE_NAME, whereClause, whereArgs);
+		String[] whereArgs = new String[i];
+		System.arraycopy(whereArgsTmp, 0, whereArgs, 0, i);
+		mDb.update(TABLE_NAME, value, whereClause, whereArgs);
 		mDb.close();		
 		
 		//Mise à jours des palanquées
 		for(int j = 0; j < palanquee.getPlongeurs().size(); j++){
 			Plongeur plongeur = palanquee.getPlongeurs().get(j);
-						
+			
+			plongeur.setIdFicheSecurite(palanquee.getIdFicheSecurite());
+			plongeur.setIdPalanquee(palanquee.getId());
+			
 			if(plongeur.getId() == null || plongeur.getId() < 0)
 				plongeur = insert(plongeur);
 			else
@@ -392,6 +378,7 @@ public class PlongeurDao extends BaseDao {
 					cursor.getString(cursor.getColumnIndex(DATE_NAISSANCE)),
 					cursor.getFloat(cursor.getColumnIndex(PROFONDEUR_REALISEE)),
 					cursor.getInt(cursor.getColumnIndex(DUREE_REALISEE)),
+					cursor.getInt(cursor.getColumnIndex(DESACTIVE)) == 1,
 					cursor.getLong(cursor.getColumnIndex(VERSION))
 					);
 			

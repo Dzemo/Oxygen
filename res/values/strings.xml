@@ -126,7 +126,7 @@
     <string name="fiche_info_dialog_site_title">Site de plongée</string>
     <string name="fiche_info_dialog_directeur_plonge_title">Directeur de plongée</string>
     <string name="fiche_info_dialog_embarcation_title">Embarcation</string>
-    <string name="fiche_info_dialog_suppression">Voulez-vous vraiment supprimer cette fiche de sécurité ? (elle sera supprimé uniquement sur cette appareil)</string>
+    <string name="fiche_info_dialog_suppression">Voulez-vous vraiment supprimer cette fiche de sécurité ?</string>
     <string name="fiche_info_dialog_cloture">Voulez-vous vraiment cloturer cette fiche ? (il ne sera plus possible de la modifier par la suite, et elle sera archivée sur le serveur distant lors de la prochaine synchronisation)</string>
     <string name="fiche_info_dialog_quitter_sauvegrder">Cette fiche de sécurité a été modifiée, voulez-vous l\'enregistrer ?</string>
     <string name="fiche_info_dialog_quitter">Quitter</string>
@@ -223,6 +223,8 @@
     <string name="synch_error_host_unknown">Addresse du serveur incorrect</string>
     <string name="synch_error_timeout">Pas de réponse du serveur (timeout)</string>
     <string name="synch_error_generation">Impossible de récupérer les données à envoyer</string>
+    <string name="synch_error_older_version">Une nouvelle version de l\'application est nécessaire pour ce synchroniser avec ce serveur</string>
+    <string name="synch_error_newer_version">Une mise à jours du serveur est nécessaire pour ce synchroniser avec cette application</string>
     <string name="synch_error_no_data">Aucune données récupérés par le serveur</string>
     <string name="synch_error_parse">Impossible de lire les données récupérées</string>
     <string name="synch_error_no_connection">Appareil non connecté au réseau de données</string>

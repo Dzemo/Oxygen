@@ -32,6 +32,7 @@ public class FicheSecurite  implements Parcelable {
 	private Long version;
 	private ListePalanquees palanquees;
 	private boolean modifie;
+	private boolean desactive;
 	
 	public FicheSecurite() {
 		super();
@@ -45,6 +46,7 @@ public class FicheSecurite  implements Parcelable {
 		this.version = -1L;
 		this.palanquees = new ListePalanquees();
 		this.modifie = false;
+		this.desactive = false;
 	}
 	
 	/**
@@ -57,10 +59,11 @@ public class FicheSecurite  implements Parcelable {
 	 * @param etat
 	 * @param version
 	 * @param palanquees
+	 * @param desactive
 	 */
 	public FicheSecurite(Long id, Integer idWeb, Embarcation embarcation,
 			Moniteur directeurPlonge, Long timestamp, Site site, EnumEtat etat,
-			Long version, ListePalanquees palanquees) {
+			Long version, ListePalanquees palanquees, Boolean desactive) {
 		super();
 		this.id = id;
 		this.idWeb = idWeb;
@@ -72,6 +75,7 @@ public class FicheSecurite  implements Parcelable {
 		this.version = version;
 		this.palanquees = palanquees;
 		this.modifie = false;
+		this.desactive = desactive;
 	}
 	
 	/**
@@ -116,6 +120,7 @@ public class FicheSecurite  implements Parcelable {
 			palanquees = new ListePalanquees();
 		
 		modifie = source.readByte() == 1;
+		desactive = source.readByte() == 1;
 	}
 
 	/**
@@ -283,7 +288,21 @@ public class FicheSecurite  implements Parcelable {
 	public void setModifie(boolean modifie) {
 		this.modifie = modifie;
 	}
-	
+
+	/**
+	 * @return the desactive
+	 */
+	public boolean isDesactive() {
+		return desactive;
+	}
+
+	/**
+	 * @param desactive the desactive to set
+	 */
+	public void setDesactive(boolean desactive) {
+		this.desactive = desactive;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -294,7 +313,7 @@ public class FicheSecurite  implements Parcelable {
 				+ directeurPlonge + "\n\ttimestamp: " + timestamp
 				+ "\n\tsite: " + site + "\n\tetat: " + etat + "\n\tversion: "
 				+ version + "\n\tpalanquees: " + palanquees + "\n\tmodifie: "
-				+ modifie + "\n}";
+				+ modifie + "\n\tdesactive: " + desactive + "\n}";
 	}
 
 	@Override
@@ -321,6 +340,7 @@ public class FicheSecurite  implements Parcelable {
 		dest.writeByte((byte)(palanquees != null ? 1 : 0));
 		dest.writeParcelable(palanquees, flags);
 		dest.writeByte((byte)(modifie ? 1 : 0));
+		dest.writeByte((byte)(desactive ? 1 : 0));
 	}
 	
 	/**

@@ -40,6 +40,7 @@ public class Palanquee implements Parcelable {
 	private Long version;
 	private ListePlongeurs plongeurs;
 	private boolean modifie;
+	private boolean desactive;
 	
 	public Palanquee() {
 		super();
@@ -58,6 +59,7 @@ public class Palanquee implements Parcelable {
 		this.version = 0L;
 		this.plongeurs = new ListePlongeurs();
 		this.modifie = false;
+		this.desactive = false;
 	}
 	
 	/**
@@ -72,13 +74,14 @@ public class Palanquee implements Parcelable {
 	 * @param profondeurRealiseeMoniteur
 	 * @param dureePrevue
 	 * @param dureeRealiseeMoniteur
+	 * @param desactive
 	 * @param version
 	 * @param plongeurs
 	 */
 	public Palanquee(Long id, Integer idWeb, Long idFicheSecurite, Moniteur moniteur,
 			Integer numero, EnumTypePlonge typePlonge, EnumTypeGaz typeGaz,
 			Float profondeurPrevue, Float profondeurRealisee,
-			Integer dureePrevue, Integer dureeRealisee, String heure, Long version,
+			Integer dureePrevue, Integer dureeRealisee, String heure, boolean desactive, Long version,
 			ListePlongeurs plongeurs) {
 		super();
 		this.id = id;
@@ -96,6 +99,7 @@ public class Palanquee implements Parcelable {
 		this.version = version;
 		this.plongeurs = plongeurs;
 		this.modifie = false;
+		this.desactive = desactive;
 	}
 	
 	public Palanquee(Parcel source){
@@ -114,6 +118,7 @@ public class Palanquee implements Parcelable {
 		version = source.readLong();
 		plongeurs = source.readParcelable(ListePlongeurs.class.getClassLoader());
 		modifie = source.readByte() == 1;
+		desactive = source.readByte() == 1;
 	}
 
 	public Long getId() {
@@ -262,6 +267,14 @@ public class Palanquee implements Parcelable {
 	public void setModifie(boolean modifie) {
 		this.modifie = modifie;
 	}
+	
+	public boolean isDesactive() {
+		return desactive;
+	}
+
+	public void setDesactive(boolean desactive) {
+		this.desactive = desactive;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -278,8 +291,10 @@ public class Palanquee implements Parcelable {
 				+ dureePrevue + "\n\tdureeRealiseeMoniteur: "
 				+ dureeRealiseeMoniteur + "\n\theure: " + heure
 				+ "\n\tversion: " + version + "\n\tplongeurs: " + plongeurs
-				+ "\n\tmodifie: " + modifie + "\n}";
+				+ "\n\tmodifie: " + modifie + "\n\tdesactive: " + desactive
+				+ "\n}";
 	}
+	
 
 	@Override
 	public int describeContents() {
@@ -303,5 +318,6 @@ public class Palanquee implements Parcelable {
 		dest.writeLong(version);
 		dest.writeParcelable(plongeurs, flags);
 		dest.writeByte((byte)(modifie ? 1 : 0));
+		dest.writeByte((byte)(desactive ? 1 : 0));
 	}
 }
